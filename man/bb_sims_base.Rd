@@ -2,7 +2,7 @@
 % Please edit documentation in R/sims-base.R
 \name{bb_sims_base}
 \alias{bb_sims_base}
-\title{Simulate Boreal Caribou Data from}
+\title{Simulate Boreal Caribou Data from Base Parameter}
 \usage{
 bb_sims_base(
   nyear = 10,
@@ -91,14 +91,11 @@ bb_sims_base(
 }
 \value{
 A list of three tibbles.
-}
-\description{
-Returns a list of three tibbles.
 The first named survival has columns year, month, starttotal, mortalitiescertain and mortalitiesuncertain.
 The second named recruitment has columns year, month, cows, bulls, unknownadults, yearlings and calves.
-And the final named abundances has columns year, month, sex, stage, abundance.
+And the final named abundance has columns year, month, sex, stage, abundance.
 }
-\details{
+\description{
 The survival for a month is the survival from the start to the end of a month.
 The abundance for a month is the abundance at the end of the month.
 The number of collared females of a life stage is the minimum of the
