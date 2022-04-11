@@ -36,14 +36,13 @@ bb_sims <- function(
     female_adults = 1000,
     survival_adult_females = logit(0.95),
     survival_fawns = logit(0.95),
-    fawns_per_adult_female = 0.1,
-    collared_females = 10,
+    fawns_per_adult_female = 0.3,
+    collared_females = 30,
     census_proportion = 0.1,
-    month_calving = 6,
-    month_census_year = month_calving,
+    month_composition = 9,
     survival_trend = 0,
     survival_amplitude = 0,
-    survival_peak = month_calving,
+    survival_peak = month_composition,
     survival_annual_sd = 0,
     survival_month_sd = 0,
     survival_yearling_effect = 0,
@@ -60,8 +59,8 @@ bb_sims <- function(
 ) {
   chk_whole_number(nyear)
   chk_gt(nyear)
-  chk_whole_number(month_calving)
-  chk_range(month_calving, c(1, 12))
+  chk_whole_number(month_composition)
+  chk_range(month_composition, c(1, 12))
   chk_number(mixing_adult_male)
   chk_range(mixing_adult_male)
   

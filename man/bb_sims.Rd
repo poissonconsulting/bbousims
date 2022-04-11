@@ -9,14 +9,13 @@ bb_sims(
   female_adults = 1000,
   survival_adult_females = logit(0.95),
   survival_fawns = logit(0.95),
-  fawns_per_adult_female = 0.1,
-  collared_females = 10,
+  fawns_per_adult_female = 0.3,
+  collared_females = 30,
   census_proportion = 0.1,
-  month_calving = 6,
-  month_census_year = month_calving,
+  month_composition = 9,
   survival_trend = 0,
   survival_amplitude = 0,
-  survival_peak = month_calving,
+  survival_peak = month_composition,
   survival_annual_sd = 0,
   survival_month_sd = 0,
   survival_yearling_effect = 0,
@@ -33,9 +32,9 @@ bb_sims(
 )
 }
 \arguments{
-\item{nyear}{A positive count number of the number of years.}
+\item{nyear}{The number of caribou years.}
 
-\item{female_adults}{A count of the number of female adults at the start of month 1 in year 1.}
+\item{female_adults}{The number of female adults at the start of the first (calving) month in the first year.}
 
 \item{survival_adult_females}{A probability of the annual female adult survival.}
 
@@ -47,9 +46,7 @@ bb_sims(
 
 \item{census_proportion}{The proportion of the population in the annual census.}
 
-\item{month_calving}{A count between 1 and 12 of the month that females calf.}
-
-\item{month_census_year}{A vector of length nyear of the census month for each year.}
+\item{month_composition}{A number between 1 and 12 of the caribou month that composition survey occurs.}
 
 \item{survival_trend}{The effect of an increase of one year on the log-odds monthly survival.}
 
