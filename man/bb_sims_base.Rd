@@ -24,16 +24,16 @@ bb_sims_base(
   probability_uncertain_survivor_month_year = matrix(0, 12, nyear),
   group_size_year = rep(10, nyear),
   group_phi_year = rep(0, nyear),
-  groups_year = rep(10, nyear),
+  groups_coverage_year = 0.2,
+  proportion_adult_male_year = rep(0, nyear),
   probability_unsexed_adult_female_year = rep(0, nyear),
-  probability_unsexed_adult_male_year = rep(0, nyear),
-  mixing_adult_male_year = rep(1, nyear)
+  probability_unsexed_adult_male_year = rep(0, nyear)
 )
 }
 \arguments{
 \item{nyear}{The number of caribou years.}
 
-\item{month_composition}{A number between 1 and 12 of the caribou month that composition survey occurs.}
+\item{month_composition}{A number between 1 and 12 of the caribou month that composition survey occurs relative to the calving month.}
 
 \item{female_yearlings}{The number of female yearlings at the start of the first (calving) month in the first year.}
 
@@ -69,13 +69,13 @@ bb_sims_base(
 
 \item{group_phi_year}{A vector of length nyear of the standard deviation of the extra-Poisson variation in the group size.}
 
-\item{groups_year}{A vector of length nyear of the number of groups in the census.}
+\item{groups_coverage_year}{A vector of length nyear of the proportion of the groups in the composition survey.}
+
+\item{proportion_adult_male_year}{A vector of length nyear of the proportion of the adult males in mixed groups in the composition survey.}
 
 \item{probability_unsexed_adult_female_year}{A vector of length nyear of the probability of an adult female being unsexed.}
 
 \item{probability_unsexed_adult_male_year}{A vector of length nyear of the probability of an adult male being unsexed.}
-
-\item{mixing_adult_male_year}{A vector of length nyear of the extent of mixing of adult males with adult females.}
 }
 \value{
 A list of three tibbles.
@@ -85,12 +85,14 @@ And the final named abundance has columns year, month, sex, stage, abundance.
 }
 \description{
 The survival for a month is the survival from the start to the end of a month.
-Except for the starting values the abundance for a month is the abundance at the end of the month.
+Except for the starting values, the abundance for a month is the abundance at the end of the month.
 The number of collared females of a life stage is the minimum of the
 number specified and the number of individuals available.
 Individual are assigned to composition groups based on their relative proportions
 until there are no individuals remaining.
-It's currently unclear how to implement mixing_adult_male_year.
+Cows, bulls and yearlings are assigned to groups based on their relative proportions.
+If a cow is assigned and there is space for one more individual then a calf is a
+For each cow (or yearling if have calves) probability of having a calf.
 The model includes demographic stochasticity.
 }
 \examples{
