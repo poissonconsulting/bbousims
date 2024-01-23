@@ -1,16 +1,16 @@
 #' Simulate Boreal Caribou Data from Base Parameter
-#' 
+#'
 #' The survival for a month is the survival from the start to the end of a month.
 #' Except for the starting values, the abundance for a month is the abundance at the end of the month.
 #' The number of collared females of a life stage is the minimum of the
 #' number specified and the number of individuals available.
-#' Individual are assigned to composition groups based on their relative proportions 
+#' Individual are assigned to composition groups based on their relative proportions
 #' until there are no individuals remaining.
 #' Cows, bulls and yearlings are assigned to groups based on their relative proportions.
 #' If a cow is assigned and there is space for one more individual then a calf is a
 #' For each cow (or yearling if have calves) probability of having a calf.
 #' The model includes demographic stochasticity.
-#' 
+#'
 #' @param nyear The number of caribou years.
 #' @param month_composition A number between 1 and 12 of the caribou month that composition survey occurs relative to the calving month.
 #' @param female_yearlings The number of female yearlings at the start of the first (calving) month in the first year.
@@ -50,7 +50,7 @@ bb_sims_base <- function(
     male_yearlings = female_yearlings,
     female_adults = 1000,
     male_adults = NULL, # if null simulates expected values based on female adults at equilibrium
-    survival_calves_year = rep(0.985^(12-month_composition), nyear),
+    survival_calves_year = rep(0.985^(12 - month_composition), nyear),
     survival_female_yearlings_month_year = survival_female_adults_month_year,
     survival_male_yearlings_month_year = survival_male_adults_month_year,
     survival_female_adults_month_year = matrix(0.985, 12, nyear),
@@ -66,8 +66,7 @@ bb_sims_base <- function(
     groups_coverage_year = 0.2,
     proportion_adult_male_year = rep(0, nyear),
     probability_unsexed_adult_female_year = rep(0, nyear),
-    probability_unsexed_adult_male_year = rep(0, nyear)
-) {
+    probability_unsexed_adult_male_year = rep(0, nyear)) {
   chk_whole_number(nyear)
   chk_gt(nyear)
   chk_whole_number(month_composition)

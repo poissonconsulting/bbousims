@@ -1,5 +1,5 @@
 #' Simulate Boreal Caribou Data from Model Parameters
-#' 
+#'
 #' @inheritParams bb_sims_base
 #' @param survival_adult_females A probability of the annual female adult survival.
 #' @param survival_calves A probability of the annual female calf survival.
@@ -18,7 +18,7 @@
 #' @param probability_unsexed_adult_female = 0,
 #' @param probability_unsexed_adult_male = 0,
 #' @param proportion_adult_male = 1
-#' 
+#'
 #' @return A list of three tibbles.
 #' The first named survival has columns year, month, starttotal, mortalitiescertain and mortalitiesuncertain.
 #' The second named recruitment has columns year, month, cows, bulls, unknownadults, yearlings and calves.
@@ -47,16 +47,15 @@ bb_sims <- function(
     group_size = 10,
     probability_unsexed_adult_female = 0,
     probability_unsexed_adult_male = 0,
-    proportion_adult_male = 0
-) {
+    proportion_adult_male = 0) {
   chk_whole_number(nyear)
   chk_gt(nyear)
   chk_whole_number(month_composition)
   chk_range(month_composition, c(1, 12))
   chk_number(proportion_adult_male)
   chk_range(proportion_adult_male)
-  
+
   # will call bb_sims_base()
-  
+
   NULL
 }
