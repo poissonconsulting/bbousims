@@ -2,11 +2,11 @@ test_that("multiplication works", {
   # ensure same calf assigment in demographic stochasticity
   # vector of 1/0 to indicate whether ages or remains
   
-  # # 5 states two sexes, constant rates -------------------------------------------------------------
-  # # calves have 1 survival rate, otherwise yearling and adult have separate survival by sex
+  # # 6 states two sexes, constant rates -------------------------------------------------------------
   # # female yearlings and adults have separate fecundity rates
-  # # sex is assigned to each calf after birth based on ratio
-  # # state 1 = calf
+  # # sex is assigned to each calf state after birth based on sex ratio
+  # # state 1 = calf female
+  # # state 2 = calf male
   # # state 2 = yearling female
   # # state 3 = yearling male
   # # state 4 = adult female
@@ -14,18 +14,18 @@ test_that("multiplication works", {
   #
   # # annual survival - constant rates
   
-  population0 <- c(200, 100, 100, 200, 200)
+  population0 <- c(100, 100, 100, 100, 200, 200)
   # varying survival rate by state
-  survival <- survival_matrix(c(0.84, 0.86, 0.86, 0.88, 0.87))
-  age <- age_matrix(0.5, 5)
+  survival <- matrix_survival(c(0.84, 0.84, 0.86, 0.86, 0.88, 0.87))
+  age <- matrix_age(c(3, 4, 5, 6, 5, 6))
   # female yearling fecundity 0.2, adult fecundity 0.25
-  birth <- birth_matrix(c(0, 0.2, 0, 0.25, 0))
+  birth <- matrix_birth(c(0, 0, 0.2, 0, 0.25, 0))
   
   survival %*% population0
   age %*% population0
   birth %*% population0
   
-  population <- bas_population_growth(population0, survival = survival, age = age, birth = birth, nperiod = 5)
+  population <- project_population_bas(population0, survival = survival, age = age, birth = birth, nperiod = 5)
   population
   # gp <- plot_population(population, states = c("calf", "yearling female", "yearling male", "adult female", "adult male"))
   # sbf_open_window()
@@ -36,24 +36,23 @@ test_that("multiplication works", {
   # birth varies by year and state
   # age varies by year (via sex ratio)
   
-  # list of survival matrices for each period
-  x1 <- matrix(c(rep(0.98, 12), rep(0.97, 12)), nrow = 12)
-  x2 <- matrix(c(rep(0.97, 12), rep(0.96, 12)), nrow = 12)
-  x3 <- matrix(c(rep(0.95, 12), rep(0.94, 12)), nrow = 12)
-  x4 <- matrix(c(rep(0.99, 12), rep(0.99, 12)), nrow = 12)
-  x5 <- matrix(c(rep(0.98, 12), rep(0.96, 12)), nrow = 12)
+  # array of survival rates by year, period, state
+  # no monthly variation here for simplicity
+  survival_rates <- lapply(c(-0.01, 0.01, 0, -0.02, 0.01, 0.01), function(x){
+    rep(c(0.98, 0.97, 0.96), 4) + x
+  })
+  survival_rates <- array(unlist(survival_rates), dim = c(3, 4, 6))
+ 
+  survival <- matrix_survival_period(survival_rates)
   
-  survival_rates <- array(c(x1, x2, x3, x4, x5), dim = c(12, 2, 5))
-  survival <- survival_year_month(survival_rates)
+  birth_rates <- matrix(c(0, 0, 0.2, 0, 0.3, 0,
+                          0, 0,  0.3, 0, 0.35, 0,
+                          0, 0, 0.2, 0, 0.3, 0), ncol = 6, byrow = TRUE)
+  birth <- matrix_birth_year(birth_rates)
   
-  birth_rates <- matrix(c(0, 0.2, 0, 0.3, 0,
-                          0, 0.3, 0, 0.35, 0), ncol = 5, byrow = TRUE)
-  birth <- birth_year(birth_rates)
+  age <- matrix_age(c(3, 4, 5, 6, 5, 6))
   
-  age <- age_year(rep(0.5, 2), nstate = 5)
+  x <- project_population_bas_period(population0, survival = survival, birth = birth, age = age)
   
-  x <- bas_population_growth_period(population0, survival = survival, birth = birth, age = age)
-  
-  ageing - 1 if age to next class or 0 if dont 
-  
+
 })

@@ -1,50 +1,46 @@
-#' Create a survival matrix.
+#' Create a survival process matrix.
 #' 
 #' @param survival A vector of the survival rates in each state.
 #'
-#' @return A survival population matrix.
+#' @return A matrix of the survival subprocess.
 #' @export
 #'
 #' @examples
-#' survival_matrix(c(0.87, 0.84, 0.84, 0.89, 0.9)) %*% rep(100, 5)
-survival_matrix <- function(survival){
+#' matrix_survival(c(0.87, 0.84, 0.84, 0.89, 0.9)) %*% rep(100, 5)
+matrix_survival <- function(survival){
   chk_numeric(survival)
   chk_range(survival)
-  nstate <- length(survival)
-  x <- matrix(rep(0, nstate*nstate), ncol = nstate)
-  for(i in 1:nstate){
-    x[i,i] <- survival[i]
-  }
+  
+  x <- empty_matrix(length(survival))
+  diag(x) <- survival
   x
 }
 
-#' Create survival matrix for each year and month.
+#' Create survival matrix for each year and period.
 #' 
-#' @param survival An array of the survival rates with dimensions month, year and state.
+#' @param survival An array of the survival rates with dimensions period, year and state. Period represents any subdivision of a year (i.e., week, month, season).
 #'
-#' @return An array of survival population matrices with dimensions state, state, year, month.
+#' @return An array of survival process matrices with dimensions state, state, year, period.
 #' @export
 #'
 #' @examples
 #' #' if (interactive()) {
-#'   x1 <- matrix(rep(c(0.98, 0.97), 12), nrow = 12, byrow = TRUE)
-#'   x2 <- matrix(rep(c(0.97, 0.96), 12), nrow = 12, byrow = TRUE)
-#'   x3 <- matrix(rep(c(0.95, 0.94), 12), nrow = 12, byrow = TRUE)
-#'   x4 <- matrix(rep(c(0.99, 0.99), 12), nrow = 12, byrow = TRUE)
-#'   x5 <- matrix(rep(c(0.98, 0.96), 12), nrow = 12, byrow = TRUE)
-#'   
-#'   survival <- array(c(x1, x2, x3, x4, x5), dim = c(12, 2, 5))
-#'   survival_year_month(survival)
+#'   survival_rates <- lapply(c(-0.01, 0.01, 0, -0.02, 0.01, 0.01), function(x){
+#'    rep(c(0.98, 0.97, 0.96), 4) + x
+#'   })
+#'.  survival_rates <- array(unlist(survival_rates), dim = c(3, 4, 6))
+#'   matrix_survival_period(survival_rates)
 #' }
 #' 
-survival_year_month <- function(survival){
+matrix_survival_period <- function(survival){
   dims <- dim(survival)
+  nperiod <- dims[1]
   nyear <- dims[2]
   nstate <- dims[3]
-  x <- array(0, dim = c(nstate, nstate, nyear, 12))
+  x <- array(0, dim = c(nstate, nstate, nyear, nperiod))
   for(year in 1:nyear){
-    for(month in 1:12){
-      x[,,year,month] <- survival_matrix(survival[month, year, ])
+    for(period in 1:nperiod){
+      x[,,year,period] <- matrix_survival(survival[period, year, ])
     }
   }
   x

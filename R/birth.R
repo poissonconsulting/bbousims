@@ -1,26 +1,35 @@
-#' Create a birth matrix.
+#' Create a birth process matrix.
 #' 
 #' @param fecundity A vector of the fecundity rates in each state.
+#' @param female_recruit_state A number indicating the index position of the female recruit state. 
+#' @param male_recruit_state A number indicating the index position of the male recruit state. 
+#' @param female_proportion A number between 0 and 1 indicating the proportion of recruits that are female.
 #'
-#' @return A birth population matrix.
+#' @return A matrix of the birth subprocess.
 #' @export
 #'
 #' @examples
-#' birth_matrix(c(0, 0.2, 0, 0.25, 0)) %*% rep(100, 5)
+#' matrix_birth(c(0, 0, 0.2, 0, 0.25, 0)) %*% rep(100, 6)
 
-birth_matrix <- function(fecundity){
+matrix_birth <- function(fecundity, female_recruit_state = 1, male_recruit_state = 2, female_proportion = 0.5){
   chk_numeric(fecundity)
-  chk_range(fecundity)
-  nstate <- length(fecundity)
-  x <- matrix(rep(0, nstate*nstate), ncol = nstate)
-  for(i in 1:nstate){
-    x[i,i] <- 1
-    x[1,i] <- fecundity[i]
+  chk_gte(fecundity)
+  chk_whole_number(male_recruit_state)
+  chk_range(male_recruit_state, range = c(0, length(fecundity)))
+  chk_whole_number(female_recruit_state)
+  chk_range(female_recruit_state, range = c(0, length(fecundity)))
+  chk_range(female_proportion)
+  
+  x <- empty_matrix(length(fecundity))
+  diag(x) <- 1
+  for(i in seq_along(fecundity)){
+    x[female_recruit_state,i] <- fecundity[i]*female_proportion
+    x[male_recruit_state,i] <- fecundity[i]*(1 - female_proportion)
   }
   x
 }
 
-#' Create birth matrix for each year.
+#' Create a birth process matrix for each year.
 #' 
 #' @param fecundity A matrix of the fecundity rates with dimensions year and state.
 #'
@@ -34,13 +43,16 @@ birth_matrix <- function(fecundity){
 #'                       0, 0.25, 0, 0.3, 0), ncol = 5, byrow = TRUE))
 #' }
 #' 
-birth_year <- function(fecundity){
+matrix_birth_year <- function(fecundity, female_recruit_state = 1, male_recruit_state = 2, female_proportion = 0.5){
   dims <- dim(fecundity)
   nyear <- dims[1]
   nstate <- dims[2]
   x <- array(0, dim = c(nstate, nstate, nyear))
   for(year in 1:nyear){
-    x[,,year] <- birth_matrix(fecundity[year,])
+    x[,,year] <- matrix_birth(fecundity[year,], 
+                              female_recruit_state = female_recruit_state,
+                              male_recruit_state = male_recruit_state,
+                              female_proportion = female_proportion)
   }
   x
 }
