@@ -10,7 +10,7 @@
 #'
 #' @examples
 #' matrix_birth(c(0, 0, 0.2, 0, 0.25, 0)) %*% rep(100, 6)
-
+message("fertility not fecundity - fecundity is fertility and survival combined")
 matrix_birth <- function(fecundity, female_recruit_state = 1, male_recruit_state = 2, female_proportion = 0.5){
   chk_numeric(fecundity)
   chk_gte(fecundity)
@@ -21,11 +21,11 @@ matrix_birth <- function(fecundity, female_recruit_state = 1, male_recruit_state
   chk_range(female_proportion)
   
   x <- empty_matrix(length(fecundity))
-  diag(x) <- 1
   for(i in seq_along(fecundity)){
     x[female_recruit_state,i] <- fecundity[i]*female_proportion
     x[male_recruit_state,i] <- fecundity[i]*(1 - female_proportion)
   }
+  diag(x) <- 1
   x
 }
 
