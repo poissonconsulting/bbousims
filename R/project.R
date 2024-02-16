@@ -1,3 +1,5 @@
+# these functions are deterministic! see simulate.R for stochastic equivalents
+
 #' Project population from BAS model
 #' 
 #' Project population growth given initial population in each state and survival, ageing, and birth subprocesses, in that order. 
@@ -95,8 +97,9 @@ project_population_bas_period <- function(population_init, birth, age, survival)
       }
     }
   }
-  pop <- c(population)
-  # remove initial
-  projection <- pop[(nstate+1):length(pop)]
-  array(projection, dim = c(nstate, nperiod, nyear))
+  population
+  # pop <- c(population)
+  # # remove initial
+  # projection <- pop[(nstate+1):length(pop)]
+  # array(projection, dim = c(nstate, nperiod, nyear))
 }

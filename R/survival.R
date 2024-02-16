@@ -25,11 +25,11 @@ matrix_survival <- function(survival){
 #'
 #' @examples
 #' #' if (interactive()) {
-#'   survival_rates <- lapply(c(-0.01, 0.01, 0, -0.02, 0.01, 0.01), function(x){
-#'    rep(c(0.98, 0.97, 0.96), 4) + x
-#'   })
-#'.  survival_rates <- array(unlist(survival_rates), dim = c(3, 4, 6))
-#'   matrix_survival_period(survival_rates)
+#'     survival_rates <- lapply(c(-0.01, 0.01, 0, -0.02, 0.01, 0.01), function(x){
+#'       c(rep(0.98, 4), rep(0.97, 4), rep(0.96, 4)) + x
+#'     })
+#'     survival_rates <- array(unlist(survival_rates), dim = c(4, 3, 6))
+#'     matrix_survival_period(survival_rates)
 #' }
 #' 
 matrix_survival_period <- function(survival){
