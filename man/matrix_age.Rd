@@ -7,7 +7,7 @@
 matrix_age(age)
 }
 \arguments{
-\item{age}{A vector indicating the state to age into. If ageing does not occur, the state should reference itself.}
+\item{age}{A vector indicating the stage to age into. If ageing does not occur, the stage should reference itself.}
 }
 \value{
 A matrix of the age subprocess.

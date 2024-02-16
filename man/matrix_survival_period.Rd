@@ -7,16 +7,16 @@
 matrix_survival_period(survival)
 }
 \arguments{
-\item{survival}{An array of the survival rates with dimensions period, year and state. Period represents any subdivision of a year (i.e., week, month, season).}
+\item{survival}{An array of the survival rates with dimensions period, year and stage. Period represents any subdivision of a year (i.e., week, month, season).}
 }
 \value{
-An array of survival process matrices with dimensions state, state, year, period.
+An array of survival process matrices with dimensions stage, stage, year, period.
 }
 \description{
 Create survival matrix for each year and period.
 }
 \examples{
-#' if (interactive()) {
+if (interactive()) {
     survival_rates <- lapply(c(-0.01, 0.01, 0, -0.02, 0.01, 0.01), function(x){
       c(rep(0.98, 4), rep(0.97, 4), rep(0.96, 4)) + x
     })

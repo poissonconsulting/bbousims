@@ -1,6 +1,6 @@
 #' Create an age process matrix.
 #'
-#' @param age A vector indicating the state to age into. If ageing does not occur, the state should reference itself. 
+#' @param age A vector indicating the stage to age into. If ageing does not occur, the stage should reference itself. 
 #'
 #' @return A matrix of the age subprocess.
 #' @export

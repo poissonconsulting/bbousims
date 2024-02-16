@@ -7,25 +7,25 @@
 project_population_bas(population_init, birth, age, survival, nperiod = 1)
 }
 \arguments{
-\item{population_init}{A vector of the initial population for each state.}
+\item{population_init}{A vector of the initial population for each stage.}
 
-\item{birth}{A matrix of the birth process matrix (from \code{\link[=birth_matrix]{birth_matrix()}}).}
+\item{birth}{A matrix of the birth process matrix (from \code{\link[=matrix_birth]{matrix_birth()}}).}
 
-\item{age}{A matrix of the age process matrix (from \code{\link[=age_matrix]{age_matrix()}}).}
+\item{age}{A matrix of the age process matrix (from \code{\link[=matrix_age]{matrix_age()}}).}
 
-\item{survival}{A matrix of the survival process matrix (from \code{\link[=survival_matrix]{survival_matrix()}}).}
+\item{survival}{A matrix of the survival process matrix (from \code{\link[=matrix_survival]{matrix_survival()}}).}
 
 \item{nperiod}{A whole number of the number of periods to apply population growth.}
 }
 \value{
-A matrix of the projected population with dimensions state and \code{nperiod + 1} to include the initial population.
+A matrix of the projected population with dimensions stage and \code{nperiod + 1} to include the initial population.
 }
 \description{
-Project population growth given initial population in each state and survival, ageing, and birth subprocesses, in that order.
+Project population growth given initial population in each stage and survival, ageing, and birth subprocesses, in that order.
 The number of columns and rows of the birth, age and survival matrices must be identical to the length of the initial population vector.
 }
 \examples{
-#' if (interactive()) {
+if (interactive()) {
   nstate <- 6
   population0 <- rep(100, nstate)
   survival <- matrix_survival(rep(0.87, nstate))

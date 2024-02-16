@@ -7,7 +7,7 @@
 matrix_survival(survival)
 }
 \arguments{
-\item{survival}{A vector of the survival rates in each state.}
+\item{survival}{A vector of the survival rates in each stage.}
 }
 \value{
 A matrix of the survival subprocess.

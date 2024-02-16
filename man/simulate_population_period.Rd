@@ -7,13 +7,15 @@
 simulate_population_period(population_init, birth, age, survival, nsims = 100L)
 }
 \arguments{
-\item{population_init}{A vector of the initial population for each state.}
+\item{population_init}{A vector of the initial population for each stage.}
 
-\item{birth}{An array of the birth matrices (output of \code{\link[=birth_year]{birth_year()}}).}
+\item{birth}{An array of the birth matrices (output of \code{\link[=matrix_birth_year]{matrix_birth_year()}}).}
 
-\item{age}{An array of the age matrices (output of \code{\link[=age_year]{age_year()}}).}
+\item{age}{An age process matrix (output of \link{matrix_age}).}
 
-\item{survival}{An array of the survival matrices (output of \code{\link[=survival_year_period]{survival_year_period()}}).}
+\item{survival}{An array of the survival matrices (output of \code{\link[=matrix_survival_period]{matrix_survival_period()}}).}
+
+\item{nsims}{A whole number between 1 and 1,000,000 specifying}
 }
 \value{
 A nlist object with projected abundance at each stage, period and simulation.
@@ -25,12 +27,13 @@ This model assumes that survival occurs at the end of each period and survival, 
 The dimensions of birth, age and survival process matrices must be identical to the length of the initial population vector.
 }
 \examples{
-#' if (interactive()) {
+if (interactive()) {
   nstage <- 6
   population0 <- rep(100, nstage)
   survival <- matrix_survival(rep(0.87, nstage))
   age <- matrix_age(c(2, 3, 4, 5, 6, 5, 6))
   birth <- matrix_birth(c(0, 0, 0.2, 0, 0.2, 0))
-  simulate_population_period(population0, survival = survival, age = age, birth = birth, nyears = 5, nsims = 100)
+  simulate_population_period(population0, survival = survival, age = age, 
+    birth = birth, nyears = 5, nsims = 100)
 }
 }

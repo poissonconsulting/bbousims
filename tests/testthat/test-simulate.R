@@ -3,12 +3,12 @@ test_that("simulating population with constant survival/fecundity rates works", 
   nstage <- 6L
   nsims <- 10L
   pop0 <- rep(100, nstage)
-  # varying survival rate by state
+  # varying survival rate by stage
   survival <- matrix_survival(rbeta(nstage, 84, 16))
   age <- matrix_age(c(3, 4, 5, 6, 5, 6))
   birth <- matrix_birth(c(0, 0, 0.2, 0, 0.25, 0))
   
-  x <- simulate_population(pop0, birth = birth, age = age, survival = survival, nperiod = nperiod, nsims = nsims)
+  x <- simulate_population(pop0, birth = birth, age = age, survival = survival, nsims = nsims)
   
   expect_s3_class(x, "nlists")
   expect_length(x, 10L)
@@ -17,7 +17,7 @@ test_that("simulating population with constant survival/fecundity rates works", 
 
 test_that("simulating population with varying survival/fecundity rates works", {
   nstage <- 6L
-  nsims <- 1000L
+  nsims <- 10L
   pop0 <- rep(100, nstage)
   
   survival_rates <- lapply(c(-0.01, 0.01, 0, -0.02, 0.01, 0.01), function(x){

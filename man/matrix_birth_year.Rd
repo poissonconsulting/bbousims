@@ -6,25 +6,31 @@
 \usage{
 matrix_birth_year(
   fecundity,
-  female_recruit_state = 1,
-  male_recruit_state = 2,
+  female_recruit_stage = 1,
+  male_recruit_stage = 2,
   female_proportion = 0.5
 )
 }
 \arguments{
-\item{fecundity}{A matrix of the fecundity rates with dimensions year and state.}
+\item{fecundity}{A matrix of the fecundity rates with dimensions year and stage.}
+
+\item{female_recruit_stage}{A positive whole number of the stage representing female recruits.}
+
+\item{male_recruit_stage}{A positive whole number of the stage representing male recruits.}
+
+\item{female_proportion}{A number between 0 and 1 indicating the proportion of recruits that are female.
+the number of data sets to simulate.}
 }
 \value{
-An array with dimensions state, state, year.
+An array of the birth process matrices with dimensions stage, stage, year.
 }
 \description{
 Create a birth process matrix for each year.
 }
 \examples{
-#' if (interactive()) {
+if (interactive()) {
   birth_year(matrix(c(0, 0.2, 0, 0.3, 0,
                       0, 0.3, 0, 0.35, 0,
                       0, 0.25, 0, 0.3, 0), ncol = 5, byrow = TRUE))
 }
-
 }

@@ -1,6 +1,6 @@
 #' Create a survival process matrix.
 #' 
-#' @param survival A vector of the survival rates in each state.
+#' @param survival A vector of the survival rates in each stage.
 #'
 #' @return A matrix of the survival subprocess.
 #' @export
@@ -18,13 +18,13 @@ matrix_survival <- function(survival){
 
 #' Create survival matrix for each year and period.
 #' 
-#' @param survival An array of the survival rates with dimensions period, year and state. Period represents any subdivision of a year (i.e., week, month, season).
+#' @param survival An array of the survival rates with dimensions period, year and stage. Period represents any subdivision of a year (i.e., week, month, season).
 #'
-#' @return An array of survival process matrices with dimensions state, state, year, period.
+#' @return An array of survival process matrices with dimensions stage, stage, year, period.
 #' @export
 #'
 #' @examples
-#' #' if (interactive()) {
+#' if (interactive()) {
 #'     survival_rates <- lapply(c(-0.01, 0.01, 0, -0.02, 0.01, 0.01), function(x){
 #'       c(rep(0.98, 4), rep(0.97, 4), rep(0.96, 4)) + x
 #'     })

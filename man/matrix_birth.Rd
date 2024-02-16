@@ -6,22 +6,23 @@
 \usage{
 matrix_birth(
   fecundity,
-  female_recruit_state = 1,
-  male_recruit_state = 2,
+  female_recruit_stage = 1,
+  male_recruit_stage = 2,
   female_proportion = 0.5
 )
 }
 \arguments{
-\item{fecundity}{A vector of the fecundity rates in each state.}
+\item{fecundity}{A vector of the fecundity rates in each stage.}
 
-\item{female_recruit_state}{A number indicating the index position of the female recruit state.}
+\item{female_recruit_stage}{A positive whole number of the stage representing female recruits.}
 
-\item{male_recruit_state}{A number indicating the index position of the male recruit state.}
+\item{male_recruit_stage}{A positive whole number of the stage representing male recruits.}
 
-\item{female_proportion}{A number between 0 and 1 indicating the proportion of recruits that are female.}
+\item{female_proportion}{A number between 0 and 1 indicating the proportion of recruits that are female.
+the number of data sets to simulate.}
 }
 \value{
-A matrix of the birth subprocess.
+A birth process matrix.
 }
 \description{
 Create a birth process matrix.

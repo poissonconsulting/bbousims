@@ -7,23 +7,23 @@
 project_population_bas_period(population_init, birth, age, survival)
 }
 \arguments{
-\item{population_init}{A vector of the initial population for each state.}
+\item{population_init}{A vector of the initial population for each stage.}
 
-\item{birth}{An array of the birth matrices (from \code{\link[=birth_year]{birth_year()}}).}
+\item{birth}{An array of the birth matrices (output of \code{\link[=matrix_birth_year]{matrix_birth_year()}}).}
 
-\item{age}{An array of the age matrices (from \code{\link[=age_year]{age_year()}}).}
+\item{age}{An age process matrix (output of \link{matrix_age}).}
 
-\item{survival}{An array of the survival matrices (from \code{\link[=survival_year_month]{survival_year_month()}}).}
+\item{survival}{An array of the survival matrices (output of \code{\link[=matrix_survival_period]{matrix_survival_period()}}).}
 }
 \value{
-An array of the projected population with dimensions state, period and year. Returned object does not include initial population.
+An array of the projected population with dimensions stage, period and year. Returned object does not include initial population.
 }
 \description{
-project population growth by period given initial population and survival, ageing, and birth subprocesses in that order.
-Survival rates vary by year, period and state; fecundity rates vary by year and state; ageing process does not vary with time.
+Project population growth by period given initial population and survival, ageing, and birth subprocesses in that order.
+Survival rates vary by year, period and stage; fecundity rates vary by year and stage; ageing process does not vary with time.
 }
 \examples{
-#' if (interactive()) {
+if (interactive()) {
   nstate <- 5
   population0<- rep(100, nstate)
   x1 <- matrix(c(rep(0.98, 12), rep(0.97, 12)), nrow = 12)
