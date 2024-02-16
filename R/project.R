@@ -89,11 +89,11 @@ project_population_bas_period <- function(population_init, birth, age, survival)
   
   for(year in 1:nyear){
     for(period in 1:nperiod){
-      period_cont <- year_period(year, period, nperiod)
+      period_now <- year_period(year, period, nperiod)
       if(period == nperiod){
-        population[, period_cont+1] <- birth[,,year] %*% age %*% survival[,,period,year] %*% population[,period_cont]
+        population[, period_now+1] <- birth[,,year] %*% age %*% survival[,,period,year] %*% population[,period_now]
       } else {
-        population[, period_cont+1] <- survival[,,period,year] %*% population[,period_cont]
+        population[, period_now+1] <- survival[,,period,year] %*% population[,period_now]
       }
     }
   }
