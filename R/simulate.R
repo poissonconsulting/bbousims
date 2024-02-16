@@ -87,6 +87,7 @@ simulate_population <- function(population_init, birth, age, survival, nsims = 1
   # chk_identical(length(population_init), ncol(birth))
   # chk_whole_number(nperiod)
   
+  chk_whole_numeric(population_inits)
   population_init <- as.integer(population_init)
   
   code <- "

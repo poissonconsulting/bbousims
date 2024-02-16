@@ -49,3 +49,5 @@ test_that("simulating population with varying survival/fecundity rates works", {
   expect_length(x, nsims)
   expect_identical(dim(x[[1]]$abundance), c(nstage, (dim(survival)[3] * dim(survival)[4] + 1L)))
 })
+
+
