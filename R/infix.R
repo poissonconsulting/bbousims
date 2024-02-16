@@ -29,7 +29,7 @@
   for(i in 1:nrow(x)){
     bin <- vector(length = nrow(x))
     for(j in 1:length(bin)){
-      bin[j] <- rbinom(1, size = y[j,1], prob = x[i,j])
+      bin[j] <- rbinom(1, size = as.integer(y[j,1]), prob = x[i,j])
     }
     res[i] <- sum(bin)
   }

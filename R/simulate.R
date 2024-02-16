@@ -87,6 +87,8 @@ simulate_population <- function(population_init, birth, age, survival, nsims = 1
   # chk_identical(length(population_init), ncol(birth))
   # chk_whole_number(nperiod)
   
+  population_init <- as.integer(population_init)
+  
   code <- "
   abundance <- matrix(0, nrow = nstage, ncol = nstep)
   abundance[,1] <- population_init
