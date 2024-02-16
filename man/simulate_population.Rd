@@ -2,37 +2,28 @@
 % Please edit documentation in R/simulate.R
 \name{simulate_population}
 \alias{simulate_population}
-\title{Simulate population with constant rates}
+\title{Simulate population with varying rates}
 \usage{
-simulate_population(
-  population_init,
-  birth,
-  age,
-  survival,
-  nyears = 10L,
-  nsims = 100L
-)
+simulate_population(population_init, birth, age, survival, nsims = 100L)
 }
 \arguments{
 \item{population_init}{A vector of the initial population for each stage.}
 
-\item{birth}{A matrix of the birth process matrix (output of \code{\link[=matrix_birth]{matrix_birth()}}).}
+\item{birth}{An array of the birth matrices (output of \code{\link[=matrix_birth_year]{matrix_birth_year()}}).}
 
-\item{age}{A matrix of the age process matrix (output of \code{\link[=matrix_age]{matrix_age()}}).}
+\item{age}{An age process matrix (output of \link{matrix_age}).}
 
-\item{survival}{A matrix of the survival process matrix (output of \code{\link[=matrix_survival]{matrix_survival()}}).}
+\item{survival}{An array of the survival matrices (output of \code{\link[=matrix_survival_period]{matrix_survival_period()}}).}
 
-\item{nyears}{A whole number of the number of years to project population.}
-
-\item{nsims}{A whole number between 1 and 1,000,000 specifying}
+\item{nsims}{A whole number between 1 and 1,000,000 specifying the number of simulated data sets.}
 }
 \value{
-A nlist object with projected abundance at each stage, year and simulation.
+A nlist object with projected abundance at each stage, period and simulation.
 }
 \description{
 Simulate population projections given initial population in each stage and survival, ageing, and birth process matrix.
-Survival, ageing and birth are assumed to be constant through time.
-This model assumes that survival, ageing and birth occur in that order at the end of each year.
+Survival can vary by period (e.g., month) and year, birth can vary by year, and ageing is constant.
+This model assumes that survival occurs at the end of each period and survival, ageing and birth occur at the end of each year, in that order.
 The dimensions of birth, age and survival process matrices must be identical to the length of the initial population vector.
 }
 \examples{
@@ -43,6 +34,6 @@ if (interactive()) {
   age <- matrix_age(c(2, 3, 4, 5, 6, 5, 6))
   birth <- matrix_birth(c(0, 0, 0.2, 0, 0.2, 0))
   simulate_population(population0, survival = survival, age = age, 
-    birth = birth, nyears = 5, nsims = 100)
+    birth = birth, nsims = 100)
 }
 }

@@ -8,7 +8,7 @@ test_that("simulating population with constant survival/fecundity rates works", 
   age <- matrix_age(c(3, 4, 5, 6, 5, 6))
   birth <- matrix_birth(c(0, 0, 0.2, 0, 0.25, 0))
   
-  x <- simulate_population(pop0, birth = birth, age = age, survival = survival, nsims = nsims)
+  x <- simulate_population_constant(pop0, birth = birth, age = age, survival = survival, nsims = nsims)
   
   expect_s3_class(x, "nlists")
   expect_length(x, 10L)
@@ -20,21 +20,30 @@ test_that("simulating population with varying survival/fecundity rates works", {
   nsims <- 10L
   pop0 <- rep(100, nstage)
   
-  survival_rates <- lapply(c(-0.01, 0.01, 0, -0.02, 0.01, 0.01), function(x){
-    c(rep(0.98, 4), rep(0.97, 4), rep(0.96, 4)) + x
-  })
-  survival_rates <- array(unlist(survival_rates), dim = c(4, 3, 6))
+  phi <- survival_period(
+    intercept = 4.45, 
+    stage = c(-0.1, -0.1, 0, 0, 0.1, 0.1), 
+    trend = 0.1,
+    annual_sd = 0.3, 
+    period_sd = 0.2,
+    annual_period_sd = 0.1, 
+    nyear = 5, 
+    nperiod_within_year = 12)
   
-  survival <- matrix_survival_period(survival_rates)
+  survival <- matrix_survival_period(phi)
   
-  birth_rates <- matrix(c(0, 0, 0.2, 0, 0.3, 0,
-                          0, 0,  0.3, 0, 0.35, 0,
-                          0, 0, 0.2, 0, 0.3, 0), ncol = 6, byrow = TRUE)
-  birth <- matrix_birth_year(birth_rates)
+  fec <- fecundity_year(
+    intercept = -1.3, 
+    stage = c(NA, NA, -0.1, NA, 0.05, NA), 
+    trend = -0.05,
+    annual_sd = 0.1,
+    nyear = 5)
+  
+  birth <- matrix_birth_year(fec, female_proportion = 0.6)
   
   age <- matrix_age(c(3, 4, 5, 6, 5, 6))
   
-  x <- simulate_population_period(pop0, birth = birth, age = age, survival = survival, nsims = nsims)
+  x <- simulate_population(pop0, birth = birth, age = age, survival = survival, nsims = nsims)
   
   expect_s3_class(x, "nlists")
   expect_length(x, nsims)

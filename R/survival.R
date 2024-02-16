@@ -45,3 +45,53 @@ matrix_survival_period <- function(survival){
   }
   x
 }
+
+#' Get stochastic survival rates by period, year and stage.
+#' 
+#' @inheritParams params
+#' @param intercept A number of the intercept of log-odds periodic survival. 
+#' @param stage A vector of the effect of stage on the log-odds periodic survival. 
+#' @param trend A number of the effect of an increase of one year on the log-odds periodic survival.
+#' @param annual_sd A number of the standard deviation of the annual variation on the log-odds periodic survival.
+#' @param period_sd A number of the standard deviation of the periodic (i.e., month, season) variation on the log-odds periodic survival.
+#' @param annual_period_sd A number of the standard deviation of the periodic variation within year variation on the log-odds periodic survival.
+#' @param nperiod_within_year A whole number of the number of periods within a year. 
+#'
+#' @return An array of survival rates with dimensions period, year, stage.
+#' @export
+#'
+#' @examples
+#' survival <- survival_period(4.5, stage = c(0, 0.1, -0.2), trend = 0.1,
+#'    annual_sd = 0.3, period_sd = 0.2, annual_period_sd = 0.1, nyear = 5, 
+#'    nperiod_within_year = 12)
+#' 
+survival_period <- function(intercept, stage, trend, annual_sd, period_sd, annual_period_sd, nyear, nperiod_within_year = 12){
+ 
+  nstage <- length(stage)
+  nperiod <- nperiod_within_year
+
+  esurvival <- array(0, dim = c(nperiod, nyear, nstage))
+  bannual <- vector(length = nyear)
+  bperiod <- vector(length = nperiod)
+  bannual_period <- matrix(0, nrow = nperiod, ncol = nyear)
+  year <- .center(1:nyear)
+  
+  for(yr in 1:nyear){
+    bannual[yr] <- rnorm(1, 0, annual_sd)
+    for(prd in 1:nperiod){
+      bannual_period[prd,yr] <- rnorm(1, 0, annual_period_sd)
+    }
+  }
+  for(prd in 1:nperiod){
+    bperiod[prd] <- rnorm(1, 0, period_sd)
+  }
+  
+  for(yr in 1:nyear){
+    for(prd in 1:nperiod){
+      for(stg in 1:nstage){
+        esurvival[prd, yr, stg] <- ilogit(intercept + trend * year[yr] + stage[stg] + bannual[yr] + bperiod[prd] + bannual_period[prd, yr])
+      }
+    }
+  }
+  esurvival
+}

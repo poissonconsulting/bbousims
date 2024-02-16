@@ -2,6 +2,14 @@ year_period <- function(year, period, max_period){
   ((year-1) * max_period) + period
 }
 
+.center <- function(x){
+  scale(x, center = TRUE, scale = FALSE)
+}
+
+# ncol = nrow
+empty_matrix <- function(n, value = 0){
+  x <- matrix(rep(value, n*n), ncol = n)
+}
 # population_to_df <- function(population, stage_names = 1:nrow(population)){
 #   chk_is(population, "matrix")
 #   as_tibble(population) %>%
@@ -16,7 +24,4 @@ year_period <- function(year, period, max_period){
 #     geom_line()
 # }
 
-# ncol = nrow
-empty_matrix <- function(n, value = 0){
-  x <- matrix(rep(value, n*n), ncol = n)
-}
+

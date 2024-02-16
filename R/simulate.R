@@ -20,10 +20,10 @@
 #'   survival <- matrix_survival(rep(0.87, nstage))
 #'   age <- matrix_age(c(2, 3, 4, 5, 6, 5, 6))
 #'   birth <- matrix_birth(c(0, 0, 0.2, 0, 0.2, 0))
-#'   simulate_population(population0, survival = survival, age = age, 
-#'     birth = birth, nyears = 5, nsims = 100)
+#'   simulate_population_constant(population0, survival = survival, age = age, 
+#'     birth = birth, nyear = 5, nsims = 100)
 #' }
-simulate_population <- function(population_init, birth, age, survival, nyears = 10L, nsims = 100L){
+simulate_population_constant <- function(population_init, birth, age, survival, nyear = 10L, nsims = 100L){
   chk_numeric(population_init)
   # TODO add chk_population_matrix for better chks (same row as cols)
   chk_matrix(survival)
@@ -43,7 +43,7 @@ simulate_population <- function(population_init, birth, age, survival, nyears = 
   
   nstage <- length(population_init)
   # to include initial population in projection
-  nstep <- nyears + 1
+  nstep <- nyear + 1
   consts = list(nstep = nstep, nstage = nstage, population_init = population_init)
   params <- list(survival = survival, age = age, birth = birth)
   population <- sims_simulate(code = code, constants = consts, 
@@ -73,10 +73,10 @@ simulate_population <- function(population_init, birth, age, survival, nyears = 
 #'   survival <- matrix_survival(rep(0.87, nstage))
 #'   age <- matrix_age(c(2, 3, 4, 5, 6, 5, 6))
 #'   birth <- matrix_birth(c(0, 0, 0.2, 0, 0.2, 0))
-#'   simulate_population_period(population0, survival = survival, age = age, 
-#'     birth = birth, nyears = 5, nsims = 100)
+#'   simulate_population(population0, survival = survival, age = age, 
+#'     birth = birth, nsims = 100)
 #' }
-simulate_population_period <- function(population_init, birth, age, survival, nsims = 100L){
+simulate_population <- function(population_init, birth, age, survival, nsims = 100L){
   # chk_numeric(population_init)
   # # TODO add chk_population_matrix for better chks (same row as cols)
   # chk_matrix(survival)

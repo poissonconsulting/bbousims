@@ -33,3 +33,30 @@ test_that("birth process matrices work", {
   expect_identical(y1[,1], c(110, 110, 100))
   expect_identical(y2[,1], c(115, 115, 100))
 })
+
+test_that("stochastic fecundity", {
+  intercept <- -1.3
+  annual_sd <- 0.1
+  stage <- c(0, 0, -0.1, 0, 0.5, 0)
+  trend <- -0.05
+  nyear <- 5
+
+  x <- fecundity_year(intercept = intercept, stage = stage, trend = trend,
+                       annual_sd = annual_sd, nyear = nyear)
+  
+  expect_type(x, "double")
+  expect_identical(dim(x), as.integer(c( nyear, length(stage))))
+})
+
+test_that("stochastic fecundity with NA", {
+  intercept <- -1.3
+  annual_sd <- 0.1
+  stage <- c(NA, NA, -0.1, NA, 0.5, NA)
+  trend <- -0.05
+  nyear <- 5
+  
+  x <- fecundity_year(intercept = intercept, stage = stage, trend = trend,
+                      annual_sd = annual_sd, nyear = nyear)
+  
+  expect_true(all(x[,c(which(is.na(stage)))] == 0))
+})

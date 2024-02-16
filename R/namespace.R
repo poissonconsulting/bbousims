@@ -1,3 +1,3 @@
 #' @import chk sims
-#' @importFrom stats rbinom
+#' @importFrom stats rbinom rnorm
 NULL

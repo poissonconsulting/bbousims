@@ -52,3 +52,40 @@ matrix_birth_year <- function(fecundity, female_recruit_stage = 1, male_recruit_
   }
   x
 }
+
+#' Get stochastic fecundity rates by year and stage.
+#' 
+#' @inheritParams params
+#' @param intercept A number of the intercept of the log-odds fecundity. 
+#' @param stage A vector of the effect of stage on the log-odds fecundity. If NA, fecundity is set to 0 for that stage.
+#' @param trend A number of the effect of an increase of one year on the log-odds fecundity.
+#' @param annual_sd A number of the standard deviation of the annual variation on the log-odds fecundity.
+#'
+#' @return A matrix of fecundity rates with dimensions year and stage.
+#' @export
+#'
+#' @examples
+#' fecundity <- fecundity_year(4.5, stage = c(0, 0.1, -0.2), 
+#'   trend = 0.1, annual_sd = 0.3, nyear = 5)
+#' 
+fecundity_year <- function(intercept, stage, trend, annual_sd, nyear){
+  
+  nstage <- length(stage)
+
+  efecundity <- matrix(0, nrow = nyear, ncol = nstage)
+  bannual <- vector(length = nyear)
+  year <- .center(1:nyear)
+  stage_bin <- !is.na(stage)
+  stage[is.na(stage)] <- 0
+  
+  for(yr in 1:nyear){
+    bannual[yr] <- rnorm(1, 0, annual_sd)
+  }
+  
+  for(yr in 1:nyear){
+      for(stg in 1:nstage){
+        efecundity[yr, stg] <- ilogit(intercept + stage[stg] + trend * year[yr] + bannual[yr]) * stage_bin[stg]
+      }
+  }
+  efecundity
+}

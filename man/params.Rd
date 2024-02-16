@@ -14,9 +14,9 @@
 
 \item{survival}{A matrix of the survival process matrix (output of \code{\link[=matrix_survival]{matrix_survival()}}).}
 
-\item{nyears}{A whole number of the number of years to project population.}
+\item{nyear}{A whole number of the number of years.}
 
-\item{nsims}{A whole number between 1 and 1,000,000 specifying}
+\item{nsims}{A whole number between 1 and 1,000,000 specifying the number of simulated data sets.}
 
 \item{female_recruit_stage}{A positive whole number of the stage representing female recruits.}
 
