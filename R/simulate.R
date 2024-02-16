@@ -87,10 +87,14 @@ simulate_population <- function(population_init, birth, age, survival, nsims = 1
   # chk_identical(length(population_init), ncol(birth))
   # chk_whole_number(nperiod)
   
-  chk_whole_numeric(population_inits)
+  chk_whole_numeric(population_init)
   population_init <- as.integer(population_init)
   
-  code <- "
+  
+  nstage <- length(population_init)
+  nperiod <- dim(survival)[4]
+  nyear <- dim(survival)[3]
+  nstep <- nperiod*nyear + 1
   abundance <- matrix(0, nrow = nstage, ncol = nstep)
   abundance[,1] <- population_init
   
@@ -103,16 +107,12 @@ simulate_population <- function(population_init, birth, age, survival, nsims = 1
         abundance[,period_now+1] <- survival[,,year,period] %*b% abundance[,period_now]
       }
     }
-  }"
-  
-  nstage <- length(population_init)
-  nperiod <- dim(survival)[4]
-  nyear <- dim(survival)[3]
-  nstep <- nperiod*nyear + 1
-  consts = list(nperiod = nperiod, nyear = nyear, nstep = nstep, 
-                nstage = nstage, population_init = population_init)
-  params <- list(survival = survival, age = age, birth = birth)
-  population <- sims_simulate(code = code, constants = consts, 
-                              parameters = params, nsims = nsims, monitor = "abundance")
-  population
+  }
+  abundance
+  # consts = list(nperiod = nperiod, nyear = nyear, nstep = nstep, 
+  #               nstage = nstage, population_init = population_init)
+  # params <- list(survival = survival, age = age, birth = birth)
+  # population <- sims_simulate(code = code, constants = consts, 
+  #                             parameters = params, nsims = nsims, monitor = "abundance")
+  # population
 }
