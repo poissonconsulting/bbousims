@@ -18,6 +18,8 @@ test_that("simulating population with constant survival/fecundity rates works", 
 test_that("simulating population with varying survival/fecundity rates works", {
   nstage <- 6L
   nsims <- 10L
+  nyear <- 5L
+  nperiod_within_year <- 12L
   pop0 <- rep(100, nstage)
   
   phi <- survival_period(
@@ -27,8 +29,8 @@ test_that("simulating population with varying survival/fecundity rates works", {
     annual_sd = 0.3, 
     period_sd = 0.2,
     annual_period_sd = 0.1, 
-    nyear = 5, 
-    nperiod_within_year = 12)
+    nyear = nyear, 
+    nperiod_within_year = nperiod_within_year)
   
   survival <- matrix_survival_period(phi)
   
@@ -43,11 +45,13 @@ test_that("simulating population with varying survival/fecundity rates works", {
   
   age <- matrix_age(c(3, 4, 5, 6, 5, 6))
   
-  x <- simulate_population(pop0, birth = birth, age = age, survival = survival, nsims = nsims)
-  
-  expect_s3_class(x, "nlists")
-  expect_length(x, nsims)
-  expect_identical(dim(x[[1]]$abundance), c(nstage, (dim(survival)[3] * dim(survival)[4] + 1L)))
+  set.seed(101)
+  x <- simulate_population(pop0, birth = birth, age = age, survival = survival)
+
+  expect_identical(x[,1], pop0)
+  expect_true(is.matrix(x))
+  nstep <- as.integer(nyear*nperiod_within_year + 1)
+  expect_identical(dim(x), c(nstage, nstep))
 })
 
 

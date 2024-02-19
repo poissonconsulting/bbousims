@@ -24,6 +24,20 @@
 
 \item{female_proportion}{A number between 0 and 1 indicating the proportion of recruits that are female.
 the number of data sets to simulate.}
+
+\item{population}{A population object (output of \code{simulate_population()}).}
+
+\item{group_size_lambda}{A number of the lambda value of the gamma-poisson distribution to draw groups sizes from.}
+
+\item{group_size_theta}{A number of the theta value of the gamma-poisson distribution to draw groups sizes from.}
+
+\item{max_group_proportion}{A number between 0 and 1 of the maximum group size as proportion of the total population.}
+
+\item{min_group_size}{A whole positive number of the minimum group size.}
+
+\item{recruit_stages}{A vector of whole numbers indicating the recruit stages (e.g., calf).}
+
+\item{reproductive_female_stages}{A vector of whole numbers indicating the reproductive female stages (e.g., cows).}
 }
 \description{
 Parameter Descriptions for bboutools Functions

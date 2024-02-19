@@ -32,7 +32,7 @@ simulate_population_constant <- function(population_init, birth, age, survival, 
   chk_identical(length(population_init), ncol(survival))
   chk_identical(length(population_init), ncol(age))
   chk_identical(length(population_init), ncol(birth))
-
+  
   code <- "
   abundance <- matrix(0, nrow = nstage, ncol = nstep)
   abundance[,1] <- population_init
@@ -47,7 +47,7 @@ simulate_population_constant <- function(population_init, birth, age, survival, 
   consts = list(nstep = nstep, nstage = nstage, population_init = population_init)
   params <- list(survival = survival, age = age, birth = birth)
   population <- sims_simulate(code = code, constants = consts, 
-                parameters = params, nsims = nsims, monitor = "abundance")
+                              parameters = params, nsims = nsims, monitor = "abundance")
   population
 }
 
