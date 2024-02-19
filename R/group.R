@@ -87,6 +87,7 @@ population_groups <- function(population,
                               max_group_proportion = 1/4,
                               min_group_size = 2){
 
+  population <- as.matrix(population)
   nstep <- ncol(population)
   purrr::map(seq_len(nstep), function(x){
     population1_groups(population[,x], 
@@ -121,6 +122,7 @@ population_groups_pairs <- function(population,
                               recruit_stages = c(1, 2),
                               reproductive_female_stages = c(3, 5)){
   
+  population <- as.matrix(population)
   nstep <- ncol(population)
   purrr::map(seq_len(nstep), function(x){
     population1_groups_pairs(population[,x], 

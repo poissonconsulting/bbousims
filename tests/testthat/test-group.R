@@ -127,4 +127,14 @@ test_that("assign population to groups", {
   for(i in seq_along(individuals)){
     expect_identical(individuals[[i]], sort(unlist(group[[i]])))
   }
+  
+  # works with one period ----
+  group <- population_groups(rep(100, 6), 
+                                   group_size_lambda = lambda, 
+                                   group_size_theta = theta, 
+                                   max_group_proportion = max_proportion, 
+                                   min_group_size = min_size)
+  expect_true(is.list(group))
+  expect_identical(length(group), 1L)
+  expect_true(is.list(group[[1]]))
 })
