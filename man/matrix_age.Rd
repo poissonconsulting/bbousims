@@ -4,7 +4,7 @@
 \alias{matrix_age}
 \title{Create an age process matrix.}
 \usage{
-matrix_age(age)
+matrix_age(age = c(3, 4, 5, 6, 5, 6))
 }
 \arguments{
 \item{age}{A vector indicating the stage to age into. If ageing does not occur, the stage should reference itself.}

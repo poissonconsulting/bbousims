@@ -30,32 +30,81 @@
 bb_sims <- function(
     nyear = 10,
     month_composition = 9,
-    female_adults = 1000,
-    survival_adult_females = 0.83,
-    survival_calves = 0.83,
-    calves_per_adult_female = 0.3,
-    collared_adult_females = 30,
-    groups_coverage = 0.1,
-    survival_trend = 0,
-    survival_annual_sd = 0,
-    survival_month_sd = 0,
+    adults = 1000,
+    proportion_adult_female = 0.65,
+    proportion_yearling_female = 0.5,
+    survival = 0.985,
+    survival_trend = 0.1,
+    survival_annual_sd = 0.25,
+    survival_month_sd = 0.25,
     survival_annual_month_sd = 0,
-    survival_yearling_effect = 0,
-    survival_male_effect = 0,
+    # survival_calves = 0.83,
+    calves_per_adult_female = 0.2,
+    calves_per_adult_female_trend = 0.1,
+    calves_per_adult_female_annual_sd = 0.25,
+    collared_adult_females = 30,
+    # survival_yearling_effect = 0,
+    # survival_male_effect = 0,
     probability_uncertain_mortality = 0,
-    probability_uncertain_survivor = 0,
-    group_size = 10,
+    # probability_uncertain_survivor = 0,
+    group_size = 5,
+    group_min_size = 2,
+    group_max_proportion = 0.2,
+    groups_coverage = 0.2,
     probability_unsexed_adult_female = 0,
-    probability_unsexed_adult_male = 0,
-    proportion_adult_male = 0) {
+    probability_unsexed_adult_male = 0) {
   chk_whole_number(nyear)
   chk_gt(nyear)
   chk_whole_number(month_composition)
   chk_range(month_composition, c(1, 12))
-  chk_number(proportion_adult_male)
-  chk_range(proportion_adult_male)
-
-  # will call bb_sims_base()
-
-  NULL
+  # chk_number(proportion_adult_male)
+  # chk_range(proportion_adult_male)
+  
+  # no yearling calves
+  fec <- fecundity_year(
+    intercept = log(calves_per_adult_female),
+    stage = c(NA, NA, NA, NA, 0, NA),
+    trend = calves_per_adult_female_trend,
+    annual_sd = calves_per_adult_female_annual_sd,
+    nyear = nyear)
+  
+  phi <- survival_period(
+    intercept = logit(survival),
+    stage = rep(0, 6),
+    trend = survival_trend,
+    annual_sd = survival_annual_sd,
+    period_sd = survival_month_sd,
+    annual_period_sd = survival_annual_month_sd,
+    nyear = nyear)
+  
+  adultf <- rbinom(1, adults, proportion_adult_female)
+  adultm <- adults - adultf
+  yearlingf <- rbinom(1, adults, 0.5)
+  yearlingm <- adults - yearlingf
+  calff <- rbinom(1, adults, 0.5)
+  calfm <- adults - calff
+  
+  # figure out initial pop sizes from female_adults
+  bb_sims_base(nyear = nyear,
+                    month_composition = month_composition,
+                    female_calves = calff,
+                    male_calves = calfm,
+                    female_yearlings = yearlingf,
+                    male_yearlings = yearlingm,
+                    female_adults = adultf,
+                    male_adults = adultm,  
+                    survival_rates = phi,
+                    fecundity_rates = fec,
+                    # collared_female_yearlings_month_year = matrix(0, 12, nyear),
+                    collared_adult_females = collared_adult_females,
+                    probability_uncertain_mortality_month_year = matrix(probability_uncertain_mortality, 12, nyear),
+                    probability_uncertain_survivor_month_year = matrix(probability_uncertain_survivor, 12, nyear), # used?
+                    group_size_lambda_year = rep(group_size, nyear),
+                    group_size_theta_year = rep(0, nyear),
+                    group_max_proportion = group_max_proportion,
+                    group_min_size = group_min_size,
+                    groups_coverage_year = rep(groups_coverage, nyear),
+                    # proportion_adult_female = rep(proportion_adult_female, nyear),
+                    probability_unsexed_adult_female_year = rep(probability_unsexed_adult_female, nyear),
+                    probability_unsexed_adult_male_year = rep(probability_unsexed_adult_male, nyear))
 }

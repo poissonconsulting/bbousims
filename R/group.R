@@ -1,9 +1,9 @@
 # drawn from gamma poisson
-ran_group_size <- function(lambda, theta, max_group_size, min_group_size){
+ran_group_size <- function(lambda, theta, max_group_size, group_min_size){
   inside <- FALSE
   while(!inside){
     size <- extras::ran_gamma_pois(n = 1, lambda = lambda, theta = theta)
-    inside <- size < max_group_size & size > min_group_size
+    inside <- size < max_group_size & size > group_min_size
   }
   size
 }
@@ -84,8 +84,8 @@ individuals_to_pairs <- function(x, recruit_stages, reproductive_female_stages){
 population_groups <- function(population,
                               group_size_lambda = 5,
                               group_size_theta = 2,
-                              max_group_proportion = 1/4,
-                              min_group_size = 2){
+                              group_max_proportion = 1/4,
+                              group_min_size = 2){
 
   population <- as.matrix(population)
   nstep <- ncol(population)
@@ -93,8 +93,8 @@ population_groups <- function(population,
     population1_groups(population[,x], 
                        group_size_lambda = group_size_lambda,
                        group_size_theta = group_size_theta,
-                       max_group_proportion = max_group_proportion,
-                       min_group_size = min_group_size)
+                       group_max_proportion = group_max_proportion,
+                       group_min_size = group_min_size)
   })
 }
 
@@ -117,8 +117,8 @@ population_groups <- function(population,
 population_groups_pairs <- function(population,
                               group_size_lambda = 5,
                               group_size_theta = 2,
-                              max_group_proportion = 1/4,
-                              min_group_size = 2,
+                              group_max_proportion = 1/4,
+                              group_min_size = 2,
                               recruit_stages = c(1, 2),
                               reproductive_female_stages = c(3, 5)){
   
@@ -128,8 +128,8 @@ population_groups_pairs <- function(population,
     population1_groups_pairs(population[,x], 
                        group_size_lambda = group_size_lambda,
                        group_size_theta = group_size_theta,
-                       max_group_proportion = max_group_proportion,
-                       min_group_size = min_group_size,
+                       group_max_proportion = group_max_proportion,
+                       group_min_size = group_min_size,
                        recruit_stages = recruit_stages,
                        reproductive_female_stages = reproductive_female_stages)
   })
@@ -139,18 +139,25 @@ population_groups_pairs <- function(population,
 population1_groups <- function(population,
                               group_size_lambda,
                               group_size_theta,
-                              max_group_proportion,
-                              min_group_size){
+                              group_max_proportion,
+                              group_min_size){
 
   total <- sum(population)
   individuals <- population_individuals(population, shuffle = TRUE)
   index <- 1:total
   
-  sizes <- sample_groups(total, 
-                        lambda = group_size_lambda,
-                        theta = group_size_theta,
-                        max_size = total*max_group_proportion,
-                        min_size = min_group_size)
+  max_size <- total*group_max_proportion
+  min_size = group_min_size
+  
+  if(max_size <= min_size){
+    return(list(individuals))
+  } else {
+    sizes <- sample_groups(total, 
+                           lambda = group_size_lambda,
+                           theta = group_size_theta,
+                           max_size = max_size,
+                           min_size = group_min_size)
+  }
   
   purrr::map(2:length(sizes), function(x){
     ind <- index[(sizes[x-1] + 1):sizes[x]]
@@ -161,8 +168,8 @@ population1_groups <- function(population,
 population1_groups_pairs <- function(population,
                                group_size_lambda,
                                group_size_theta,
-                               max_group_proportion,
-                               min_group_size,
+                               group_max_proportion,
+                               group_min_size,
                                recruit_stages,
                                reproductive_female_stages){
   
@@ -176,8 +183,8 @@ population1_groups_pairs <- function(population,
   sizes <- sample_groups(total, 
                         lambda = group_size_lambda,
                         theta = group_size_theta,
-                        max_size = total*max_group_proportion,
-                        min_size = min_group_size,
+                        max_size = total*group_max_proportion,
+                        min_size = group_min_size,
                         cumulative = FALSE)
   
   purrr::map(sizes, function(x){

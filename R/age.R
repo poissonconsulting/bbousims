@@ -7,7 +7,7 @@
 #'
 #' @examples
 #' matrix_age(c(3, 4, 5, 6, 5, 6)) %*% c(100, 50, 50, 75, 80, 60)
-matrix_age <- function(age){
+matrix_age <- function(age = c(3, 4, 5, 6, 5, 6)){
   chk_whole_numeric(age)
   chk_range(age, range(0, length(age)))
   

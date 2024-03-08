@@ -1,3 +1,4 @@
+message("no longer need simulate_population_constant?")
 #' Simulate population with constant rates
 #' 
 #' Simulate population projections given initial population in each stage and survival, ageing, and birth process matrix.
@@ -90,7 +91,6 @@ simulate_population <- function(population_init, birth, age, survival, nsims = 1
   chk_whole_numeric(population_init)
   population_init <- as.integer(population_init)
   
-  
   nstage <- length(population_init)
   nperiod <- dim(survival)[4]
   nyear <- dim(survival)[3]
@@ -109,10 +109,4 @@ simulate_population <- function(population_init, birth, age, survival, nsims = 1
     }
   }
   abundance
-  # consts = list(nperiod = nperiod, nyear = nyear, nstep = nstep, 
-  #               nstage = nstage, population_init = population_init)
-  # params <- list(survival = survival, age = age, birth = birth)
-  # population <- sims_simulate(code = code, constants = consts, 
-  #                             parameters = params, nsims = nsims, monitor = "abundance")
-  # population
 }

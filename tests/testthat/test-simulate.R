@@ -26,7 +26,7 @@ test_that("simulating population with varying survival/fecundity rates works", {
     intercept = 4.45, 
     stage = c(-0.1, -0.1, 0, 0, 0.1, 0.1), 
     trend = 0.1,
-    annual_sd = 0.3, 
+    annual_sd = 0.2, 
     period_sd = 0.2,
     annual_period_sd = 0.1, 
     nyear = nyear, 

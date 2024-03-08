@@ -2,6 +2,15 @@ year_period <- function(year, period, max_period){
   ((year-1) * max_period) + period
 }
 
+period_to_year <- function(x){
+  ceiling(x/12)
+}
+
+period_to_month <- function(x){
+  year <- period_to_year(x)
+  x - ((year-1) * 12)
+}
+
 .center <- function(x){
   scale(x, center = TRUE, scale = FALSE)
 }
