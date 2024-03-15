@@ -7,21 +7,15 @@
 population_groups_survey(
   population,
   month_composition,
-  group_size_year,
-  group_size_theta,
-  max_group_proportion,
-  min_group_size,
+  group_size_lambda_year,
+  group_size_theta_year,
+  group_max_proportion,
+  group_min_size,
   groups_coverage_year
 )
 }
 \arguments{
 \item{population}{A population object (output of \code{simulate_population()}).}
-
-\item{group_size_theta}{A number of the theta value of the gamma-poisson distribution to draw groups sizes from.}
-
-\item{max_group_proportion}{A number between 0 and 1 of the maximum group size as proportion of the total population.}
-
-\item{min_group_size}{A whole positive number of the minimum group size.}
 }
 \value{
 A list of observed groups in each composition survey.

@@ -2,6 +2,7 @@
 
 export("%*b%")
 export("%*b2%")
+export(bb_demographic_summary)
 export(bb_sims)
 export(bb_sims_base)
 export(fecundity_year)

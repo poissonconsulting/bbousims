@@ -5,6 +5,7 @@
 \title{Simulate Boreal Caribou Data from Base Parameter}
 \usage{
 bb_sims_base(
+  nyear = 5,
   month_composition = 9,
   female_calves = NULL,
   male_calves = female_calves,
@@ -14,21 +15,22 @@ bb_sims_base(
   male_adults = NULL,
   survival_rates = NULL,
   fecundity_rates = NULL,
-  collared_female_yearlings_month_year = matrix(5, 12, nyear),
-  collared_female_adults_month_year = matrix(30, 12, nyear),
+  collared_adult_females = 30,
   probability_uncertain_mortality_month_year = matrix(0.1, 12, nyear),
   probability_uncertain_survivor_month_year = matrix(0, 12, nyear),
-  group_size_year = rep(10, nyear),
-  group_phi_year = rep(2, nyear),
-  max_group_proportion = 0.25,
-  min_group_size = 3,
-  groups_coverage_year = 0.2,
+  group_size_lambda_year = rep(10, nyear),
+  group_size_theta_year = rep(2, nyear),
+  group_max_proportion = 0.25,
+  group_min_size = 3,
+  groups_coverage_year = rep(0.2, nyear),
   proportion_adult_male_year = rep(0, nyear),
   probability_unsexed_adult_female_year = rep(0.1, nyear),
   probability_unsexed_adult_male_year = rep(0.1, nyear)
 )
 }
 \arguments{
+\item{nyear}{The number of caribou years.}
+
 \item{month_composition}{A number between 1 and 12 of the caribou month that composition survey occurs relative to the calving month.}
 
 \item{female_yearlings}{The number of female yearlings at the start of the first (calving) month in the first year.}
@@ -39,17 +41,9 @@ bb_sims_base(
 
 \item{male_adults}{The number of male adults at the start of the first (calving) month in the first year.}
 
-\item{collared_female_yearlings_month_year}{A matrix of dimensions 12 x nyear of the number of collared female yearlings at the start of the month.}
-
-\item{collared_female_adults_month_year}{A matrix of dimensions 12 x nyear of the number of collared female adults at the start of the month.}
-
 \item{probability_uncertain_mortality_month_year}{A matrix of dimensions 12 x nyear of the monthly probability of the fate of a mortality being uncertain.}
 
 \item{probability_uncertain_survivor_month_year}{A matrix of dimensions 12 x nyear of the monthly probability of the fate of a survivor being uncertain.}
-
-\item{group_size_year}{A vector of length nyear of the expected group size.}
-
-\item{group_phi_year}{A vector of length nyear of the standard deviation of the extra-Poisson variation in the group size.}
 
 \item{groups_coverage_year}{A vector of length nyear of the proportion of the groups in the composition survey.}
 
@@ -58,8 +52,6 @@ bb_sims_base(
 \item{probability_unsexed_adult_female_year}{A vector of length nyear of the probability of an adult female being unsexed.}
 
 \item{probability_unsexed_adult_male_year}{A vector of length nyear of the probability of an adult male being unsexed.}
-
-\item{nyear}{The number of caribou years.}
 
 \item{survival_calves_year}{A vector of length nyear of the calf survival from the composition survey to calving.}
 
@@ -74,6 +66,14 @@ bb_sims_base(
 \item{calves_per_female_yearling_year}{A vector of length nyear of the expected number of calves per female yearling during the composition survey.}
 
 \item{calves_per_female_adult_year}{A vector of length nyear of the expected number of calves per female adult during the composition survey.}
+
+\item{collared_female_yearlings_month_year}{A matrix of dimensions 12 x nyear of the number of collared female yearlings at the start of the month.}
+
+\item{collared_female_adults_month_year}{A matrix of dimensions 12 x nyear of the number of collared female adults at the start of the month.}
+
+\item{group_size_year}{A vector of length nyear of the expected group size.}
+
+\item{group_phi_year}{A vector of length nyear of the standard deviation of the extra-Poisson variation in the group size.}
 }
 \value{
 A list of three tibbles.

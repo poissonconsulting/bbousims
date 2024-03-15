@@ -8,8 +8,8 @@ population_groups(
   population,
   group_size_lambda = 5,
   group_size_theta = 2,
-  max_group_proportion = 1/4,
-  min_group_size = 2
+  group_max_proportion = 1/4,
+  group_min_size = 2
 )
 }
 \arguments{
@@ -18,10 +18,6 @@ population_groups(
 \item{group_size_lambda}{A number of the lambda value of the gamma-poisson distribution to draw groups sizes from.}
 
 \item{group_size_theta}{A number of the theta value of the gamma-poisson distribution to draw groups sizes from.}
-
-\item{max_group_proportion}{A number between 0 and 1 of the maximum group size as proportion of the total population.}
-
-\item{min_group_size}{A whole positive number of the minimum group size.}
 }
 \value{
 A list of groups in each period.

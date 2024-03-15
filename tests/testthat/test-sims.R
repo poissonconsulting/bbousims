@@ -33,34 +33,65 @@ test_that("bb_sims works", {
 })
 
 test_that("bb_sims works", {
-  nyear = 10
+  nyear = 20
   month_composition = 9
-  adults = 1000
+  adult_females = 1000
   proportion_adult_female = 0.65
   proportion_yearling_female = 0.5
-  survival = 0.985
-  # survival_calves = 0.83
+  survival_adult_female = 0.985
+  survival_calf = 0.985
   calves_per_adult_female = 0.3
   collared_adult_females = 30
-  groups_coverage = 0.1
-  survival_trend = 0.1
-  survival_annual_sd = 0.25
-  survival_month_sd = 0.25
+  survival_trend = 0.5
+  survival_annual_sd = 0
+  survival_month_sd = 0
   survival_annual_month_sd = 0
-  # survival_yearling_effect = 0.5
-  # survival_male_effect = 0.1
-  # survival_calf_effect = 0.1
-  calves_per_adult_female_trend = 0.1
-  calves_per_adult_female_annual_sd = 0.1
   probability_uncertain_mortality = 0
-  # probability_uncertain_survivor = 0
+  calves_per_adult_female_trend = 0
+  calves_per_adult_female_annual_sd = 0
+  probability_uncertain_survivor = 0
   group_size = 5
   group_max_proportion = 0.2
   group_min_size = 2
+  groups_coverage = 0.1
   probability_unsexed_adult_female = 0
   probability_unsexed_adult_male = 0
   
+  adults_female = 1000
+  calves_per_adult_female = 0.9
+  proportion_adult_female = 0.65
+  proportion_yearling_female = 0.5
+  survival_adult_female = 0.85
+  survival_calf = 0.5
+  survival_yearling = survival_adult_female
+  
+  dem <- bb_demographic_summary(calves_per_adult_female = calves_per_adult_female,
+                                proportion_adult_female = proportion_adult_female,
+                                proportion_yearling_female = proportion_yearling_female,
+                                survival_adult_female = survival_adult_female,
+                                survival_calf = survival_calf,
+                                survival_yearling = survival_yearling)
+ 
+  
+  pop0 <- 
+  
+ 
+  
+  n_af <- adult_females
+  n <- n_af / age_dist[3]
+  n_yf <- n * age_dist[2]
+  n_cf <- n * age_dist[1]
+  n_am <- n_af/proportion_adult_female - n_af
+  n_ym <- n_yf/proportion_yearling_female - n_yf
+  # assuming proportion yearling female same as proportion calf female
+  n_cm <- n_cf/proportion_yearling_female - n_cf
+  
+  pop0 <- round(c(n_cf, n_cm, 
+            n_yf, n_ym, 
+            n_af, n_am))
+  
   # no yearling calves
+  # matrix fecundity rates year x stage
   fec <- fecundity_year(
     intercept = log(calves_per_adult_female),
     stage = c(NA, NA, NA, NA, 0, NA),
@@ -68,8 +99,9 @@ test_that("bb_sims works", {
     annual_sd = calves_per_adult_female_annual_sd,
     nyear = nyear)
   
+  # array survival rates, month x year x stage
   phi <- survival_period(
-    intercept = logit(survival),
+    intercept = logit(survival_adult_female),
     stage = rep(0, 6),
     trend = survival_trend,
     annual_sd = survival_annual_sd,
@@ -77,20 +109,11 @@ test_that("bb_sims works", {
     annual_period_sd = survival_annual_month_sd,
     nyear = nyear)
   
-  # how to set initial population size?
-  # John suggesting we just do female_adults
-  adultf <- rbinom(1, adults, proportion_adult_female)
-  adultm <- adults - adultf
-  yearlingf <- rbinom(1, adults, proportion_yearling_female)
-  yearlingm <- adults - yearlingf
-  calff <- rbinom(1, adults, proportion_yearling_female)
-  calfm <- adults - calff
-  pop0 <- c(calff, calfm, yearlingf, yearlingm, adultf, adultm)
-  
   survival_matrices <- matrix_survival_period(phi)
   birth_matrices <- matrix_birth_year(fec)
   age_matrix <- matrix_age()
   
+  # survival then ageing then birth (BAS model)
   population <- simulate_population(pop0, 
                                     birth = birth_matrices, 
                                     survival = survival_matrices,
@@ -104,6 +127,9 @@ test_that("bb_sims works", {
   group_size_theta_year <- rep(0, nyear)
   groups_coverage_year <- rep(groups_coverage, nyear)
   
+  # list length year with list of groups in each year
+  # groups sizes drawn from gamma-poisson dist
+  # get group is composition month surveys and sample based on coverage
   groups <- purrr::map(seq_along(survey), ~ {
     pop <- population[,survey[.x]]
     y <- population1_groups(population = pop,
@@ -170,17 +196,65 @@ popa <- bb_sims(nyear = 10, month_composition = 9L, adults = 2000,
                 group_max_proportion = 0.1,
                 groups_coverage = 0.2)
 
-fit_r <- bboutools::bb_fit_recruitment(popa$recruitment, 
+fit_r <- bboutools::bb_fit_recruitment(recruitment, 
                                        adult_female_proportion = NULL, 
                                        yearling_female_proportion = 0.5, 
                                        year_trend = TRUE)
 
-View(coef(fit_r))
+View(coef(fit_r, include_random = FALSE))
 
-fit_s <- bboutools::bb_fit_survival(popa$survival, 
+survival$PopulationName <- "A"
+fit_s <- bboutools::bb_fit_survival(survival, 
                                        year_trend = TRUE)
 
-View(coef(fit_s))
+View(coef(fit_s, include_random = FALSE))
   
+})
+
+test_that("simulate_population works", {
+  nyear = 20
+  month_composition = 9
+  adult_females = 1000
+  proportion_adult_female = 0.65
+  proportion_yearling_female = 0.5
+  survival_adult_female = 0.985
+  survival_calf = 0.5
+  calves_per_adult_female = 0.9
+  collared_adult_females = 30
+  survival_trend = 0.5
+  survival_annual_sd = 0
+  survival_month_sd = 0
+  survival_annual_month_sd = 0
+  probability_uncertain_mortality = 0
+  # survival_yearling_effect = 0.5
+  # survival_male_effect = 0.1
+  # survival_calf_effect = 0.1
+  calves_per_adult_female_trend = 0
+  calves_per_adult_female_annual_sd = 0
+  # probability_uncertain_survivor = 0
+  group_size = 5
+  group_max_proportion = 0.2
+  group_min_size = 2
+  groups_coverage = 0.1
+  probability_unsexed_adult_female = 0
+  probability_unsexed_adult_male = 0
+  
+  # with 0 trend population should remain stable
+  # proportion female should remain the same? - need to adjust adult male survival?
+  
+ pop <- simulate_population2(nyear = 20,
+                             adult_females = 1000,
+                             proportion_adult_female = 0.65,
+                             proportion_yearling_female = 0.5,
+                             survival_adult_female = 0.985,
+                             survival_calf = 0.985,
+                             calves_per_adult_female = 0.3,
+                             survival_trend = 0,
+                             survival_annual_sd = 0,
+                             survival_month_sd = 0,
+                             survival_annual_month_sd = 0,
+                             calves_per_adult_female_trend = 0,
+                             calves_per_adult_female_annual_sd = 0)
+ plot_population(pop)
 })
 
