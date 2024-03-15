@@ -65,18 +65,7 @@ simulate_population_constant <- function(population_init, birth, age, survival, 
 #' @param survival An array of the survival matrices (output of [matrix_survival_period()]). 
 #'
 #' @return A nlist object with projected abundance at each stage, period and simulation.
-#' @export
 #'
-#' @examples
-#' if (interactive()) {
-#'   nstage <- 6
-#'   population0 <- rep(100, nstage)
-#'   survival <- matrix_survival(rep(0.87, nstage))
-#'   age <- matrix_age(c(2, 3, 4, 5, 6, 5, 6))
-#'   birth <- matrix_birth(c(0, 0, 0.2, 0, 0.2, 0))
-#'   simulate_population(population0, survival = survival, age = age, 
-#'     birth = birth, nsims = 100)
-#' }
 simulate_population <- function(population_init, 
                                 birth, 
                                 age, 
@@ -124,12 +113,27 @@ simulate_population <- function(population_init,
   m
 }
 
-simulate_population2 <- function( nyear = 20,
+#' Simulate population with varying rates
+#' 
+#' Simulate population projections given initial population in each stage and survival, ageing, and birth process matrix.
+#' Survival can vary by period (e.g., month) and year, birth can vary by year, and ageing is constant. 
+#' This model assumes that survival occurs at the end of each period and survival, ageing and birth occur at the end of each year, in that order. 
+#' The dimensions of birth, age and survival process matrices must be identical to the length of the initial population vector. 
+#' 
+#' @inheritParams params
+#' @param birth An array of the birth matrices (output of [matrix_birth_year()]). 
+#' @param age An age process matrix (output of [matrix_age]). 
+#' @param survival An array of the survival matrices (output of [matrix_survival_period()]). 
+#'
+#' @return A nlist object with projected abundance at each stage, period and simulation.
+#' @export
+#'
+bb_simulate_population <- function(nyear = 20,
                                   adult_females = 1000,
                                   proportion_adult_female = 0.65,
                                   proportion_yearling_female = 0.5,
-                                  survival_adult_female = 0.985,
-                                  survival_calf = 0.985^12,
+                                  survival_adult_female = 0.985, # month
+                                  survival_calf = 0.985, # annual
                                   calves_per_adult_female = 0.9,
                                   survival_trend = 0.5,
                                   survival_annual_sd = 0,
@@ -138,36 +142,18 @@ simulate_population2 <- function( nyear = 20,
                                   calves_per_adult_female_trend = 0,
                                   calves_per_adult_female_annual_sd = 0){
   
-  survival_adult_female_year <- survival_adult_female^12
-  survival_yearling_female_year <- survival_adult_female_year
-  female_calves <- proportion_yearling_female * survival_adult_female_year * calves_per_adult_female
-  survival_calf_year <- survival_calf^12
+  dem <- bb_demographic_summary(sex_ratio = proportion_yearling_female, 
+                                calves_per_adult_female = calves_per_adult_female,
+                                survival_adult_female = survival_adult_female^12,
+                                survival_calf = survival_calf)
   
-  A <- matrix(c(0,  0,  female_calves,
-                survival_calf_year, 0,  0,
-                0,  survival_yearling_female_year, survival_adult_female_year), 
-              nrow = 3, byrow = TRUE)
-  
-  age_dist <- popbio::eigen.analysis(A)$stable.stage
-  
-  n_af <- adult_females
-  n <- n_af / age_dist[3]
-  n_yf <- n * age_dist[2]
-  n_cf <- n * age_dist[1]
-  n_am <- n_af/proportion_adult_female - n_af
-  n_ym <- n_yf/proportion_yearling_female - n_yf
-  # assuming proportion yearling female same as proportion calf female
-  n_cm <- n_cf/proportion_yearling_female - n_cf
-  
-  pop0 <- round(c(n_cf, n_cm, 
-                  n_yf, n_ym, 
-                  n_af, n_am))
+  pop0 <- initial_population(1000, stable_stage_dist = dem$stable_stage_dist)
   
   # no yearling calves
   # matrix fecundity rates year x stage
   fec <- fecundity_year(
     intercept = log(calves_per_adult_female),
-    stage = c(NA, NA, NA, NA, 0, NA),
+    stage = c(NA, NA, 0),
     trend = calves_per_adult_female_trend,
     annual_sd = calves_per_adult_female_annual_sd,
     nyear = nyear)
@@ -175,7 +161,7 @@ simulate_population2 <- function( nyear = 20,
   # array survival rates, month x year x stage
   phi <- survival_period(
     intercept = logit(survival_adult_female),
-    stage = rep(0, 6),
+    stage = rep(0, 3),
     trend = survival_trend,
     annual_sd = survival_annual_sd,
     period_sd = survival_month_sd,
