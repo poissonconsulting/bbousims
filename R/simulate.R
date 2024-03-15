@@ -77,7 +77,12 @@ simulate_population_constant <- function(population_init, birth, age, survival, 
 #'   simulate_population(population0, survival = survival, age = age, 
 #'     birth = birth, nsims = 100)
 #' }
-simulate_population <- function(population_init, birth, age, survival, nsims = 100L){
+simulate_population <- function(population_init, 
+                                birth, 
+                                age, 
+                                survival,
+                                proportion_adult_female,
+                                proportion_yearling_female){
   # chk_numeric(population_init)
   # # TODO add chk_population_matrix for better chks (same row as cols)
   # chk_matrix(survival)
@@ -109,4 +114,92 @@ simulate_population <- function(population_init, birth, age, survival, nsims = 1
     }
   }
   abundance
+  m <- matrix(NA, nrow = 6, ncol = ncol(abundance))
+  m[1,] <- abundance[1,]
+  m[2,] <- round(abundance[1,] / proportion_yearling_female - abundance[1,])
+  m[3,] <- abundance[2,]
+  m[4,] <- round(abundance[2,] / proportion_yearling_female - abundance[2,])
+  m[5,] <- abundance[3,]
+  m[6,] <- round(abundance[3,] / proportion_adult_female - abundance[3,])
+  m
+}
+
+simulate_population2 <- function( nyear = 20,
+                                  adult_females = 1000,
+                                  proportion_adult_female = 0.65,
+                                  proportion_yearling_female = 0.5,
+                                  survival_adult_female = 0.985,
+                                  survival_calf = 0.985^12,
+                                  calves_per_adult_female = 0.9,
+                                  survival_trend = 0.5,
+                                  survival_annual_sd = 0,
+                                  survival_month_sd = 0,
+                                  survival_annual_month_sd = 0,
+                                  calves_per_adult_female_trend = 0,
+                                  calves_per_adult_female_annual_sd = 0){
+  
+  survival_adult_female_year <- survival_adult_female^12
+  survival_yearling_female_year <- survival_adult_female_year
+  female_calves <- proportion_yearling_female * survival_adult_female_year * calves_per_adult_female
+  survival_calf_year <- survival_calf^12
+  
+  A <- matrix(c(0,  0,  female_calves,
+                survival_calf_year, 0,  0,
+                0,  survival_yearling_female_year, survival_adult_female_year), 
+              nrow = 3, byrow = TRUE)
+  
+  age_dist <- popbio::eigen.analysis(A)$stable.stage
+  
+  n_af <- adult_females
+  n <- n_af / age_dist[3]
+  n_yf <- n * age_dist[2]
+  n_cf <- n * age_dist[1]
+  n_am <- n_af/proportion_adult_female - n_af
+  n_ym <- n_yf/proportion_yearling_female - n_yf
+  # assuming proportion yearling female same as proportion calf female
+  n_cm <- n_cf/proportion_yearling_female - n_cf
+  
+  pop0 <- round(c(n_cf, n_cm, 
+                  n_yf, n_ym, 
+                  n_af, n_am))
+  
+  # no yearling calves
+  # matrix fecundity rates year x stage
+  fec <- fecundity_year(
+    intercept = log(calves_per_adult_female),
+    stage = c(NA, NA, NA, NA, 0, NA),
+    trend = calves_per_adult_female_trend,
+    annual_sd = calves_per_adult_female_annual_sd,
+    nyear = nyear)
+  
+  # array survival rates, month x year x stage
+  phi <- survival_period(
+    intercept = logit(survival_adult_female),
+    stage = rep(0, 6),
+    trend = survival_trend,
+    annual_sd = survival_annual_sd,
+    period_sd = survival_month_sd,
+    annual_period_sd = survival_annual_month_sd,
+    nyear = nyear)
+  
+  survival_matrices <- matrix_survival_period(phi)
+  birth_matrices <- matrix_birth_year(fec)
+  age_matrix <- matrix_age()
+  
+  # survival then ageing then birth (BAS model)
+  population <- simulate_population(pop0, 
+                                    birth = birth_matrices, 
+                                    survival = survival_matrices,
+                                    age = age_matrix)
+  population
+}
+
+plot_population <- function(population){
+  library(ggplot2)
+  x <- as.data.frame(t(population))
+  colnames(x) <- 1:6
+  x$Period <- 1:nrow(x)
+  x <- tidyr::pivot_longer(x, 1:6, names_to = "Stage", values_to = "Abundance")
+  ggplot(data = x) +
+    geom_line(aes(x = Period, y = Abundance, color = Stage)) 
 }
