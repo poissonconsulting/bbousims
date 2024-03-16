@@ -11,7 +11,7 @@
 matrix_birth <- function(fecundity, female_recruit_stage = 1, male_recruit_stage = 2, female_proportion = 0.5){
   chk_numeric(fecundity)
   chk_gte(fecundity)
-  chk_whole_number(male_recruit_stage)
+  chk_null_or(male_recruit_stage, chk_whole_number) 
   chk_range(male_recruit_stage, range = c(0, length(fecundity)))
   chk_whole_number(female_recruit_stage)
   chk_range(female_recruit_stage, range = c(0, length(fecundity)))
@@ -20,7 +20,11 @@ matrix_birth <- function(fecundity, female_recruit_stage = 1, male_recruit_stage
   x <- empty_matrix(length(fecundity))
   for(i in seq_along(fecundity)){
     x[female_recruit_stage,i] <- fecundity[i]*female_proportion
-    x[male_recruit_stage,i] <- fecundity[i]*(1 - female_proportion)
+  }
+  if(!is.null(male_recruit_stage)){
+    for(i in seq_along(fecundity)){
+      x[male_recruit_stage,i] <- fecundity[i]*(1 - female_proportion)
+    }
   }
   diag(x) <- 1
   x
@@ -56,10 +60,9 @@ matrix_birth_year <- function(fecundity, female_recruit_stage = 1, male_recruit_
 #' Get stochastic fecundity rates by year and stage.
 #' 
 #' @inheritParams params
-#' @param intercept A number of the intercept of the log-odds fecundity. 
-#' @param stage A vector of the effect of stage on the log-odds fecundity. If NA, fecundity is set to 0 for that stage.
-#' @param trend A number of the effect of an increase of one year on the log-odds fecundity.
-#' @param annual_sd A number of the standard deviation of the annual variation on the log-odds fecundity.
+#' @param calves_per_adult_female A number of the calves per adult female. 
+#' @param trend A number of the effect of an increase of one year on the log calves per adult female.
+#' @param annual_sd A number of the standard deviation of the annual variation on the log calves per adult female.
 #'
 #' @return A matrix of fecundity rates with dimensions year and stage.
 #' @export
@@ -68,23 +71,26 @@ matrix_birth_year <- function(fecundity, female_recruit_stage = 1, male_recruit_
 #' fecundity <- fecundity_year(4.5, stage = c(0, 0.1, -0.2), 
 #'   trend = 0.1, annual_sd = 0.3, nyear = 5)
 #' 
-fecundity_year <- function(intercept, stage, trend, annual_sd, nyear){
+fecundity_year <- function(calves_per_adult_female, 
+                           trend,
+                           annual_sd, 
+                           nyear){
   
-  nstage <- length(stage)
-
+  nstage <- 3
   efecundity <- matrix(0, nrow = nyear, ncol = nstage)
   bannual <- vector(length = nyear)
   year <- .center(1:nyear)
-  stage_bin <- !is.na(stage)
-  stage[is.na(stage)] <- 0
-  
+  # calf and yearling set to 0
+  stage_bin <- c(0, 0, 1)
+  calves_per_adult_female <- logit(calves_per_adult_female)
+
   for(yr in 1:nyear){
     bannual[yr] <- rnorm(1, 0, annual_sd)
   }
   
   for(yr in 1:nyear){
       for(stg in 1:nstage){
-        efecundity[yr, stg] <- ilogit(intercept + stage[stg] + trend * year[yr] + bannual[yr]) * stage_bin[stg]
+        efecundity[yr, stg] <- ilogit(calves_per_adult_female + trend * year[yr] + bannual[yr]) * stage_bin[stg]
       }
   }
   efecundity

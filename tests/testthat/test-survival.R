@@ -15,20 +15,25 @@ test_that("survival process matrices", {
 })
 
 test_that("survival stochastic", {
-  intercept <- 4.45
-  annual_sd <- 0.3
-  period_sd <- 0.2
-  annual_period_sd <- 0.1
-  stage <- c(-0.1, -0.1, 0, 0, 0.1, 0.1)
-  trend <- 0.1
+  survival_adult_female <- 0.84
+  survival_calf <- 0.5
+  annual_sd <- 0.05
+  period_sd <- 0.05
+  annual_period_sd <- 0.05
+  yearling_effect <- 0.1
+  trend <- 0.2
   nyear <- 5
   nperiod_within_year <- 12
   
-  x <- survival_period(intercept = intercept, stage = stage, trend = trend,
+  x <- survival_period(survival_adult_female = survival_adult_female,
+                       survival_calf = survival_calf,
+                       yearling_effect = yearling_effect,
+                       trend = trend,
                        annual_sd = annual_sd, period_sd = period_sd,
                        annual_period_sd = annual_period_sd, nyear = nyear, 
                        nperiod_within_year = nperiod_within_year)
   
   expect_type(x, "double")
   expect_identical(dim(x), as.integer(c(nperiod_within_year, nyear, length(stage))))
+  expect_snapshot(x)
 })
