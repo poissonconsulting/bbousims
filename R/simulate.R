@@ -1,56 +1,8 @@
-message("no longer need simulate_population_constant?")
-#' Simulate population with constant rates
-#' 
-#' Simulate population projections given initial population in each stage and survival, ageing, and birth process matrix.
-#' Survival, ageing and birth are assumed to be constant through time. 
-#' This model assumes that survival, ageing and birth occur in that order at the end of each year. 
-#' The dimensions of birth, age and survival process matrices must be identical to the length of the initial population vector. 
-#' 
-#' @inheritParams params
-#' @param birth A matrix of the birth process matrix (output of [matrix_birth()]). 
-#' @param age A matrix of the age process matrix (output of [matrix_age()]). 
-#' @param survival A matrix of the survival process matrix (output of [matrix_survival()]). 
-#'
-#' @return A nlist object with projected abundance at each stage, year and simulation.
-#' @export
-#'
-#' @examples
-#' if (interactive()) {
-#'   nstage <- 6
-#'   population0 <- rep(100, nstage)
-#'   survival <- matrix_survival(rep(0.87, nstage))
-#'   age <- matrix_age(c(2, 3, 4, 5, 6, 5, 6))
-#'   birth <- matrix_birth(c(0, 0, 0.2, 0, 0.2, 0))
-#'   simulate_population_constant(population0, survival = survival, age = age, 
-#'     birth = birth, nyear = 5, nsims = 100)
-#' }
-simulate_population_constant <- function(population_init, birth, age, survival, nyear = 10L, nsims = 100L){
-  chk_numeric(population_init)
-  # TODO add chk_population_matrix for better chks (same row as cols)
-  chk_matrix(survival)
-  chk_matrix(age)
-  chk_matrix(birth)
-  chk_identical(length(population_init), ncol(survival))
-  chk_identical(length(population_init), ncol(age))
-  chk_identical(length(population_init), ncol(birth))
-  
-  code <- "
-  abundance <- matrix(0, nrow = nstage, ncol = nstep)
-  abundance[,1] <- population_init
-
-  for(i in 2:nstep){
-    abundance[,i] <- birth %*b% (age %*b% (survival %*b% abundance[,i-1])) 
-  }"
-  
-  nstage <- length(population_init)
-  # to include initial population in projection
-  nstep <- nyear + 1
-  consts = list(nstep = nstep, nstage = nstage, population_init = population_init)
-  params <- list(survival = survival, age = age, birth = birth)
-  population <- sims_simulate(code = code, constants = consts, 
-                              parameters = params, nsims = nsims, monitor = "abundance")
-  population
-}
+rbinom_map <- function(size, prob){
+  purrr::map_dbl(size, ~ {
+    rbinom(1, size = round(.x / prob),  prob = 1 - prob)
+  })
+} 
 
 #' Simulate population with varying rates
 #' 
@@ -64,14 +16,15 @@ simulate_population_constant <- function(population_init, birth, age, survival, 
 #' @param age An age process matrix (output of [matrix_age]). 
 #' @param survival An array of the survival matrices (output of [matrix_survival_period()]). 
 #'
-#' @return A nlist object with projected abundance at each stage, period and simulation.
+#' @return A matrix of the population by stage and period. 
 #'
-simulate_population <- function(population_init, 
+simulate_population_base <- function(population_init, 
                                 birth, 
                                 age, 
                                 survival,
                                 proportion_adult_female,
-                                proportion_yearling_female){
+                                proportion_yearling_female,
+                                stochastic = TRUE){
   # chk_numeric(population_init)
   # # TODO add chk_population_matrix for better chks (same row as cols)
   # chk_matrix(survival)
@@ -92,24 +45,43 @@ simulate_population <- function(population_init,
   abundance <- matrix(0, nrow = nstage, ncol = nstep)
   abundance[,1] <- population_init
   
-  for(year in 1:nyear){
-    for(period in 1:nperiod){
-      period_now <- (year-1) * nperiod + period
-      if(period == nperiod){
-        abundance[,period_now+1] <- birth[,,year] %*b% (age %*b% (survival[,,year,period] %*b% abundance[,period_now])) 
-      } else {
-        abundance[,period_now+1] <- survival[,,year,period] %*b% abundance[,period_now]
+  if(stochastic){
+    for(year in 1:nyear){
+      for(period in 1:nperiod){
+        period_now <- (year-1) * nperiod + period
+        if(period == nperiod){
+          abundance[,period_now+1] <- birth[,,year] %*b% (age %*b% (survival[,,year,period] %*b% abundance[,period_now])) 
+        } else {
+          abundance[,period_now+1] <- survival[,,year,period] %*b% abundance[,period_now]
+        }
+      }
+    }
+  } else {
+    for(year in 1:nyear){
+      for(period in 1:nperiod){
+        period_now <- (year-1) * nperiod + period
+        if(period == nperiod){
+          abundance[,period_now+1] <- birth[,,year] %*% (age %*% (survival[,,year,period] %*% abundance[,period_now])) 
+        } else {
+          abundance[,period_now+1] <- survival[,,year,period] %*% abundance[,period_now]
+        }
       }
     }
   }
-  abundance
   m <- matrix(NA, nrow = 6, ncol = ncol(abundance))
   m[1,] <- abundance[1,]
-  m[2,] <- round(abundance[1,] / proportion_yearling_female - abundance[1,])
   m[3,] <- abundance[2,]
-  m[4,] <- round(abundance[2,] / proportion_yearling_female - abundance[2,])
   m[5,] <- abundance[3,]
-  m[6,] <- round(abundance[3,] / proportion_adult_female - abundance[3,])
+  
+  if(stochastic){
+    m[2,] <- rbinom_map(abundance[1,], proportion_yearling_female) 
+    m[4,] <- rbinom_map(abundance[2,], proportion_yearling_female) 
+    m[6,] <- rbinom_map(abundance[3,], proportion_adult_female) 
+  } else {
+    m[2,] <- abundance[1,] / proportion_yearling_female - abundance[1,]
+    m[4,] <- abundance[2,] / proportion_yearling_female - abundance[2,]
+    m[6,] <- abundance[3,] / proportion_adult_female - abundance[3,]
+  }
   m
 }
 
@@ -121,9 +93,7 @@ simulate_population <- function(population_init,
 #' The dimensions of birth, age and survival process matrices must be identical to the length of the initial population vector. 
 #' 
 #' @inheritParams params
-#' @param birth An array of the birth matrices (output of [matrix_birth_year()]). 
-#' @param age An age process matrix (output of [matrix_age]). 
-#' @param survival An array of the survival matrices (output of [matrix_survival_period()]). 
+#' @param stochastic A flag indicating whether to include demographic stochasticity.
 #'
 #' @return A nlist object with projected abundance at each stage, period and simulation.
 #' @export
@@ -132,36 +102,35 @@ bb_simulate_population <- function(nyear = 20,
                                   adult_females = 1000,
                                   proportion_adult_female = 0.65,
                                   proportion_yearling_female = 0.5,
-                                  survival_adult_female = 0.985, # month
-                                  survival_calf = 0.985, # annual
-                                  calves_per_adult_female = 0.9,
-                                  survival_trend = 0.5,
+                                  survival_adult_female = 0.84, # annual
+                                  survival_calf = 0.5, # annual
+                                  calves_per_adult_female = 0.5,
+                                  survival_trend = 0.2,
                                   survival_annual_sd = 0,
                                   survival_month_sd = 0,
                                   survival_annual_month_sd = 0,
-                                  calves_per_adult_female_trend = 0,
-                                  calves_per_adult_female_annual_sd = 0){
+                                  calves_per_adult_female_trend = 0.1,
+                                  calves_per_adult_female_annual_sd = 0,
+                                  stochastic = TRUE){
   
   dem <- bb_demographic_summary(sex_ratio = proportion_yearling_female, 
                                 calves_per_adult_female = calves_per_adult_female,
-                                survival_adult_female = survival_adult_female^12,
+                                survival_adult_female = survival_adult_female,
                                 survival_calf = survival_calf)
   
-  pop0 <- initial_population(1000, stable_stage_dist = dem$stable_stage_dist)
+  pop0 <- initial_population(adult_females = adult_females,
+                             stable_stage_dist = dem$stable_stage_dist)
   
-  # no yearling calves
-  # matrix fecundity rates year x stage
   fec <- fecundity_year(
-    intercept = log(calves_per_adult_female),
-    stage = c(NA, NA, 0),
+    calves_per_adult_female = calves_per_adult_female,
     trend = calves_per_adult_female_trend,
     annual_sd = calves_per_adult_female_annual_sd,
     nyear = nyear)
   
   # array survival rates, month x year x stage
   phi <- survival_period(
-    intercept = logit(survival_adult_female),
-    stage = rep(0, 3),
+    survival_adult_female = survival_adult_female,
+    survival_calf = survival_calf,
     trend = survival_trend,
     annual_sd = survival_annual_sd,
     period_sd = survival_month_sd,
@@ -173,19 +142,56 @@ bb_simulate_population <- function(nyear = 20,
   age_matrix <- matrix_age()
   
   # survival then ageing then birth (BAS model)
-  population <- simulate_population(pop0, 
+  population <- simulate_population_base(pop0, 
                                     birth = birth_matrices, 
                                     survival = survival_matrices,
-                                    age = age_matrix)
+                                    age = age_matrix,
+                                    proportion_adult_female = proportion_adult_female,
+                                    proportion_yearling_female = proportion_yearling_female,
+                                    stochastic = stochastic)
   population
 }
 
-plot_population <- function(population){
+#' Plot population
+#' 
+#' Plot simulated population (i.e., from output of `bb_simulate_population()`).
+#' 
+#' @inheritParams params
+#' @param annual A flag indicating whether to show annual population (as opposed to monthly).
+#'
+#' @return A nlist object with projected abundance at each stage, period and simulation.
+#' @export
+#'
+bb_plot_population <- function(population, annual = TRUE){
   library(ggplot2)
   x <- as.data.frame(t(population))
   colnames(x) <- 1:6
   x$Period <- 1:nrow(x)
-  x <- tidyr::pivot_longer(x, 1:6, names_to = "Stage", values_to = "Abundance")
-  ggplot(data = x) +
-    geom_line(aes(x = Period, y = Abundance, color = Stage)) 
+  x$Year <- period_to_year(x$Period)
+  x <- 
+    x %>%
+    tidyr::pivot_longer(1:6, names_to = "Stage", values_to = "Abundance") %>%
+    dplyr::mutate(Stage = dplyr::case_when(Stage == 1 ~ "Female Calf",
+                                    Stage == 2 ~ "Male Calf",
+                                    Stage == 3 ~ "Female Yearling",
+                                    Stage == 4 ~ "Male Yearling",
+                                    Stage == 5 ~ "Female Adult",
+                                    Stage == 6 ~ "Male Adult"),
+                  Stage = factor(Stage, levels = c("Female Calf",
+                                                   "Male Calf",
+                                                   "Female Yearling",
+                                                   "Male Yearling",
+                                                   "Female Adult",
+                                                   "Male Adult")))
+  if(annual){
+    x <- 
+      x %>%
+      dplyr::arrange(Period) %>%
+      dplyr::group_by(Year, Stage) %>%
+      dplyr::slice(1) %>%
+      dplyr::ungroup()
+  }
+  ggplot2::ggplot(data = x) +
+    ggplot2::geom_line(ggplot2::aes(x = Year, y = Abundance, color = Stage)) +
+    poispalette::scale_color_disc_poisson()
 }
