@@ -43,7 +43,7 @@ matrix_birth <- function(fecundity, female_recruit_stage = 1, male_recruit_stage
 #'                       0, 0.3, 0, 0.35, 0,
 #'                       0, 0.25, 0, 0.3, 0), ncol = 5, byrow = TRUE))
 #' }
-matrix_birth_year <- function(fecundity, female_recruit_stage = 1, male_recruit_stage = 2, female_proportion = 0.5){
+matrix_birth_year <- function(fecundity, female_recruit_stage = 1, male_recruit_stage = NULL, female_proportion = 0.5){
   dims <- dim(fecundity)
   nyear <- dims[1]
   nstate <- dims[2]
@@ -79,7 +79,7 @@ fecundity_year <- function(calves_per_adult_female,
   nstage <- 3
   efecundity <- matrix(0, nrow = nyear, ncol = nstage)
   bannual <- vector(length = nyear)
-  year <- .center(1:nyear)
+  year <- 1:nyear - 1
   # calf and yearling set to 0
   stage_bin <- c(0, 0, 1)
   calves_per_adult_female <- logit(calves_per_adult_female)

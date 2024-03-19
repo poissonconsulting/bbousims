@@ -6,8 +6,8 @@
 #' @export
 #'
 #' @examples
-#' matrix_age(c(3, 4, 5, 6, 5, 6)) %*% c(100, 50, 50, 75, 80, 60)
-matrix_age <- function(age = c(3, 4, 5, 6, 5, 6)){
+#' matrix_age(c(2, 3, 3)) %*% c(80, 50, 150)
+matrix_age <- function(age = c(2, 3, 3)){
   chk_whole_numeric(age)
   chk_range(age, range(0, length(age)))
   
