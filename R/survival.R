@@ -93,7 +93,7 @@ survival_period <- function(survival_adult_female,
   bperiod <- vector(length = nperiod)
   bannual_period <- matrix(0, nrow = nperiod, ncol = nyear)
   # intercept is now 
-  year <- 1:nyear-1
+  year <- 1:nyear - 1
   stage <- c(0, yearling_effect, 0)
   
   for(yr in 1:nyear){
