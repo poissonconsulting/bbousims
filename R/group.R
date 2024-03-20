@@ -81,7 +81,7 @@ individuals_to_pairs <- function(x, recruit_stages, reproductive_female_stages){
 #' @return A list of groups in each period.
 #' @export
 #'
-population_groups <- function(population,
+bb_population_groups <- function(population,
                               group_size_lambda = 5,
                               group_size_theta = 2,
                               group_max_proportion = 1/4,

@@ -1,13 +1,12 @@
 #' Assign population into groups for each composition survey
 #' 
-#' See `population_groups()` for details on group assignment. 
-#' Month composition is month of compsition surveys relative to the start of the caribou year. 
+#' See `bb_population_groups()` for details on group assignment. 
+#' Month composition is month of composition surveys relative to the start of the caribou year. 
 #' Groups are sampled in each composition survey in proportion to groups_coverage_year. 
 #' 
 #' @inheritParams params
 #'
 #' @return A list of observed groups in each composition survey.
-#' @export
 #'
 population_groups_survey <- function(population, 
                                      month_composition,
@@ -15,7 +14,7 @@ population_groups_survey <- function(population,
                                      group_size_theta_year,
                                      group_max_proportion,
                                      group_min_size,
-                                     groups_coverage_year){
+                                     group_coverage_year){
   nstep <- ncol(population)
   nyear <- (nstep - 1)/12
   composition_ind <- month_composition + 1
@@ -29,6 +28,6 @@ population_groups_survey <- function(population,
                             group_size_theta = group_size_theta_year[.x],
                             group_max_proportion = group_max_proportion,
                             group_min_size = group_min_size)
-    sample(y, round(groups_coverage_year[.x] * length(y)))
+    sample(y, round(group_coverage_year[.x] * length(y)))
   })
 }

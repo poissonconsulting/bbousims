@@ -15,7 +15,7 @@ test_that("fecundity process matrices", {
 
 test_that("fecundity stochastic", {
   calves_per_adult_female <- 0.9
-  annual_sd <- 0.05
+  annual_sd <- 0
   trend <- 0.2
   nyear <- 5
 

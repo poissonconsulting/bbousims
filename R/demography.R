@@ -38,7 +38,7 @@ bb_demographic_summary <- function(sex_ratio,
   calf_cow <- (calves_per_adult_female * survival_calf) / (survival_adult_female + 0.5 * survival_yearling)
   
   #DeCesare Recruitment.
-  recruitment <- calf_cow * proportion_yearling_female / (1 + calf_cow * sex_ratio)
+  recruitment <- calf_cow * sex_ratio / (1 + calf_cow * sex_ratio)
   
   female_calves <- sex_ratio * survival_adult_female * calves_per_adult_female
   leslie <- matrix(c(0,  0,  female_calves,
