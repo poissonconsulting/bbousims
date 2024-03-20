@@ -29,27 +29,28 @@ You can install the development version of bbousims from [GitHub](https://github
 devtools::install_github("poissonconsulting/bbousims")
 ```
 
-## Example
+## Simulate Boreal Caribou survival and recruitment data
 
-This is a basic example which shows you how to solve a common problem:
+### Get demographic summary from key parameters
 
-```{r example}
-library(bbousims)
-## basic example code
-```
+## Doing more with `bbousims`
+`bbousims` contains more flexible functionality to work with any stage composition.
+For example, given the following stage composition
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+### Generate survival and fecundity rates
 
-```{r cars}
-summary(cars)
-```
+### Process matrix multiplication with demographic stochasticity
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/v1/examples>.
+We defined the custom infix operator `%*b%` to perform matrix multiplication with stochasticity. Instead of multiplying the population at each stage by the corresponding rate, `%*b%` draws from a binomial distribution, where size is the population and probability is the rate of interest.  
 
-You can also embed plots, for example:
+For example, with population vector and survival process matrix
 
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
+regular (deterministic) matrix multiplication yields
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+Stochastic matrix multiplication yields 
+
+where the resulting population is composed of whole individuals and each iteration is different.  
+
+### Simulate population projection from BAS model
+
+### Simulate observed composition groups
