@@ -31,7 +31,6 @@
 #' The first named survival has columns year, month, starttotal, mortalitiescertain and mortalitiesuncertain.
 #' The second named recruitment has columns year, month, cows, bulls, unknownadults, yearlings and calves.
 #' And the final named abundance has columns year, month, sex, stage, abundance.
-#' @export
 #'
 #' @examples
 #' bb_sims_base()
