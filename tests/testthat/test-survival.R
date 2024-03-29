@@ -40,7 +40,7 @@ test_that("survival with no random and no trend", {
   nyear <- 5
   
   x <-
-    bbs_survival_period(
+    bbs_survival(
       survival_adult_female = survival_adult_female,
       survival_calf_female = survival_calf_female,
       yearling_effect = yearling_effect,
@@ -62,7 +62,7 @@ test_that("survival with random adult female, no trend, no yearling effect", {
   nyear <- 5
   
   x <-
-    bbs_survival_period(
+    bbs_survival(
       survival_adult_female = survival_adult_female,
       survival_calf_female = survival_calf_female,
       yearling_effect = yearling_effect,
@@ -87,7 +87,7 @@ test_that("survival with random calf female, no trend, no yearling effect", {
   nyear <- 5
   
   x <-
-    bbs_survival_period(
+    bbs_survival(
       survival_adult_female = survival_adult_female,
       survival_calf_female = survival_calf_female,
       yearling_effect = yearling_effect,
@@ -107,7 +107,7 @@ test_that("survival with calf female trend", {
   trend_calf_female = 0.2
   
   x <-
-    bbs_survival_period(
+    bbs_survival(
       survival_adult_female = survival_adult_female,
       survival_calf_female = survival_calf_female,
       trend_calf_female = trend_calf_female
@@ -126,7 +126,7 @@ test_that("survival with calf female trend", {
   trend_adult_female = 0.2
   
   x <-
-    bbs_survival_period(
+    bbs_survival(
       survival_adult_female = survival_adult_female,
       survival_calf_female = survival_calf_female,
       trend_adult_female = trend_adult_female
@@ -148,7 +148,7 @@ test_that("matrix survival period works", {
   survival_calf_female <- 0.5
 
   x <-
-    bbs_survival_period(
+    bbs_survival(
       survival_adult_female = survival_adult_female,
       survival_calf_female = survival_calf_female
     )

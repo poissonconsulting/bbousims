@@ -75,7 +75,7 @@ bbs_matrix_survival_period <- function(survival){
 #'    annual_sd = 0.3, period_sd = 0.2, annual_period_sd = 0.1, nyear = 5, 
 #'    nperiod_within_year = 12)
 #' 
-bbs_survival_period <- function(survival_adult_female, 
+bbs_survival <- function(survival_adult_female, 
                             survival_calf_female, 
                             nyear = 10, 
                             trend_adult_female = 0, 
