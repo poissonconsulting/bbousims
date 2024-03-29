@@ -6,8 +6,8 @@
 #' @export
 #'
 #' @examples
-#' matrix_survival(c(0.87, 0.84, 0.84, 0.89, 0.9)) %*% rep(100, 5)
-matrix_survival <- function(survival){
+#' bbs_matrix_survival(c(0.5, 0.83, 0.84)) %*% rep(100, 5)
+bbs_matrix_survival <- function(survival){
   chk_numeric(survival)
   chk_range(survival)
   
@@ -32,7 +32,7 @@ matrix_survival <- function(survival){
 #'     matrix_survival_period(survival_rates)
 #' }
 #' 
-matrix_survival_period <- function(survival){
+bbs_matrix_survival_period <- function(survival){
   dims <- dim(survival)
   nperiod <- dims[1]
   nyear <- dims[2]
@@ -40,7 +40,7 @@ matrix_survival_period <- function(survival){
   x <- array(0, dim = c(nstate, nstate, nyear, nperiod))
   for(year in 1:nyear){
     for(period in 1:nperiod){
-      x[,,year,period] <- matrix_survival(survival[period, year, ])
+      x[,,year,period] <- bbs_matrix_survival(survival[period, year, ])
     }
   }
   x
@@ -49,21 +49,25 @@ matrix_survival_period <- function(survival){
 #' Get stochastic survival rates by period, year and stage.
 #' 
 #' Stages include female calves, female yearlings and female adults. 
-#' The calf survival rates are fixed in time. 
+#' Calf and adult female survival can vary by trend, annual random effect, month random effect and month within annual random effect. 
+#' Yearling survival is generated as an effect on adult female survival. 
 #' Variation from random effects is stochastic. 
 #' Trend is on centered year; therefore `survival_adult_female` is the rate in the mean year. 
 #' 
 #' @inheritParams params
 #' @param survival_adult_female A number between 0 and 1 of the annual adult female survival. 
 #' @param survival_calf A number between 0 and 1 of the annual calf survival. 
-#' @param yearling_effect A number of the effect of yearling on the log-odds adult female periodic survival. 
-#' @param trend A number of the effect of an increase of one year on the log-odds adult female periodic survival.
-#' @param annual_sd A number of the standard deviation of the annual variation on the log-odds periodic survival.
-#' @param period_sd A number of the standard deviation of the periodic (i.e., month, season) variation on the log-odds periodic survival.
-#' @param annual_period_sd A number of the standard deviation of the periodic variation within year variation on the log-odds periodic survival.
-#' @param nperiod_within_year A whole number of the number of periods within a year. 
+#' @param yearling_effect A number of the effect of yearling on the log-odds adult female monthly survival. 
+#' @param trend_adult_female A number of the effect of an increase of one year on the log-odds adult female monthly survival.
+#' @param annual_sd_adult_female A number of the standard deviation of the annual variation in adult female survival on the log-odds monthly survival.
+#' @param month_sd_adult_female A number of the standard deviation of the monthly variation in adult female survival on the log-odds monthly survival.
+#' @param annual_month_sd_adult_female A number of the standard deviation of the monthly variation within year variation in adult female survival on the log-odds monthly survival.
+#' @param trend_calf_female A number of the effect of an increase of one year on the log-odds calf female monthly survival.
+#' @param annual_sd_calf_female A number of the standard deviation of the annual variation in calf female survival on the log-odds monthly survival.
+#' @param month_sd_calf_female A number of the standard deviation of the monthly variation in calf female survival on the log-odds monthly survival.
+#' @param annual_month_sd_calf_female A number of the standard deviation of the monthly variation within year variation in calf female survival on the log-odds monthly survival.
 #'
-#' @return An array of survival rates with dimensions period, year, stage.
+#' @return An array of survival rates with dimensions month, year, stage.
 #' @export
 #'
 #' @examples
@@ -71,49 +75,58 @@ matrix_survival_period <- function(survival){
 #'    annual_sd = 0.3, period_sd = 0.2, annual_period_sd = 0.1, nyear = 5, 
 #'    nperiod_within_year = 12)
 #' 
-survival_period <- function(survival_adult_female, 
-                            survival_calf, 
+bbs_survival_period <- function(survival_adult_female, 
+                            survival_calf_female, 
                             nyear = 10, 
-                            trend = 0, 
-                            annual_sd = 0,
-                            period_sd = 0, 
-                            annual_period_sd = 0, 
-                            yearling_effect = 0, 
-                            nperiod_within_year = 12){
+                            trend_adult_female = 0, 
+                            annual_sd_adult_female = 0,
+                            month_sd_adult_female = 0, 
+                            annual_month_sd_adult_female = 0, 
+                            trend_calf_female = 0, 
+                            annual_sd_calf_female = 0,
+                            month_sd_calf_female = 0, 
+                            annual_month_sd_calf_female = 0, 
+                            yearling_effect = 0){
  
-  nperiod <- nperiod_within_year
   nstage <- 3
   
   # convert annual to monthly on logit scale
-  survival_adult_female <- logit(survival_adult_female^(1/nperiod_within_year))
-  survival_calf <- logit(survival_calf^(1/nperiod_within_year))
+  survival_adult_female <- logit(survival_adult_female^(1/12))
+  survival_calf_female <- logit(survival_calf_female^(1/12))
   
-  esurvival <- array(0, dim = c(nperiod, nyear, nstage))
-  bannual <- vector(length = nyear)
-  bperiod <- vector(length = nperiod)
-  bannual_period <- matrix(0, nrow = nperiod, ncol = nyear)
-  # intercept is now 
+  esurvival <- array(0, dim = c(12, nyear, nstage))
+  eaf <- array(0, dim = c(12, nyear))
+  bannual_af <- vector(length = nyear)
+  bmonth_af <- vector(length = 12)
+  bannual_month_af <- matrix(0, nrow = 12, ncol = nyear)
+  bannual_cf <- vector(length = nyear)
+  bmonth_cf <- vector(length = 12)
+  bannual_month_cf <- matrix(0, nrow = 12, ncol = nyear)
+  # intercept is first year
   year <- 1:nyear - 1
-  stage <- c(0, yearling_effect, 0)
-  
+
   for(yr in 1:nyear){
-    bannual[yr] <- rnorm(1, 0, annual_sd)
-    for(prd in 1:nperiod){
-      bannual_period[prd,yr] <- rnorm(1, 0, annual_period_sd)
+    bannual_af[yr] <- rnorm(1, 0, annual_sd_adult_female)
+    bannual_cf[yr] <- rnorm(1, 0, annual_sd_calf_female)
+    for(mth in 1:12){
+      bannual_month_af[mth,yr] <- rnorm(1, 0, annual_month_sd_adult_female)
+      bannual_month_cf[mth,yr] <- rnorm(1, 0, annual_month_sd_calf_female)
     }
   }
-  for(prd in 1:nperiod){
-    bperiod[prd] <- rnorm(1, 0, period_sd)
+  for(mth in 1:12){
+    bmonth_af[mth] <- rnorm(1, 0, month_sd_adult_female)
+    bmonth_cf[mth] <- rnorm(1, 0, month_sd_calf_female)
   }
   
   for(yr in 1:nyear){
-    for(prd in 1:nperiod){
+    for(mth in 1:12){
       for(stg in 1:nstage){
-        esurvival[prd, yr, stg] <- ilogit(survival_adult_female + trend * year[yr] + stage[stg] + bannual[yr] + bperiod[prd] + bannual_period[prd, yr])
+        eaf[mth, yr] <- survival_adult_female + trend_adult_female * year[yr] + bannual_af[yr] + bmonth_af[mth] + bannual_month_af[mth, yr]
+        esurvival[mth, yr, 1] <- ilogit(survival_calf_female + trend_calf_female * year[yr] + bannual_cf[yr] + bmonth_cf[mth] + bannual_month_cf[mth, yr])
+        esurvival[mth, yr, 2] <- ilogit(eaf[mth, yr] + yearling_effect)
+        esurvival[mth, yr, 3] <- ilogit(eaf[mth, yr]) 
       }
     }
   }
-  # set fixed calf
-  esurvival[,,1] <- ilogit(survival_calf)
   esurvival
 }
