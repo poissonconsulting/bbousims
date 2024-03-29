@@ -8,7 +8,7 @@
 #'
 #' @examples
 #' matrix_birth(c(0, 0, 0.2, 0, 0.25, 0)) %*% rep(100, 6)
-matrix_birth <- function(fecundity, female_recruit_stage = 1, male_recruit_stage = 2, female_proportion = 0.5){
+bbs_matrix_birth <- function(fecundity, female_recruit_stage = 1, male_recruit_stage = NULL, female_proportion = 0.5){
   chk_numeric(fecundity)
   chk_gte(fecundity)
   chk_null_or(male_recruit_stage, chk_whole_number) 
@@ -43,13 +43,16 @@ matrix_birth <- function(fecundity, female_recruit_stage = 1, male_recruit_stage
 #'                       0, 0.3, 0, 0.35, 0,
 #'                       0, 0.25, 0, 0.3, 0), ncol = 5, byrow = TRUE))
 #' }
-matrix_birth_year <- function(fecundity, female_recruit_stage = 1, male_recruit_stage = NULL, female_proportion = 0.5){
+bbs_matrix_birth_year <- function(fecundity, 
+                                  female_recruit_stage = 1, 
+                                  male_recruit_stage = NULL, 
+                                  female_proportion = 0.5){
   dims <- dim(fecundity)
   nyear <- dims[1]
   nstate <- dims[2]
   x <- array(0, dim = c(nstate, nstate, nyear))
   for(year in 1:nyear){
-    x[,,year] <- matrix_birth(fecundity[year,], 
+    x[,,year] <- bbs_matrix_birth(fecundity[year,], 
                               female_recruit_stage = female_recruit_stage,
                               male_recruit_stage = male_recruit_stage,
                               female_proportion = female_proportion)
@@ -59,22 +62,22 @@ matrix_birth_year <- function(fecundity, female_recruit_stage = 1, male_recruit_
 
 #' Get stochastic fecundity rates by year and stage.
 #' 
+#' 
 #' @inheritParams params
 #' @param calves_per_adult_female A number of the calves per adult female. 
-#' @param trend A number of the effect of an increase of one year on the log calves per adult female.
-#' @param annual_sd A number of the standard deviation of the annual variation on the log calves per adult female.
+#' @param trend A number of the effect of an increase of one year on the log-odds calves per adult female.
+#' @param annual_sd A number of the standard deviation of the annual variation on the log-odds calves per adult female.
 #'
 #' @return A matrix of fecundity rates with dimensions year and stage.
 #' @export
 #'
 #' @examples
-#' fecundity <- fecundity_year(4.5, stage = c(0, 0.1, -0.2), 
-#'   trend = 0.1, annual_sd = 0.3, nyear = 5)
+#' fecundity <- bbs_fecundity(0.4, trend = 0.1, annual_sd = 0.3, nyear = 5)
 #' 
-fecundity_year <- function(calves_per_adult_female, 
-                           trend,
-                           annual_sd, 
-                           nyear){
+bbs_fecundity <- function(calves_per_adult_female, 
+                           trend = 0,
+                           annual_sd = 0, 
+                           nyear = 10){
   
   nstage <- 3
   efecundity <- matrix(0, nrow = nyear, ncol = nstage)

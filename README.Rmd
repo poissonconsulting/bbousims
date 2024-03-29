@@ -33,24 +33,68 @@ devtools::install_github("poissonconsulting/bbousims")
 
 ### Get demographic summary from key parameters
 
-## Doing more with `bbousims`
-`bbousims` contains more flexible functionality to work with any stage composition.
-For example, given the following stage composition
-
 ### Generate survival and fecundity rates
 
+The user can stochastically generate survival rates for adult females and calf females based on the intercept, trend, annual random effect, month random effect, month within annual random effect for each. Survival rates of yearling females are determined as an effect on adult female survival. 
+
+```{r}
+survival <- bbs_survival(
+  survival_adult_female = 0.84, # annual
+  survival_calf_female = 0.5, # annual
+  yearling_effect = 0.1, # effects on log-odds scale
+  annual_sd_adult_female = 0.1,
+  month_sd_adult_female = 0.2,
+  trend_adult_female = 0.1,
+  trend_calf_female = -0.1,
+  nyear = 4
+)
+```
+
+Fecundity rates can vary for adult females by trend and annual random effect.
+```{r}
+fecundity <- bbs_fecundity(
+  calves_per_adult_female = 0.4, trend = 0.05, annual_sd = 0.05, nyear = 4
+)
+```
+
+These can be converted to process matrices for each year/month with `bbs_matrix_survival_period()` and `bbs_matrix_birth_year()`. 
+
+```{r}
+# first year
+fecundity_process <- bbs_matrix_birth_year(fecundity)
+fecundity_process[,,1]
+# first period
+survival_process <- bbs_matrix_survival_period(survival)
+survival_process[,,1,1]
+```
 ### Process matrix multiplication with demographic stochasticity
 
 We defined the custom infix operator `%*b%` to perform matrix multiplication with stochasticity. Instead of multiplying the population at each stage by the corresponding rate, `%*b%` draws from a binomial distribution, where size is the population and probability is the rate of interest.  
 
-For example, with population vector and survival process matrix
+For example, with population vector and survival process matrix for the first period
+
+```{r}
+pop <- c(105, 81, 220)
+survival_mat <- survival_process[,,1,1]
+```
 
 regular (deterministic) matrix multiplication yields
 
-Stochastic matrix multiplication yields 
+```{r}
+survival_mat %*% pop
+```
+and stochastic matrix multiplication yields 
+
+```{r}
+survival_mat %*b% pop
+```
 
 where the resulting population is composed of whole individuals and each iteration is different.  
 
 ### Simulate population projection from BAS model
 
 ### Simulate observed composition groups
+
+## Doing more with `bbousims`
+`bbousims` contains more flexible functionality to work with any stage composition.
+For example, given the following stage composition
