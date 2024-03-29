@@ -1,70 +1,52 @@
-#' Create a birth process matrix.
-#' 
-#' @param fecundity A vector of the fecundity rates in each stage.
-#' @inheritParams params
+#' Get stochastic fecundity rates by year and stage.
 #'
-#' @return A birth process matrix.
+#' Year is scaled to Year - 1 for trend, which ensures that the intercept is the rate in the first year.
+#'
+#' @inheritParams params
+#' @param intercept A vector of the intercept of the log-odds fecundity by stage. If NA, fecundity is set to 0 for all years.
+#' @param trend A vector of the effect of an increase of one year on the log-odds fecundity by stage.
+#' @param annual_sd A vector of the standard deviation of the annual variation on the log-odds fecundity by stage.
+#'
+#' @return A matrix of fecundity rates with dimensions year and stage.
 #' @export
 #'
 #' @examples
-#' matrix_birth(c(0, 0, 0.2, 0, 0.25, 0)) %*% rep(100, 6)
-bbs_matrix_birth <- function(fecundity, female_recruit_stage = 1, male_recruit_stage = NULL, female_proportion = 0.5){
-  chk_numeric(fecundity)
-  chk_gte(fecundity)
-  chk_null_or(male_recruit_stage, chk_whole_number) 
-  chk_range(male_recruit_stage, range = c(0, length(fecundity)))
-  chk_whole_number(female_recruit_stage)
-  chk_range(female_recruit_stage, range = c(0, length(fecundity)))
-  chk_range(female_proportion)
+#' bbs_fecundity(c(NA, logit(0.4)), trend = c(NA, 0.1), annual_sd = c(NA, 0.05))
+#'
+bbs_fecundity <- function(intercept,
+                          trend = rep(0, length(intercept)),
+                          annual_sd = rep(0, length(intercept)),
+                          nyear = 10) {
+  nstage <- length(intercept)
+  efecundity <- array(0, dim = c(nyear, nstage))
+  bannual <- array(0, dim = c(nyear, nstage))
+  year <- 1:nyear - 1
+  zero <- is.na(intercept)
+  annual_sd[is.na(annual_sd)] <- 0
   
-  x <- empty_matrix(length(fecundity))
-  for(i in seq_along(fecundity)){
-    x[female_recruit_stage,i] <- fecundity[i]*female_proportion
-  }
-  if(!is.null(male_recruit_stage)){
-    for(i in seq_along(fecundity)){
-      x[male_recruit_stage,i] <- fecundity[i]*(1 - female_proportion)
+  for (stg in 1:nstage) {
+    for (yr in 1:nyear) {
+      bannual[yr, stg] <- rnorm(1, 0, annual_sd[stg])
     }
   }
-  diag(x) <- 1
-  x
-}
-
-#' Create a birth process matrix for each year.
-#' 
-#' @param fecundity A matrix of the fecundity rates with dimensions year and stage.
-#' @inheritParams params
-#' @return An array of the birth process matrices with dimensions stage, stage, year.
-#' @export
-#'
-#' @examples
-#' if (interactive()) {
-#'   birth_year(matrix(c(0, 0.2, 0, 0.3, 0,
-#'                       0, 0.3, 0, 0.35, 0,
-#'                       0, 0.25, 0, 0.3, 0), ncol = 5, byrow = TRUE))
-#' }
-bbs_matrix_birth_year <- function(fecundity, 
-                                  female_recruit_stage = 1, 
-                                  male_recruit_stage = NULL, 
-                                  female_proportion = 0.5){
-  dims <- dim(fecundity)
-  nyear <- dims[1]
-  nstate <- dims[2]
-  x <- array(0, dim = c(nstate, nstate, nyear))
-  for(year in 1:nyear){
-    x[,,year] <- bbs_matrix_birth(fecundity[year,], 
-                              female_recruit_stage = female_recruit_stage,
-                              male_recruit_stage = male_recruit_stage,
-                              female_proportion = female_proportion)
+  
+  for (yr in 1:nyear) {
+    for (stg in 1:nstage) {
+      efecundity[yr, stg] <-
+        ilogit(intercept[stg] + trend[stg] * year[yr] + bannual[yr, stg])
+    }
   }
-  x
+  
+  efecundity[, zero] <- 0
+  efecundity
 }
 
-#' Get stochastic fecundity rates by year and stage.
-#' 
-#' 
+#' Get stochastic Boreal Caribou fecundity rates by year and stage.
+#'
+#' Year is scaled to Year - 1 for trend, which ensures that `calves_per_adult_female` is the rate in the first year.
+#'
 #' @inheritParams params
-#' @param calves_per_adult_female A number of the calves per adult female. 
+#' @param calves_per_adult_female A number of the calves per adult female.
 #' @param trend A number of the effect of an increase of one year on the log-odds calves per adult female.
 #' @param annual_sd A number of the standard deviation of the annual variation on the log-odds calves per adult female.
 #'
@@ -72,29 +54,23 @@ bbs_matrix_birth_year <- function(fecundity,
 #' @export
 #'
 #' @examples
-#' fecundity <- bbs_fecundity(0.4, trend = 0.1, annual_sd = 0.3, nyear = 5)
-#' 
-bbs_fecundity <- function(calves_per_adult_female, 
-                           trend = 0,
-                           annual_sd = 0, 
-                           nyear = 10){
-  
+#' bbs_fecundity_caribou(0.4, trend = 0.1, annual_sd = 0.3)
+#'
+bbs_fecundity_caribou <- function(calves_per_adult_female,
+                                  trend = 0,
+                                  annual_sd = 0,
+                                  nyear = 10) {
   nstage <- 3
   efecundity <- matrix(0, nrow = nyear, ncol = nstage)
   bannual <- vector(length = nyear)
   year <- 1:nyear - 1
-  # calf and yearling set to 0
-  stage_bin <- c(0, 0, 1)
-  calves_per_adult_female <- logit(calves_per_adult_female)
-
-  for(yr in 1:nyear){
-    bannual[yr] <- rnorm(1, 0, annual_sd)
-  }
   
-  for(yr in 1:nyear){
-      for(stg in 1:nstage){
-        efecundity[yr, stg] <- ilogit(calves_per_adult_female + trend * year[yr] + bannual[yr]) * stage_bin[stg]
-      }
-  }
-  efecundity
+  intercept <- c(NA, NA, logit(calves_per_adult_female))
+  trend <- c(0, 0, trend)
+  annual_sd <- c(0, 0, annual_sd)
+  
+  bbs_fecundity(intercept,
+                trend = trend,
+                annual_sd = annual_sd,
+                nyear = nyear)
 }
