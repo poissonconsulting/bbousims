@@ -4,7 +4,7 @@
 #' Calf and adult female survival can vary by trend, annual random effect, month random effect and month within annual random effect. 
 #' Yearling survival is created as an effect on adult female survival rates.
 #' Variation from random effects is stochastic. 
-#' Year is scaled to Year - 1 for trend; therefore the intercept is the rate in the first year. 
+#' Year is scaled to Year - 1 for trend, which ensures that the intercept is the rate in the first year. 
 #' 
 #' @inheritParams params
 #' @param survival_adult_female A number between 0 and 1 of the annual adult female survival. 
@@ -66,7 +66,7 @@ bbs_survival_caribou <- function(survival_adult_female,
 #' Each stage can vary by intercept, year trend, annual random effect, period random effect and period within annual random effect. 
 #' All values are provided on the log-odds scale. 
 #' Variation from random effects is stochastic. 
-#' Year is scaled to Year - 1 for trend; therefore the intercept is the rate in the first year. 
+#' Year is scaled to Year - 1 for trend, which ensures that the intercept is the rate in the first year. 
 #' 
 #' @return An array of survival rates with dimensions period, year, stage.
 #' @export
