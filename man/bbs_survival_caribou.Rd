@@ -20,7 +20,9 @@ bbs_survival_caribou(
 )
 }
 \arguments{
-\item{survival_adult_female}{A number between 0 and 1 of the annual adult female survival.}
+\item{survival_adult_female}{A number between 0 and 1 of the annual female adult survival.}
+
+\item{survival_calf_female}{A number between 0 and 1 of the annual female calf survival.}
 
 \item{nyear}{A whole number of the number of years.}
 
@@ -41,8 +43,6 @@ bbs_survival_caribou(
 \item{annual_month_sd_calf_female}{A number of the standard deviation of the monthly variation within year variation in calf female survival on the log-odds monthly survival.}
 
 \item{yearling_effect}{A number of the effect of yearling on the log-odds adult female monthly survival.}
-
-\item{survival_calf}{A number between 0 and 1 of the annual calf survival.}
 }
 \value{
 An array of survival rates with dimensions month, year, stage.

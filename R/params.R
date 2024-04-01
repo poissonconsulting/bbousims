@@ -1,16 +1,16 @@
 #' Parameter Descriptions for bboutools Functions
 #'
 #' @param ... Unused parameters.
-#' @param population_init A vector of the initial population for each stage. 
-#' @param birth A matrix of the birth process matrix (output of [matrix_birth()]). 
-#' @param age A matrix of the age process matrix (output of [matrix_age()]). 
-#' @param survival A matrix of the survival process matrix (output of [matrix_survival()]). 
+#' @param survival_adult_female A number between 0 and 1 of the annual female adult survival. 
+#' @param survival_calf_female A number between 0 and 1 of the annual female calf survival. 
+#' @param calves_per_adult_female A number of the calves per adult female. 
+#' @param proportion_female A number between 0 and 1 indicating the proportion of recruits that are female.
 #' @param nyear A whole number of the number of years. 
-#' @param nsims A whole number between 1 and 1,000,000 specifying the number of simulated data sets. 
+#' @param stochastic A flag indicating whether to 
 #' @param female_recruit_stage A positive whole number of the stage representing female recruits.
 #' @param male_recruit_stage A positive whole number of the stage representing male recruits. Ignored if NULL. 
-#' @param female_proportion A number between 0 and 1 indicating the proportion of recruits that are female.
-#' the number of data sets to simulate.
+#' @param stochastic A flag indicating whether to include demographic stochasticity.
+#' 
 #' @param population A population object (output of `simulate_population()`).
 #' @param group_size_lambda A number of the lambda value of the gamma-poisson distribution to draw groups sizes from. 
 #' @param group_size_theta A number of the theta value of the gamma-poisson distribution to draw groups sizes from. 

@@ -6,24 +6,21 @@
 \arguments{
 \item{...}{Unused parameters.}
 
-\item{population_init}{A vector of the initial population for each stage.}
+\item{survival_adult_female}{A number between 0 and 1 of the annual female adult survival.}
 
-\item{birth}{A matrix of the birth process matrix (output of \code{\link[=matrix_birth]{matrix_birth()}}).}
+\item{survival_calf_female}{A number between 0 and 1 of the annual female calf survival.}
 
-\item{age}{A matrix of the age process matrix (output of \code{\link[=matrix_age]{matrix_age()}}).}
+\item{calves_per_adult_female}{A number of the calves per adult female.}
 
-\item{survival}{A matrix of the survival process matrix (output of \code{\link[=matrix_survival]{matrix_survival()}}).}
+\item{proportion_female}{A number between 0 and 1 indicating the proportion of recruits that are female.}
 
 \item{nyear}{A whole number of the number of years.}
-
-\item{nsims}{A whole number between 1 and 1,000,000 specifying the number of simulated data sets.}
 
 \item{female_recruit_stage}{A positive whole number of the stage representing female recruits.}
 
 \item{male_recruit_stage}{A positive whole number of the stage representing male recruits. Ignored if NULL.}
 
-\item{female_proportion}{A number between 0 and 1 indicating the proportion of recruits that are female.
-the number of data sets to simulate.}
+\item{stochastic}{A flag indicating whether to include demographic stochasticity.}
 
 \item{population}{A population object (output of \code{simulate_population()}).}
 

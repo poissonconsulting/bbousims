@@ -35,6 +35,7 @@ add_male_population <- function(population,
 #' The dimensions of birth, age and survival process matrices must be identical to the length of the initial population vector.
 #'
 #' @inheritParams params
+#' @param population_init A vector of the initial population for each stage. 
 #' @param birth An array of the birth matrices (output of [bbs_matrix_birth_year()]).
 #' @param age An age process matrix (output of [bbs_matrix_age]).
 #' @param survival An array of the survival matrices (output of [bbs_matrix_survival_period()]).
@@ -90,7 +91,7 @@ bbs_population <- function(population_init,
 
 #' Simulate Boreal Caribou population from BAS model
 #'
-#' Simulate population projections for Boreal Caribou from key survival and recruitment rates.
+#' Simulate population projection for Boreal Caribou from key survival and recruitment rates.
 #'
 #' This model assumes that survival occurs at the end of each period and survival, ageing and birth occur at the end of each year, in that order.
 #' Initial population is determined by calculating the stable age distribution (output of [bbs_demographic_summary()]).
@@ -99,9 +100,21 @@ bbs_population <- function(population_init,
 #' [bbs_population()] is called internally to project population.
 #'
 #' @inheritParams params
-#' @param stochastic A flag indicating whether to include demographic stochasticity.
+#' @param adult_females A number of the initial number of adult females in the population. 
+#' @param proportion_adult_female A number between 0 and 1 of the proportion of adults that are female.
+#' @param proportion_yearling_female A number between 0 and 1 of the proportion of yearlings that are female.
+#' @param survival_trend_adult_female A number of the effect of an increase of one year on the log-odds adult female survival. 
+#' @param survival_trend_calf_female A number of the effect of an increase of one year on the log-odds calf female survival. 
+#' @param survival_annual_sd_adult_females A number of the standard deviation of the annual variation in log-odds adult female survival. 
+#' @param survival_annual_sd_calf_females A number of the standard deviation of the annual variation in log-odds calf female survival. 
+#' @param survival_month_sd_adult_females A number of the standard deviation of the monthly variation in log-odds adult female survival. 
+#' @param survival_month_sd_calf_females A number of the standard deviation of the monthly variation in log-odds calf female survival. 
+#' @param survival_annual_month_sd_adult_females A number of the standard deviation of the month within annual variation in log-odds adult female survival. 
+#' @param survival_annual_month_sd_calf_females A number of the standard deviation of the month within annual variation in log-odds calf female survival. 
+#' @param calves_per_adult_female_trend A number of the effect of an increase of one year on the log-odds calves per adult female. 
+#' @param calves_per_adult_female_annual_sd A number of the standard deviation of the annual variation on the log-odds calves per adult female.
 #'
-#' @return A nlist object with projected abundance at each stage, period and simulation.
+#' @return A matrix of the population by stage and period. 
 #' @export
 #'
 bbs_population_caribou <- function(adult_females = 1000,

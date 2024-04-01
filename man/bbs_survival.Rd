@@ -14,6 +14,21 @@ bbs_survival(
   nperiod_within_year = 12
 )
 }
+\arguments{
+\item{intercept}{A vector of the intercept of the log-odds survival by stage.}
+
+\item{nyear}{A whole number of the number of years.}
+
+\item{trend}{A vector of the effect of an increase of one year on the log-odds survival by stage.}
+
+\item{annual_sd}{A vector of the standard deviation of the annual variation of the log-odds survival by stage.}
+
+\item{period_sd}{A vector of the standard deviation of the period variation of the log-odds survival by stage.}
+
+\item{annual_period_sd}{A vector of the standard deviation of the period within annual variation on the log-odds survival by stage.}
+
+\item{nperiod_within_year}{A whole number of the number of periods in a year.}
+}
 \value{
 An array of survival rates with dimensions period, year, stage.
 }

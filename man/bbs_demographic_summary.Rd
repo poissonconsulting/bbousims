@@ -13,6 +13,8 @@ bbs_demographic_summary(
 )
 }
 \arguments{
+\item{calves_per_adult_female}{A number of the calves per adult female.}
+
 \item{survival_adult_female}{A number between 0 and 1 of the annual adult female survival.}
 
 \item{survival_calf}{number between 0 and 1 of the annual calf survival.}

@@ -14,6 +14,8 @@ bbs_population(population_init, birth, age, survival, stochastic = TRUE)
 \item{age}{An age process matrix (output of \link{bbs_matrix_age}).}
 
 \item{survival}{An array of the survival matrices (output of \code{\link[=bbs_matrix_survival_period]{bbs_matrix_survival_period()}}).}
+
+\item{stochastic}{A flag indicating whether to include demographic stochasticity.}
 }
 \value{
 A matrix of the population by stage and period.

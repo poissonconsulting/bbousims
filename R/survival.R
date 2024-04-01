@@ -7,8 +7,6 @@
 #' Year is scaled to Year - 1 for trend, which ensures that the intercept is the rate in the first year. 
 #' 
 #' @inheritParams params
-#' @param survival_adult_female A number between 0 and 1 of the annual adult female survival. 
-#' @param survival_calf A number between 0 and 1 of the annual calf survival. 
 #' @param yearling_effect A number of the effect of yearling on the log-odds adult female monthly survival. 
 #' @param trend_adult_female A number of the effect of an increase of one year on the log-odds adult female monthly survival.
 #' @param annual_sd_adult_female A number of the standard deviation of the annual variation in adult female survival on the log-odds monthly survival.
@@ -83,6 +81,14 @@ bbs_survival_caribou <- function(survival_adult_female,
 #' Variation from random effects is stochastic. 
 #' Year is scaled to Year - 1 for trend, which ensures that the intercept is the rate in the first year. 
 #' 
+#' @inheritParams params
+#' @param intercept A vector of the intercept of the log-odds survival by stage.
+#' @param trend A vector of the effect of an increase of one year on the log-odds survival by stage.
+#' @param annual_sd A vector of the standard deviation of the annual variation of the log-odds survival by stage.
+#' @param period_sd A vector of the standard deviation of the period variation of the log-odds survival by stage.
+#' @param annual_period_sd A vector of the standard deviation of the period within annual variation on the log-odds survival by stage.
+#' @param nperiod_within_year A whole number of the number of periods in a year. 
+#'
 #' @return An array of survival rates with dimensions period, year, stage.
 #' @export
 #'

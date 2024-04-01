@@ -26,15 +26,47 @@ bbs_population_caribou(
 )
 }
 \arguments{
+\item{adult_females}{A number of the initial number of adult females in the population.}
+
 \item{nyear}{A whole number of the number of years.}
 
+\item{survival_adult_female}{A number between 0 and 1 of the annual female adult survival.}
+
+\item{survival_calf_female}{A number between 0 and 1 of the annual female calf survival.}
+
+\item{calves_per_adult_female}{A number of the calves per adult female.}
+
+\item{proportion_adult_female}{A number between 0 and 1 of the proportion of adults that are female.}
+
+\item{proportion_yearling_female}{A number between 0 and 1 of the proportion of yearlings that are female.}
+
+\item{survival_trend_adult_female}{A number of the effect of an increase of one year on the log-odds adult female survival.}
+
+\item{survival_trend_calf_female}{A number of the effect of an increase of one year on the log-odds calf female survival.}
+
+\item{calves_per_adult_female_trend}{A number of the effect of an increase of one year on the log-odds calves per adult female.}
+
+\item{calves_per_adult_female_annual_sd}{A number of the standard deviation of the annual variation on the log-odds calves per adult female.}
+
 \item{stochastic}{A flag indicating whether to include demographic stochasticity.}
+
+\item{survival_annual_sd_adult_females}{A number of the standard deviation of the annual variation in log-odds adult female survival.}
+
+\item{survival_annual_sd_calf_females}{A number of the standard deviation of the annual variation in log-odds calf female survival.}
+
+\item{survival_month_sd_adult_females}{A number of the standard deviation of the monthly variation in log-odds adult female survival.}
+
+\item{survival_month_sd_calf_females}{A number of the standard deviation of the monthly variation in log-odds calf female survival.}
+
+\item{survival_annual_month_sd_adult_females}{A number of the standard deviation of the month within annual variation in log-odds adult female survival.}
+
+\item{survival_annual_month_sd_calf_females}{A number of the standard deviation of the month within annual variation in log-odds calf female survival.}
 }
 \value{
-A nlist object with projected abundance at each stage, period and simulation.
+A matrix of the population by stage and period.
 }
 \description{
-Simulate population projections for Boreal Caribou from key survival and recruitment rates.
+Simulate population projection for Boreal Caribou from key survival and recruitment rates.
 }
 \details{
 This model assumes that survival occurs at the end of each period and survival, ageing and birth occur at the end of each year, in that order.
