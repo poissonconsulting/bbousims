@@ -7,7 +7,6 @@
 #' Year is scaled to Year - 1 for trend, which ensures that the intercept is the rate in the first year. 
 #' 
 #' @inheritParams params
-#' @param yearling_effect A number of the effect of yearling on the log-odds adult female monthly survival. 
 #' @param trend_adult_female A number of the effect of an increase of one year on the log-odds adult female monthly survival.
 #' @param annual_sd_adult_female A number of the standard deviation of the annual variation in adult female survival on the log-odds monthly survival.
 #' @param month_sd_adult_female A number of the standard deviation of the monthly variation in adult female survival on the log-odds monthly survival.
@@ -16,6 +15,7 @@
 #' @param annual_sd_calf_female A number of the standard deviation of the annual variation in calf female survival on the log-odds monthly survival.
 #' @param month_sd_calf_female A number of the standard deviation of the monthly variation in calf female survival on the log-odds monthly survival.
 #' @param annual_month_sd_calf_female A number of the standard deviation of the monthly variation within year variation in calf female survival on the log-odds monthly survival.
+#' @param yearling_effect A number of the effect of yearling on the log-odds adult female monthly survival. 
 #'
 #' @return An array of survival rates with dimensions month, year, stage.
 #' @export

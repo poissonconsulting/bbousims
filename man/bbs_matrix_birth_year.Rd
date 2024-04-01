@@ -8,7 +8,7 @@ bbs_matrix_birth_year(
   fecundity,
   female_recruit_stage = 1,
   male_recruit_stage = NULL,
-  female_proportion = 0.5
+  proportion_female = 0.5
 )
 }
 \arguments{
@@ -17,6 +17,8 @@ bbs_matrix_birth_year(
 \item{female_recruit_stage}{A positive whole number of the stage representing female recruits.}
 
 \item{male_recruit_stage}{A positive whole number of the stage representing male recruits. Ignored if NULL.}
+
+\item{proportion_female}{A number between 0 and 1 indicating the proportion of recruits that are female.}
 }
 \value{
 An array of the birth process matrices with dimensions stage, stage, year.
