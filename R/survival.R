@@ -37,13 +37,28 @@ bbs_survival_caribou <- function(survival_adult_female,
                             month_sd_calf_female = 0, 
                             annual_month_sd_calf_female = 0, 
                             yearling_effect = 0){
+  chk_number(survival_adult_female)
+  chk_range(survival_adult_female)
+  chk_number(survival_calf_female)
+  chk_range(survival_calf_female)
+  chk_gte(nyear)
+  chk_whole_number(nyear)
+  chk_number(trend_adult_female)
+  chk_number(annual_sd_adult_female)
+  chk_number(month_sd_adult_female)
+  chk_number(annual_month_sd_adult_female)
+  chk_number(trend_calf_female)
+  chk_number(annual_sd_calf_female)
+  chk_number(month_sd_calf_female)
+  chk_number(annual_month_sd_calf_female)
+  chk_number(yearling_effect)
  
   # convert annual to monthly on logit scale
   survival_adult_female <- logit(survival_adult_female^(1/12))
   survival_calf_female <- logit(survival_calf_female^(1/12))
   
   intercept <- c(survival_calf_female, 0, survival_adult_female)
-  trend <- c(trend_calf_female, 0, trend_adult_female, trend_adult_female)
+  trend <- c(trend_calf_female, 0, trend_adult_female)
   annual_sd <- c(annual_sd_calf_female, 0, annual_sd_adult_female)
   period_sd <- c(month_sd_calf_female, 0, month_sd_adult_female)
   annual_period_sd <- c(annual_month_sd_calf_female, 0, annual_month_sd_adult_female)
@@ -76,11 +91,25 @@ bbs_survival_caribou <- function(survival_adult_female,
 #' 
 bbs_survival <- function(intercept, 
                          nyear = 10,
-                         trend = c(0, 0, 0), 
-                         annual_sd = c(0, 0, 0),
-                         period_sd = c(0, 0, 0),
-                         annual_period_sd = c(0, 0, 0),
+                         trend = rep(0, length(intercept)), 
+                         annual_sd = rep(0, length(intercept)),
+                         period_sd = rep(0, length(intercept)),
+                         annual_period_sd = rep(0, length(intercept)),
                          nperiod_within_year = 12){
+  chk_numeric(intercept)
+  chk_whole_number(nyear)
+  chk_gt(nyear)
+  chk_numeric(trend)
+  chk_length(trend, length(intercept))
+  chk_numeric(trend)
+  chk_length(annual_sd, length(intercept))
+  chk_numeric(annual_sd)
+  chk_length(period_sd, length(intercept))
+  chk_numeric(period_sd)
+  chk_length(annual_period_sd, length(intercept))
+  chk_numeric(annual_period_sd)
+  chk_whole_number(nperiod_within_year)
+  chk_gt(nperiod_within_year)
   
   nstage <- length(intercept)
   nperiod <- nperiod_within_year

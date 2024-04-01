@@ -4,14 +4,19 @@
 \alias{bbs_fecundity}
 \title{Get stochastic fecundity rates by year and stage.}
 \usage{
-bbs_fecundity(calves_per_adult_female, trend = 0, annual_sd = 0, nyear = 10)
+bbs_fecundity(
+  intercept,
+  trend = rep(0, length(intercept)),
+  annual_sd = rep(0, length(intercept)),
+  nyear = 10
+)
 }
 \arguments{
-\item{calves_per_adult_female}{A number of the calves per adult female.}
+\item{intercept}{A vector of the intercept of the log-odds fecundity by stage. If NA, fecundity is set to 0 for all years.}
 
-\item{trend}{A number of the effect of an increase of one year on the log-odds calves per adult female.}
+\item{trend}{A vector of the effect of an increase of one year on the log-odds fecundity by stage.}
 
-\item{annual_sd}{A number of the standard deviation of the annual variation on the log-odds calves per adult female.}
+\item{annual_sd}{A vector of the standard deviation of the annual variation on the log-odds fecundity by stage.}
 
 \item{nyear}{A whole number of the number of years.}
 }
@@ -19,9 +24,9 @@ bbs_fecundity(calves_per_adult_female, trend = 0, annual_sd = 0, nyear = 10)
 A matrix of fecundity rates with dimensions year and stage.
 }
 \description{
-Get stochastic fecundity rates by year and stage.
+Year is scaled to Year - 1 for trend, which ensures that the intercept is the rate in the first year.
 }
 \examples{
-fecundity <- bbs_fecundity(0.4, trend = 0.1, annual_sd = 0.3, nyear = 5)
+bbs_fecundity(c(NA, logit(0.4)), trend = c(NA, 0.1), annual_sd = c(NA, 0.05))
 
 }

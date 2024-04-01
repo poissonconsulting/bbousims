@@ -20,7 +20,7 @@
 
 \item{female_recruit_stage}{A positive whole number of the stage representing female recruits.}
 
-\item{male_recruit_stage}{A positive whole number of the stage representing male recruits.}
+\item{male_recruit_stage}{A positive whole number of the stage representing male recruits. Ignored if NULL.}
 
 \item{female_proportion}{A number between 0 and 1 indicating the proportion of recruits that are female.
 the number of data sets to simulate.}

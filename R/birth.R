@@ -17,6 +17,14 @@ bbs_fecundity <- function(intercept,
                           trend = rep(0, length(intercept)),
                           annual_sd = rep(0, length(intercept)),
                           nyear = 10) {
+  chk_numeric(intercept)
+  chk_numeric(trend)
+  chk_length(trend, length(intercept))
+  chk_numeric(annual_sd)
+  chk_length(annual_sd, length(intercept))
+  chk_gte(nyear)
+  chk_whole_number(nyear)
+  
   nstage <- length(intercept)
   efecundity <- array(0, dim = c(nyear, nstage))
   bannual <- array(0, dim = c(nyear, nstage))
@@ -60,6 +68,13 @@ bbs_fecundity_caribou <- function(calves_per_adult_female,
                                   trend = 0,
                                   annual_sd = 0,
                                   nyear = 10) {
+  chk_number(calves_per_adult_female)
+  chk_gte(calves_per_adult_female)
+  chk_number(trend)
+  chk_number(annual_sd)
+  chk_gte(nyear)
+  chk_whole_number(nyear)
+  
   nstage <- 3
   efecundity <- matrix(0, nrow = nyear, ncol = nstage)
   bannual <- vector(length = nyear)

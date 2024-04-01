@@ -5,58 +5,25 @@
 \title{Get stochastic survival rates by period, year and stage.}
 \usage{
 bbs_survival(
-  survival_adult_female,
-  survival_calf_female,
+  intercept,
   nyear = 10,
-  trend_adult_female = 0,
-  annual_sd_adult_female = 0,
-  month_sd_adult_female = 0,
-  annual_month_sd_adult_female = 0,
-  trend_calf_female = 0,
-  annual_sd_calf_female = 0,
-  month_sd_calf_female = 0,
-  annual_month_sd_calf_female = 0,
-  yearling_effect = 0
+  trend = rep(0, length(intercept)),
+  annual_sd = rep(0, length(intercept)),
+  period_sd = rep(0, length(intercept)),
+  annual_period_sd = rep(0, length(intercept)),
+  nperiod_within_year = 12
 )
 }
-\arguments{
-\item{survival_adult_female}{A number between 0 and 1 of the annual adult female survival.}
-
-\item{nyear}{A whole number of the number of years.}
-
-\item{trend_adult_female}{A number of the effect of an increase of one year on the log-odds adult female monthly survival.}
-
-\item{annual_sd_adult_female}{A number of the standard deviation of the annual variation in adult female survival on the log-odds monthly survival.}
-
-\item{month_sd_adult_female}{A number of the standard deviation of the monthly variation in adult female survival on the log-odds monthly survival.}
-
-\item{annual_month_sd_adult_female}{A number of the standard deviation of the monthly variation within year variation in adult female survival on the log-odds monthly survival.}
-
-\item{trend_calf_female}{A number of the effect of an increase of one year on the log-odds calf female monthly survival.}
-
-\item{annual_sd_calf_female}{A number of the standard deviation of the annual variation in calf female survival on the log-odds monthly survival.}
-
-\item{month_sd_calf_female}{A number of the standard deviation of the monthly variation in calf female survival on the log-odds monthly survival.}
-
-\item{annual_month_sd_calf_female}{A number of the standard deviation of the monthly variation within year variation in calf female survival on the log-odds monthly survival.}
-
-\item{yearling_effect}{A number of the effect of yearling on the log-odds adult female monthly survival.}
-
-\item{survival_calf}{A number between 0 and 1 of the annual calf survival.}
-}
 \value{
-An array of survival rates with dimensions month, year, stage.
+An array of survival rates with dimensions period, year, stage.
 }
 \description{
-Stages include female calves, female yearlings and female adults.
-Calf and adult female survival can vary by trend, annual random effect, month random effect and month within annual random effect.
-Yearling survival is generated as an effect on adult female survival.
+Each stage can vary by intercept, year trend, annual random effect, period random effect and period within annual random effect.
+All values are provided on the log-odds scale.
 Variation from random effects is stochastic.
-Trend is on centered year; therefore \code{survival_adult_female} is the rate in the mean year.
+Year is scaled to Year - 1 for trend, which ensures that the intercept is the rate in the first year.
 }
 \examples{
-survival <- survival_period(4.5, stage = c(0, 0.1, -0.2), trend = 0.1,
-   annual_sd = 0.3, period_sd = 0.2, annual_period_sd = 0.1, nyear = 5, 
-   nperiod_within_year = 12)
+survival <- bbs_survival(intercept = logit(c(0.94, 0.98, 0.98)), trend = c(0, 0, 0.2))
 
 }

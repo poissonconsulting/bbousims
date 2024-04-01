@@ -33,6 +33,9 @@ bbs_matrix_survival <- function(survival){
 #' }
 #' 
 bbs_matrix_survival_period <- function(survival){
+  chk_is(survival, "array")
+  chk_length(dim(survival), 3L)
+  
   dims <- dim(survival)
   nperiod <- dims[1]
   nyear <- dims[2]

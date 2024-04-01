@@ -11,7 +11,7 @@ population_groups_survey(
   group_size_theta_year,
   group_max_proportion,
   group_min_size,
-  groups_coverage_year
+  group_coverage_year
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ population_groups_survey(
 A list of observed groups in each composition survey.
 }
 \description{
-See \code{population_groups()} for details on group assignment.
-Month composition is month of compsition surveys relative to the start of the caribou year.
+See \code{bb_population_groups()} for details on group assignment.
+Month composition is month of composition surveys relative to the start of the caribou year.
 Groups are sampled in each composition survey in proportion to groups_coverage_year.
 }

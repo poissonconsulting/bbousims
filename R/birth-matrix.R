@@ -47,6 +47,9 @@ bbs_matrix_birth_year <- function(fecundity,
                                   female_recruit_stage = 1, 
                                   male_recruit_stage = NULL, 
                                   female_proportion = 0.5){
+  chk_is(fecundity, "matrix")
+  chk_length(dim(fecundity), 2L)
+  
   dims <- dim(fecundity)
   nyear <- dims[1]
   nstate <- dims[2]
