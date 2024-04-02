@@ -14,7 +14,7 @@ bbs_matrix_birth <- function(fecundity,
                              proportion_female = 0.5){
   chk_numeric(fecundity)
   chk_gte(fecundity)
-  chk_null_or(male_recruit_stage, chk_whole_number) 
+  chk_null_or(male_recruit_stage, vld_whole_number)
   chk_range(male_recruit_stage, range = c(0, length(fecundity)))
   chk_whole_number(female_recruit_stage)
   chk_range(female_recruit_stage, range = c(0, length(fecundity)))
