@@ -43,7 +43,7 @@ bbs_plot_population.matrix <- function(x, annual = TRUE, ...) {
   chk_unused(...)
   chk_flag(annual)
   x <- abundance_tbl(x)
-  bbs_plot_population(x)
+  bbs_plot_population(x, annual = annual)
 }
 
 #' @describeIn bbs_plot_population Plot population abundance by period and stage for a matrix (output of [bbs_simulate_caribou()]).
@@ -54,5 +54,5 @@ bbs_plot_population.matrix <- function(x, annual = TRUE, ...) {
 bbs_plot_population.list <- function(x, annual = TRUE, ...) {
   chk_unused(...)
   chk_flag(annual)
-  bbs_plot_population(x$abundance)
+  bbs_plot_population(x$abundance, annual = annual)
 }
