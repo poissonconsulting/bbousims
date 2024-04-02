@@ -7,9 +7,9 @@
 bbs_simulate_caribou(
   adult_females = 1000,
   nyear = 20,
-  survival_adult_female = 0.8,
+  survival_adult_female = 0.85,
   survival_calf_female = 0.5,
-  calves_per_adult_female = 0.5,
+  calves_per_adult_female = 0.7,
   proportion_adult_female = 0.65,
   proportion_yearling_female = 0.5,
   survival_trend_adult_female = 0,
@@ -22,50 +22,58 @@ bbs_simulate_caribou(
   survival_annual_month_sd_calf_female = 0,
   calves_per_adult_female_trend = 0,
   calves_per_adult_female_annual_sd = 0,
+  probability_unsexed_adult_female = 0,
+  probability_unsexed_adult_male = 0,
+  month_composition = 9L,
   collared_adult_females = 30,
   month_collar = 3L,
   probability_uncertain_mortality = 0,
-  probability_uncertain_survivor = 0,
+  probability_uncertain_survival = 0,
   group_size = 5,
-  group_coverage = 0.2
+  group_coverage = 0.2,
+  group_min_size = 3,
+  group_max_proportion = 1
 )
 }
 \arguments{
-\item{nyear}{The number of caribou years.}
+\item{adult_females}{A number of the initial number of adult females in the population.}
 
-\item{calves_per_adult_female}{The expected number of calves per adult female.}
+\item{nyear}{A whole number of the number of years.}
 
-\item{collared_adult_females}{The total number of collared females at the start of each month.}
+\item{survival_adult_female}{A number between 0 and 1 of the annual female adult survival.}
 
-\item{probability_uncertain_mortality}{The probability of a mortality being uncertain.}
+\item{survival_calf_female}{A number between 0 and 1 of the annual female calf survival.}
 
-\item{probability_uncertain_survivor}{The probability of a survivor being uncertain.}
+\item{calves_per_adult_female}{A number of the calves per adult female.}
 
-\item{group_size}{The expected size of a g,}
+\item{proportion_adult_female}{A number between 0 and 1 of the proportion of adults that are female.}
 
-\item{survival_adult_females}{A probability of the annual female adult survival.}
+\item{proportion_yearling_female}{A number between 0 and 1 of the proportion of yearlings that are female.}
 
-\item{survival_calves}{A probability of the annual female calf survival.}
+\item{survival_trend_adult_female}{A number of the effect of an increase of one year on the log-odds adult female survival.}
 
-\item{groups_coverage}{The proportion of the groups in the composition survey.}
+\item{survival_trend_calf_female}{A number of the effect of an increase of one year on the log-odds calf female survival.}
 
-\item{survival_trend}{The effect of an increase of one year on the log-odds monthly survival.}
+\item{calves_per_adult_female_trend}{A number of the effect of an increase of one year on the log-odds calves per adult female.}
 
-\item{survival_annual_sd}{The standard deviation of the annual variation on the adult female log-odds monthly survival.}
+\item{calves_per_adult_female_annual_sd}{A number of the standard deviation of the annual variation on the log-odds calves per adult female.}
 
-\item{survival_month_sd}{The standard deviation of the monthly variation on the adult female log-odds monthly survival.}
+\item{probability_unsexed_adult_female}{A number between 0 and 1 of the probability that an adult female is unsexed.}
 
-\item{survival_annual_month_sd}{The standard deviation of the monthly variation within year variation on the adult female log-odds monthly survival.}
+\item{probability_unsexed_adult_male}{A number between 0 and 1 of the probability that an adult male is unsexed.}
 
-\item{survival_yearling_effect}{The effect of being a yearling on the adult female log-odds annual survival.}
+\item{collared_adult_females}{A whole positive number of the number of collared adult females.
+The number of collared adult females is 'topped up' each year at \code{month_collar}.}
 
-\item{survival_male_effect}{The effect of being an male on the adult female log-odds annual survival.}
+\item{month_collar}{A whole number between 1 and 12 of the collaring month.}
 
-\item{probability_unsexed_adult_female}{= 0,}
+\item{probability_uncertain_mortality}{A number between 0 and 1 of the probability of uncertain mortality.}
 
-\item{probability_unsexed_adult_male}{= 0,}
+\item{probability_uncertain_survival}{A number between 0 and 1 of the probability of uncertain survival.}
 
-\item{proportion_adult_male}{= 1}
+\item{group_min_size}{A whole positive number of the minimum group size.}
+
+\item{group_max_proportion}{A number between 0 and 1 of the maximum group size as proportion of the total population.}
 }
 \value{
 A list of three tibbles.
@@ -77,5 +85,5 @@ And the final named abundance has columns year, month, sex, stage, abundance.
 Simulate Boreal Caribou Data from key demographic and sampling rates
 }
 \examples{
-bb_sims()
+bbs_simulate_caribou()
 }

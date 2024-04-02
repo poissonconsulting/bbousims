@@ -100,19 +100,6 @@ bbs_population <- function(population_init,
 #' [bbs_population()] is called internally to project population.
 #'
 #' @inheritParams params
-#' @param adult_females A number of the initial number of adult females in the population. 
-#' @param proportion_adult_female A number between 0 and 1 of the proportion of adults that are female.
-#' @param proportion_yearling_female A number between 0 and 1 of the proportion of yearlings that are female.
-#' @param survival_trend_adult_female A number of the effect of an increase of one year on the log-odds adult female survival. 
-#' @param survival_trend_calf_female A number of the effect of an increase of one year on the log-odds calf female survival. 
-#' @param survival_annual_sd_adult_females A number of the standard deviation of the annual variation in log-odds adult female survival. 
-#' @param survival_annual_sd_calf_females A number of the standard deviation of the annual variation in log-odds calf female survival. 
-#' @param survival_month_sd_adult_females A number of the standard deviation of the monthly variation in log-odds adult female survival. 
-#' @param survival_month_sd_calf_females A number of the standard deviation of the monthly variation in log-odds calf female survival. 
-#' @param survival_annual_month_sd_adult_females A number of the standard deviation of the month within annual variation in log-odds adult female survival. 
-#' @param survival_annual_month_sd_calf_females A number of the standard deviation of the month within annual variation in log-odds calf female survival. 
-#' @param calves_per_adult_female_trend A number of the effect of an increase of one year on the log-odds calves per adult female. 
-#' @param calves_per_adult_female_annual_sd A number of the standard deviation of the annual variation on the log-odds calves per adult female.
 #'
 #' @return A matrix of the population by stage and period. 
 #' @export
@@ -211,8 +198,12 @@ bbs_population_caribou <- function(adult_females = 1000,
     stochastic = stochastic
   )
   
-  add_male_population(population, 
+  x <- add_male_population(population, 
                       proportion_adult_female = proportion_adult_female,
                       proportion_yearling_female = proportion_yearling_female,
                       stochastic = stochastic)
+  
+  attr(x, "survival") <- phi
+  attr(x, "fecundity") <- fec
+  x
 }

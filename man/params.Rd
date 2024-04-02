@@ -22,6 +22,45 @@
 
 \item{stochastic}{A flag indicating whether to include demographic stochasticity.}
 
+\item{month_collar}{A whole number between 1 and 12 of the collaring month.}
+
+\item{collared_adult_females}{A whole positive number of the number of collared adult females.
+The number of collared adult females is 'topped up' each year at \code{month_collar}.}
+
+\item{probability_uncertain_mortality}{A number between 0 and 1 of the probability of uncertain mortality.}
+
+\item{probability_uncertain_survival}{A number between 0 and 1 of the probability of uncertain survival.}
+
+\item{probability_unsexed_adult_female}{A number between 0 and 1 of the probability that an adult female is unsexed.}
+
+\item{probability_unsexed_adult_male}{A number between 0 and 1 of the probability that an adult male is unsexed.}
+
+\item{adult_females}{A number of the initial number of adult females in the population.}
+
+\item{proportion_adult_female}{A number between 0 and 1 of the proportion of adults that are female.}
+
+\item{proportion_yearling_female}{A number between 0 and 1 of the proportion of yearlings that are female.}
+
+\item{survival_trend_adult_female}{A number of the effect of an increase of one year on the log-odds adult female survival.}
+
+\item{survival_trend_calf_female}{A number of the effect of an increase of one year on the log-odds calf female survival.}
+
+\item{survival_annual_sd_adult_females}{A number of the standard deviation of the annual variation in log-odds adult female survival.}
+
+\item{survival_annual_sd_calf_females}{A number of the standard deviation of the annual variation in log-odds calf female survival.}
+
+\item{survival_month_sd_adult_females}{A number of the standard deviation of the monthly variation in log-odds adult female survival.}
+
+\item{survival_month_sd_calf_females}{A number of the standard deviation of the monthly variation in log-odds calf female survival.}
+
+\item{survival_annual_month_sd_adult_females}{A number of the standard deviation of the month within annual variation in log-odds adult female survival.}
+
+\item{survival_annual_month_sd_calf_females}{A number of the standard deviation of the month within annual variation in log-odds calf female survival.}
+
+\item{calves_per_adult_female_trend}{A number of the effect of an increase of one year on the log-odds calves per adult female.}
+
+\item{calves_per_adult_female_annual_sd}{A number of the standard deviation of the annual variation on the log-odds calves per adult female.}
+
 \item{population}{A matrix of the population by stage and period (output of \code{\link[=bbs_population]{bbs_population()}} or \code{\link[=bbs_population_caribou]{bbs_population_caribou()}}).}
 
 \item{group_size_lambda}{A number of the lambda value of the gamma-poisson distribution to draw group sizes from.}

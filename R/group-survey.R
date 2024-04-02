@@ -24,7 +24,7 @@ bbs_population_groups_survey <- function(population,
   chk_number(group_size_lambda)
   chk_gt(group_size_lambda)
   chk_number(group_size_theta)
-  chk_gt(group_size_theta)
+  chk_gte(group_size_theta)
   chk_number(group_max_proportion)
   chk_range(group_max_proportion)
   chk_whole_number(group_min_size)

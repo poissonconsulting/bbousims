@@ -49,18 +49,6 @@ bbs_population_caribou(
 \item{calves_per_adult_female_annual_sd}{A number of the standard deviation of the annual variation on the log-odds calves per adult female.}
 
 \item{stochastic}{A flag indicating whether to include demographic stochasticity.}
-
-\item{survival_annual_sd_adult_females}{A number of the standard deviation of the annual variation in log-odds adult female survival.}
-
-\item{survival_annual_sd_calf_females}{A number of the standard deviation of the annual variation in log-odds calf female survival.}
-
-\item{survival_month_sd_adult_females}{A number of the standard deviation of the monthly variation in log-odds adult female survival.}
-
-\item{survival_month_sd_calf_females}{A number of the standard deviation of the monthly variation in log-odds calf female survival.}
-
-\item{survival_annual_month_sd_adult_females}{A number of the standard deviation of the month within annual variation in log-odds adult female survival.}
-
-\item{survival_annual_month_sd_calf_females}{A number of the standard deviation of the month within annual variation in log-odds calf female survival.}
 }
 \value{
 A matrix of the population by stage and period.

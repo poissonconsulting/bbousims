@@ -1,13 +1,18 @@
-#' Plot population
+#' Plot Population 
 #'
-#' Plot simulated population (i.e., from output of `bb_simulate_population()`).
+#' Plots population abundance by period and stage.
 #'
 #' @inheritParams params
-#' @param annual A flag indicating whether to show annual population (as opposed to monthly).
-#'
-#' @return A nlist object with projected abundance at each stage, period and simulation.
 #' @export
-#'
+bbs_plot_population <- function(x, ...) {
+  UseMethod("bb_plot_population")
+}
+
+#' @describeIn bbs_plot_population Plot population abundance by period and stage for a data frame.
+#' @inheritParams params
+#' @param annual A flag indicating whether to show annual population (as opposed to monthly).
+#' @return A ggplot object.
+#' @export
 bbs_plot_population <- function(population, annual = TRUE) {
   library(ggplot2)
   x <- as.data.frame(t(population))

@@ -87,7 +87,7 @@ bb_sims_base <- function(
                                  probability_unsexed_adult_female_year = probability_unsexed_adult_female_year)
   
   survival_adult_female_month_year <- survival_month_year[,,3]
-  survival <- survival_collared(collared_adult_females = collared_adult_females,
+  survival <- bbs_survival_collared(collared_adult_females = collared_adult_females,
                                 month_collar = month_collar,
                               survival_adult_female_month_year = survival_adult_female_month_year,
                               probability_uncertain_mortality_month_year = probability_uncertain_mortality_month_year,

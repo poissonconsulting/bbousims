@@ -20,12 +20,12 @@ abundance_tbl <- function(population){
 
 recruitment_tbl <- function(groups,
                             month_composition,
-                            probability_unsexed_adult_male_year,
-                            probability_unsexed_adult_female_year){
+                            probability_unsexed_adult_male,
+                            probability_unsexed_adult_female){
   purrr::map_df(seq_along(groups), function(x) {
     group <- groups[[x]]
-    prob_unsexed_female <- probability_unsexed_adult_female_year[x]
-    prob_unsexed_male <- probability_unsexed_adult_male_year[x]
+    prob_unsexed_female <- probability_unsexed_adult_female
+    prob_unsexed_male <- probability_unsexed_adult_male
     purrr::map_df(seq_along(group), function(y){
       subgroup <- group[[y]]
       females <- sum(subgroup == 5)

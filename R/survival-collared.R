@@ -6,15 +6,16 @@
 #' The probability of uncertain survival reduces the number of collared adult females without adding mortalities. 
 #' 
 #' @inheritParams params
+#' @param survival_adult_female_month_year A matrix of the female adult survival rates with dimensions month and year. 
 #'
 #' @return A data.frame of the number of collared adult females, certain mortalities and uncertain mortalities in each year and month.
 #' @export
 #'
-survival_collared <- function(collared_adult_females,
+bbs_survival_collared <- function(collared_adult_females,
                               month_collar,
                             survival_adult_female_month_year,
-                            probability_uncertain_mortality_month_year,
-                            probability_uncertain_survival_month_year){
+                            probability_uncertain_mortality,
+                            probability_uncertain_survival){
   starttotal <- collared_adult_females
   nyear <- ncol(survival_adult_female_month_year)
   yearmon <- tidyr::expand_grid(year = 1:nyear, month = 1:12)
@@ -22,8 +23,8 @@ survival_collared <- function(collared_adult_females,
     month <- yearmon$month[.x]
     year <- yearmon$year[.x]
     phi <- survival_adult_female_month_year[month, year]
-    prob_uncertain_mort <- probability_uncertain_mortality_month_year[month, year]
-    prob_uncertain_surv <- probability_uncertain_survival_month_year[month, year]
+    prob_uncertain_mort <- probability_uncertain_mortality
+    prob_uncertain_surv <- probability_uncertain_survival
     last <- starttotal[length(starttotal)]
     dead <- rbinom(1, last, (1 - phi))
     dead_uncertain <- rbinom(1, dead, prob_uncertain_mort)
