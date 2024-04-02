@@ -1,17 +1,24 @@
 test_that("bbs_simulate_caribou works", {
-  x <- bbs_simulate_caribou()
+  x <- bbs_simulate_caribou(nyear = 10)
   expect_true(is.list(x))
   expect_identical(names(x), c("survival", "recruitment", "abundance"))
   expect_true(all(unlist(lapply(x, is.data.frame))))
+  
+  expect_equal(max(x$survival$Year), 10)
 })
 
 test_that("bbs_simulate_caribou works with bboutools", {
+  survival_adult_female <- 0.85
+  survival_trend <- -0.01
+  nyear <- 30L
+  
   x <- bbs_simulate_caribou(adult_females = 500, 
-                            proportion_adult_female = 0.55, 
-                            survival_trend_adult_female = -0.2, 
-                            nyear = 50L,
-                            calves_per_adult_female_trend = 0,
-                            group_coverage = 0.5, 
+                            proportion_adult_female = 0.65, 
+                            survival_adult_female = survival_adult_female,
+                            survival_trend_adult_female = survival_trend, 
+                            nyear = nyear,
+                            group_coverage = 0.2, 
+                            group_size = 15,
                             collared_adult_females = 30)
   
   fit_r <- bboutools::bb_fit_recruitment(x$recruitment, 
@@ -21,14 +28,27 @@ test_that("bbs_simulate_caribou works with bboutools", {
   
   View(coef(fit_r, include_random = FALSE))
   
-  x$survival$PopulationName <- "A"
   fit_s <- bboutools::bb_fit_survival(x$survival, 
                                       min_random_year = Inf,
                                       year_trend = TRUE, 
-                                      nthin = 10L)
+                                      nthin = 10L, year_start = 1L)
+
   
-  View(coef(fit_s, include_random = FALSE))
+  # actual
+  # sims trend is effect of one year change on monthly log-odds prob
+  # bboutools trend is effect of scaled year change
+  # sims intercept is first year
+  # bboutools intercept is mean year
+  x <- ilogit(logit(ilogit(logit(survival_adult_female^(1/12)) + survival_trend * 0:(nyear - 1))^12))
+  year <- bb_predict_survival_trend(fit_s)
+  year$actual <- x
   
+  library(ggplot2)
+  ggplot(data = year) +
+    geom_ribbon(aes(x = CaribouYear, y = estimate, ymin = lower, ymax = upper), alpha = 0.2) +
+    geom_line(aes(x = CaribouYear, y = actual), color = "red") +
+    geom_line(aes(x = CaribouYear, y = estimate), color = "black") 
+
 })
 
 test_that("bb_sims works", {

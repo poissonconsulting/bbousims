@@ -1,6 +1,6 @@
 test_that("simulating population base", {
   nyear = 10
-  
+  set.seed(101)
   survival <- bbs_survival(intercept = logit(c(0.94, 0.98)),
                            trend = c(0, 0.3),
                            annual_sd = rep(0.05, 2),
@@ -8,6 +8,7 @@ test_that("simulating population base", {
                            nyear = nyear, 
                            nperiod_within_year = 4)
   
+  set.seed(101)
   fecundity <- bbs_fecundity(intercept = c(NA, logit(0.4)),
                              trend = c(0, -0.2),
                              annual_sd = c(0, 0.1),
@@ -19,6 +20,7 @@ test_that("simulating population base", {
   
   pop0 <- c(100, 100)
   
+  set.seed(101)
   population <- bbs_population(pop0, 
                                birth = birth_mat, 
                                age = age_mat, 
@@ -32,6 +34,7 @@ test_that("simulating population base", {
 })
 
 test_that("bb_simulate_population deterministic works", {
+  set.seed(101)
   population <- bbs_population_caribou(nyear = 50, 
                                        survival_adult_female = 0.85,
                                        survival_calf_female = 0.5,
@@ -39,6 +42,8 @@ test_that("bb_simulate_population deterministic works", {
                                        survival_trend_adult_female = 0,
                                        survival_annual_sd_adult_female = 0.2)
   
+  ats <- attributes(population)
+  expect_identical(names(ats), c("dim", "survival", "fecundity"))
   expect_true(is.matrix(population))
   chk_whole_numeric(population)
   expect_snapshot(population)
