@@ -6,7 +6,7 @@ matrix_tbl <- function(x, values_to){
     dplyr::select(year, month, dplyr::everything())
 }
 
-abundance_tbl <- function(population){
+abundance_tbl <- function(population, population_name){
   population %>%
     dplyr::as_tibble(.name_repair = NULL) %>%
     dplyr::mutate(Stage = c("Female Calf", "Male Calf", "Female Yearling", "Male Yearling", "Female Adult", "Male Adult"),
@@ -14,14 +14,16 @@ abundance_tbl <- function(population){
     tidyr::pivot_longer(dplyr::contains("V"), names_to = "Period", values_to = "Abundance") %>%
     dplyr::mutate(Period = as.integer(gsub("V", "", Period)),
                   Year = period_to_year(Period),
-                  Month = period_to_month(Period)) %>%
-    dplyr::select(Year, Month, Sex, Stage, Abundance)
+                  Month = period_to_month(Period),
+                  PopulationName = population_name) %>%
+    dplyr::select(Year, Month, PopulationName, Sex, Stage, Abundance)
 }
 
 recruitment_tbl <- function(groups,
                             month_composition,
                             probability_unsexed_adult_male,
-                            probability_unsexed_adult_female){
+                            probability_unsexed_adult_female,
+                            population_name){
   purrr::map_df(seq_along(groups), function(x) {
     group <- groups[[x]]
     prob_unsexed_female <- probability_unsexed_adult_female
@@ -38,7 +40,7 @@ recruitment_tbl <- function(groups,
 
       dplyr::tibble(Year = x,
                     Month = month_composition,
-                    PopulationName = "A",
+                    PopulationName = population_name,
                     Day = 1,
                     Cows = females_known,
                     Bulls = males_known,

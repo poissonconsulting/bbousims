@@ -1,11 +1,21 @@
-#' Simulate Boreal Caribou Data from key demographic and sampling rates 
+#' Simulate Boreal Caribou Data 
+#' 
+#' Simulate Boreal Caribou data from key demographic and sampling parameters.
+#' 
+#' See [bbs_survival_caribou()] and [bbs_fecundity_caribou()] for details on how rates are generated.
+#' See [bbs_population_caribou()] for details on how population is simulated.
+#' See [bbs_population_groups_survey()] for details on how groups are assigned for each composition survey.
+#' See [bbs_survival_collared()] for details on how survival of collared adult female is determined.
+#' 
+#' Survival and recrutiment data.frames generated are formatted to be used as input data to [bboutools::bb_fit_survival()] and [bboutools::bb_fit_recruitment()], respectively. 
 #'
 #' @inheritParams params
+#' @param population_name A string of the population name. This does not affect simulation but can be used as a unique identifier.
 #'
 #' @return A list of three tibbles.
-#' The first named survival has columns year, month, starttotal, mortalitiescertain and mortalitiesuncertain.
-#' The second named recruitment has columns year, month, cows, bulls, unknownadults, yearlings and calves.
-#' And the final named abundance has columns year, month, sex, stage, abundance.
+#' The first named survival has columns Year, Month, StartTotal, MortalitiesCertain and MortalitiesUncertain.
+#' The second named recruitment has columns Year, Month, Cows, Bulls, UnknownAdults, Yearlings and Calves.
+#' And the final named abundance has columns Year, Month, Sex, Stage, Abundance.
 #' @export
 #'
 #' @examples
@@ -38,7 +48,8 @@ bbs_simulate_caribou <- function(
     group_size = 5,
     group_coverage = 0.2,
     group_min_size = 3,
-    group_max_proportion = 1) {
+    group_max_proportion = 1,
+    population_name = "A") {
   
   population <- bbs_population_caribou(adult_females = adult_females,
                                        nyear = nyear,
@@ -66,12 +77,14 @@ bbs_simulate_caribou <- function(
                                      group_min_size = group_min_size,
                                      group_max_proportion = group_max_proportion)
   
-  abundance <- abundance_tbl(population)
+  abundance <- abundance_tbl(population, 
+                             population_name = population_name)
   
   recruitment <- recruitment_tbl(groups, 
                                  month_composition = month_composition,
                                  probability_unsexed_adult_male = probability_unsexed_adult_male,
-                                 probability_unsexed_adult_female = probability_unsexed_adult_female)
+                                 probability_unsexed_adult_female = probability_unsexed_adult_female,
+                                 population_name = population_name)
   
   survival <- attr(population, "survival")
   survival_adult_female_month_year <- survival[,,3]
@@ -79,7 +92,8 @@ bbs_simulate_caribou <- function(
                                 month_collar = month_collar,
                                 survival_adult_female_month_year = survival_adult_female_month_year,
                                 probability_uncertain_mortality = probability_uncertain_mortality,
-                                probability_uncertain_survival = probability_uncertain_survival)
+                                probability_uncertain_survival = probability_uncertain_survival, 
+                                population_name = population_name)
   
   list(survival = survival,
        recruitment = recruitment,
