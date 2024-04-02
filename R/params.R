@@ -11,11 +11,11 @@
 #' @param male_recruit_stage A positive whole number of the stage representing male recruits. Ignored if NULL. 
 #' @param stochastic A flag indicating whether to include demographic stochasticity.
 #' 
-#' @param population A population object (output of `simulate_population()`).
-#' @param group_size_lambda A number of the lambda value of the gamma-poisson distribution to draw groups sizes from. 
-#' @param group_size_theta A number of the theta value of the gamma-poisson distribution to draw groups sizes from. 
-#' @param max_group_proportion A number between 0 and 1 of the maximum group size as proportion of the total population. 
-#' @param min_group_size A whole positive number of the minimum group size.
+#' @param population A matrix of the population by stage and period (output of [bbs_population()] or [bbs_population_caribou()]).
+#' @param group_size_lambda A number of the lambda value of the gamma-poisson distribution to draw group sizes from. 
+#' @param group_size_theta A number of the theta value of the gamma-poisson distribution to draw group sizes from. 
+#' @param group_max_proportion A number between 0 and 1 of the maximum group size as proportion of the total population. 
+#' @param group_min_size A whole positive number of the minimum group size.
 #' @param recruit_stages A vector of whole numbers indicating the recruit stages (e.g., calf).
 #' @param reproductive_female_stages A vector of whole numbers indicating the reproductive female stages (e.g., cows).
 #'
