@@ -1,209 +1,89 @@
-rbinom_map <- function(size, prob) {
-  purrr::map_dbl(size, ~ {
-    rbinom(1, size = round(.x / prob),  prob = 1 - prob)
-  })
-}
-
-add_male_population <- function(population, 
-                                proportion_adult_female,
-                                proportion_yearling_female,
-                                stochastic){
-  m <- matrix(NA, nrow = 6, ncol = ncol(population))
-  m[1, ] <- population[1, ]
-  m[3, ] <- population[2, ]
-  m[5, ] <- population[3, ]
-  
-  if (stochastic) {
-    m[2, ] <- rbinom_map(population[1, ], proportion_yearling_female)
-    m[4, ] <- rbinom_map(population[2, ], proportion_yearling_female)
-    m[6, ] <- rbinom_map(population[3, ], proportion_adult_female)
-  } else {
-    m[2, ] <- population[1, ] / proportion_yearling_female - population[1, ]
-    m[4, ] <-
-      population[2, ] / proportion_yearling_female - population[2, ]
-    m[6, ] <-
-      population[3, ] / proportion_adult_female - population[3, ]
-  }
-  m
-}
-
-#' Simulate population from BAS model
-#'
-#' Simulate population projections given initial population in each stage and survival, ageing, and birth process matrices.
-#' Survival can vary by period (e.g., month) and year, birth can vary by year, and ageing is constant.
-#' This model assumes that survival occurs at the end of each period and survival, ageing and birth occur at the end of each year, in that order.
-#' The dimensions of birth, age and survival process matrices must be identical to the length of the initial population vector.
-#'
-#' @inheritParams params
-#' @param population_init A vector of the initial population for each stage. 
-#' @param birth An array of the birth matrices (output of [bbs_matrix_birth_year()]).
-#' @param age An age process matrix (output of [bbs_matrix_age]).
-#' @param survival An array of the survival matrices (output of [bbs_matrix_survival_period()]).
-#'
-#' @return A matrix of the population by stage and period.
-#'
-bbs_population <- function(population_init,
-                           birth,
-                           age,
-                           survival,
-                           stochastic = TRUE) {
-  chk_whole_numeric(population_init)
-  chk_array(birth)
-  chk_length(dim(birth), 3L)
-  chk_matrix(age)
-  chk_array(survival)
-  chk_length(dim(survival), 4L)
-  chk_identical(length(population_init), ncol(survival))
-  chk_identical(length(population_init), ncol(age))
-  chk_identical(length(population_init), ncol(birth))
-  # same number of years
-  chk_identical(dim(birth)[3], dim(survival)[3])
-  chk_flag(stochastic)
-
-  population_init <- as.integer(population_init)
-  
-  nstage <- length(population_init)
-  nperiod <- dim(survival)[4]
-  nyear <- dim(survival)[3]
-  nstep <- nperiod * nyear + 1
-  abundance <- matrix(0, nrow = nstage, ncol = nstep)
-  abundance[, 1] <- population_init
-  
-  mmult <- `%*%`
-  if (stochastic) {
-    mmult <- `%*b%`
-  }
-  
-  for (year in 1:nyear) {
-    for (period in 1:nperiod) {
-      period_now <- (year - 1) * nperiod + period
-      if (period == nperiod) {
-        abundance[, period_now + 1] <-
-          mmult(birth[, , year], mmult(age, mmult(survival[, , year, period], abundance[, period_now])))
-      } else {
-        abundance[, period_now + 1] <-
-          mmult(survival[, , year, period], abundance[, period_now])
-      }
-    }
-  }
-  abundance
-}
-
-#' Simulate Boreal Caribou population from BAS model
-#'
-#' Simulate population projection for Boreal Caribou from key survival and recruitment rates.
-#'
-#' This model assumes that survival occurs at the end of each period and survival, ageing and birth occur at the end of each year, in that order.
-#' Initial population is determined by calculating the stable age distribution (output of [bbs_demographic_summary()]).
-#' Survival and fecundity rates are generated from [bbs_survival_caribou()] and [bbs_fecundity_caribou()]
-#' and these are converted into processes matrices using [bbs_matrix_survival_period()] and [bbs_matrix_birth_year()].
-#' [bbs_population()] is called internally to project population.
+#' Simulate Boreal Caribou Data from key demographic and sampling rates 
 #'
 #' @inheritParams params
 #'
-#' @return A matrix of the population by stage and period. 
+#' @return A list of three tibbles.
+#' The first named survival has columns year, month, starttotal, mortalitiescertain and mortalitiesuncertain.
+#' The second named recruitment has columns year, month, cows, bulls, unknownadults, yearlings and calves.
+#' And the final named abundance has columns year, month, sex, stage, abundance.
 #' @export
 #'
-bbs_population_caribou <- function(adult_females = 1000,
-                                   nyear = 20,
-                                   survival_adult_female = 0.85, # annual
-                                   survival_calf_female = 0.5, # annual
-                                   calves_per_adult_female = 0.7, # annual
-                                   proportion_adult_female = 0.65,
-                                   proportion_yearling_female = 0.5,
-                                   survival_trend_adult_female = 0,
-                                   survival_trend_calf_female = 0,
-                                   survival_annual_sd_adult_female = 0,
-                                   survival_annual_sd_calf_female = 0,
-                                   survival_month_sd_adult_female = 0,
-                                   survival_month_sd_calf_female = 0,
-                                   survival_annual_month_sd_adult_female = 0,
-                                   survival_annual_month_sd_calf_female = 0,
-                                   calves_per_adult_female_trend = 0,
-                                   calves_per_adult_female_annual_sd = 0,
-                                   stochastic = TRUE) {
-  chk_whole_number(adult_females)
-  chk_gt(adult_females)
-  chk_whole_number(nyear)
-  chk_gt(nyear)
-  chk_number(survival_adult_female)
-  chk_range(survival_adult_female)
-  chk_number(survival_calf_female)
-  chk_range(survival_calf_female)
-  chk_number(calves_per_adult_female)
-  chk_gte(calves_per_adult_female)
-  chk_number(proportion_adult_female)
-  chk_range(proportion_adult_female)
-  chk_number(proportion_yearling_female)
-  chk_range(proportion_yearling_female)
-  chk_number(survival_trend_adult_female)
-  chk_number(survival_trend_calf_female)
-  chk_number(survival_annual_sd_adult_female)
-  chk_gte(survival_annual_sd_adult_female)
-  chk_number(survival_annual_sd_calf_female)
-  chk_gte(survival_annual_sd_calf_female)
-  chk_number(survival_month_sd_adult_female)
-  chk_gte(survival_month_sd_adult_female)
-  chk_number(survival_month_sd_calf_female)
-  chk_gte(survival_month_sd_calf_female)
-  chk_number(survival_annual_month_sd_adult_female)
-  chk_gte(survival_annual_month_sd_adult_female)
-  chk_number(survival_annual_month_sd_calf_female)
-  chk_gte(survival_annual_month_sd_calf_female)
-  chk_number(calves_per_adult_female_trend)
-  chk_number(calves_per_adult_female_annual_sd)
-  chk_gte(calves_per_adult_female_annual_sd)
-  chk_flag(stochastic)
+#' @examples
+#' bbs_simulate_caribou()
+bbs_simulate_caribou <- function(
+    adult_females = 1000,
+    nyear = 20,
+    survival_adult_female = 0.85, # annual
+    survival_calf_female = 0.5, # annual
+    calves_per_adult_female = 0.7, # annual
+    proportion_adult_female = 0.65,
+    proportion_yearling_female = 0.5,
+    survival_trend_adult_female = 0,
+    survival_trend_calf_female = 0,
+    survival_annual_sd_adult_female = 0,
+    survival_annual_sd_calf_female = 0,
+    survival_month_sd_adult_female = 0,
+    survival_month_sd_calf_female = 0,
+    survival_annual_month_sd_adult_female = 0,
+    survival_annual_month_sd_calf_female = 0,
+    calves_per_adult_female_trend = 0,
+    calves_per_adult_female_annual_sd = 0,
+    probability_unsexed_adult_female = 0,
+    probability_unsexed_adult_male = 0,
+    month_composition = 9L,
+    collared_adult_females = 30,
+    month_collar = 3L,
+    probability_uncertain_mortality = 0,
+    probability_uncertain_survival = 0,
+    group_size = 5,
+    group_coverage = 0.2,
+    group_min_size = 3,
+    group_max_proportion = 1) {
   
-  stable_stage_dist <- bbs_stable_stage_distribution(proportion_female = proportion_yearling_female, 
-                                                     calves_per_adult_female = calves_per_adult_female,
-                                                     survival_calf = survival_calf_female, 
-                                                     survival_yearling = survival_adult_female, 
-                                                     survival_adult_female = survival_adult_female)
+  population <- bbs_population_caribou(adult_females = adult_females,
+                                       nyear = nyear,
+                                       survival_adult_female = survival_adult_female,
+                                       survival_calf_female = survival_calf_female, 
+                                       calves_per_adult_female = calves_per_adult_female, 
+                                       proportion_adult_female = proportion_adult_female,
+                                       proportion_yearling_female = proportion_yearling_female,
+                                       survival_trend_adult_female = survival_trend_adult_female,
+                                       survival_trend_calf_female = survival_trend_calf_female,
+                                       survival_annual_sd_adult_female = survival_annual_sd_adult_female,
+                                       survival_annual_sd_calf_female = survival_annual_sd_calf_female,
+                                       survival_month_sd_adult_female = survival_month_sd_adult_female,
+                                       survival_month_sd_calf_female = survival_month_sd_calf_female,
+                                       survival_annual_month_sd_adult_female = survival_annual_month_sd_adult_female,
+                                       survival_annual_month_sd_calf_female = survival_annual_month_sd_calf_female,
+                                       calves_per_adult_female_trend = calves_per_adult_female_trend,
+                                       calves_per_adult_female_annual_sd = calves_per_adult_female_annual_sd)
   
-  pop0 <- initial_population(adult_females = adult_females,
-                             stable_stage_dist = stable_stage_dist)
+  groups <- bbs_population_groups_survey(population,
+                                     month_composition = month_composition,
+                                     group_size_lambda = group_size,
+                                     group_size_theta = 0,
+                                     group_coverage = group_coverage,
+                                     group_min_size = group_min_size,
+                                     group_max_proportion = group_max_proportion)
   
-  fec <- bbs_fecundity_caribou(
-    calves_per_adult_female = calves_per_adult_female,
-    trend = calves_per_adult_female_trend,
-    annual_sd = calves_per_adult_female_annual_sd,
-    nyear = nyear
-  )
+  abundance <- abundance_tbl(population)
   
-  # array survival rates, month x year x stage
-  phi <- bbs_survival_caribou(
-    survival_adult_female = survival_adult_female,
-    survival_calf_female = survival_calf_female,
-    trend_adult_female = survival_trend_adult_female,
-    trend_calf_female = survival_trend_calf_female,
-    annual_sd_adult_female = survival_annual_sd_adult_female,
-    annual_sd_calf_female = survival_annual_sd_calf_female,
-    month_sd_adult_female = survival_month_sd_adult_female,
-    month_sd_calf_female = survival_month_sd_calf_female,
-    annual_month_sd_adult_female = survival_annual_month_sd_adult_female,
-    annual_month_sd_calf_female = survival_annual_month_sd_calf_female,
-    nyear = nyear
-  )
+  recruitment <- recruitment_tbl(groups, 
+                                 month_composition = month_composition,
+                                 probability_unsexed_adult_male = probability_unsexed_adult_male,
+                                 probability_unsexed_adult_female = probability_unsexed_adult_female)
   
-  survival_mat <- bbs_matrix_survival_period(phi)
-  birth_mat <- bbs_matrix_birth_year(fec)
-  age_mat <- bbs_matrix_age()
+  survival <- attr(population, "survival")
+  survival_adult_female_month_year <- survival[,,3]
+  survival <- bbs_survival_collared(collared_adult_females = collared_adult_females,
+                                month_collar = month_collar,
+                                survival_adult_female_month_year = survival_adult_female_month_year,
+                                probability_uncertain_mortality = probability_uncertain_mortality,
+                                probability_uncertain_survival = probability_uncertain_survival)
   
-  population <- bbs_population(
-    pop0,
-    birth = birth_mat,
-    survival = survival_mat,
-    age = age_mat,
-    stochastic = stochastic
-  )
-  
-  x <- add_male_population(population, 
-                      proportion_adult_female = proportion_adult_female,
-                      proportion_yearling_female = proportion_yearling_female,
-                      stochastic = stochastic)
-  
-  attr(x, "survival") <- phi
-  attr(x, "fecundity") <- fec
-  x
+  list(survival = survival,
+       recruitment = recruitment,
+       abundance = abundance)
+
 }
+
