@@ -125,8 +125,7 @@ bbs_survival <- function(intercept,
   bannual <- array(0, dim = c(nyear, nstage))
   bperiod <- array(0, dim = c(nperiod, nstage))
   bannual_period <- array(0, dim = c(nyear, nperiod, nstage))
-  # intercept is first year
-  year <- 1:nyear - 1
+  year <- scale(1:nyear)
   
   for(stg in 1:nstage){
     for(yr in 1:nyear){
