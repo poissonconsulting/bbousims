@@ -12,11 +12,11 @@
 #' @export
 #'
 bbs_survival_collared <- function(collared_adult_females,
-                              month_collar,
                             survival_adult_female_month_year,
-                            probability_uncertain_mortality,
-                            probability_uncertain_survival,
-                            population_name){
+                            probability_uncertain_mortality = 0,
+                            probability_uncertain_survival = 0,
+                            month_collar = 3L,
+                            population_name = "A"){
   starttotal <- collared_adult_females
   nyear <- ncol(survival_adult_female_month_year)
   yearmon <- tidyr::expand_grid(year = 1:nyear, month = 1:12)

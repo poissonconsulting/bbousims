@@ -6,7 +6,7 @@ matrix_tbl <- function(x, values_to){
     dplyr::select(year, month, dplyr::everything())
 }
 
-abundance_tbl <- function(population, population_name){
+abundance_tbl <- function(population, population_name = "A"){
   population %>%
     dplyr::as_tibble(.name_repair = NULL) %>%
     dplyr::mutate(Stage = c("Female Calf", "Male Calf", "Female Yearling", "Male Yearling", "Female Adult", "Male Adult"),
