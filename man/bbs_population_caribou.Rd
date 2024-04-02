@@ -7,9 +7,9 @@
 bbs_population_caribou(
   adult_females = 1000,
   nyear = 20,
-  survival_adult_female = 0.8,
+  survival_adult_female = 0.85,
   survival_calf_female = 0.5,
-  calves_per_adult_female = 0.5,
+  calves_per_adult_female = 0.7,
   proportion_adult_female = 0.65,
   proportion_yearling_female = 0.5,
   survival_trend_adult_female = 0,

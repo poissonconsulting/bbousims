@@ -22,15 +22,15 @@
 
 \item{stochastic}{A flag indicating whether to include demographic stochasticity.}
 
-\item{population}{A population object (output of \code{simulate_population()}).}
+\item{population}{A matrix of the population by stage and period (output of \code{\link[=bbs_population]{bbs_population()}} or \code{\link[=bbs_population_caribou]{bbs_population_caribou()}}).}
 
-\item{group_size_lambda}{A number of the lambda value of the gamma-poisson distribution to draw groups sizes from.}
+\item{group_size_lambda}{A number of the lambda value of the gamma-poisson distribution to draw group sizes from.}
 
-\item{group_size_theta}{A number of the theta value of the gamma-poisson distribution to draw groups sizes from.}
+\item{group_size_theta}{A number of the theta value of the gamma-poisson distribution to draw group sizes from.}
 
-\item{max_group_proportion}{A number between 0 and 1 of the maximum group size as proportion of the total population.}
+\item{group_max_proportion}{A number between 0 and 1 of the maximum group size as proportion of the total population.}
 
-\item{min_group_size}{A whole positive number of the minimum group size.}
+\item{group_min_size}{A whole positive number of the minimum group size.}
 
 \item{recruit_stages}{A vector of whole numbers indicating the recruit stages (e.g., calf).}
 

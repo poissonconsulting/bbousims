@@ -7,7 +7,7 @@
 bbs_plot_population(population, annual = TRUE)
 }
 \arguments{
-\item{population}{A population object (output of \code{simulate_population()}).}
+\item{population}{A matrix of the population by stage and period (output of \code{\link[=bbs_population]{bbs_population()}} or \code{\link[=bbs_population_caribou]{bbs_population_caribou()}}).}
 
 \item{annual}{A flag indicating whether to show annual population (as opposed to monthly).}
 }
