@@ -2,18 +2,42 @@
 % Please edit documentation in R/plot-population.R
 \name{bbs_plot_population}
 \alias{bbs_plot_population}
-\title{Plot population}
+\alias{bbs_plot_population.data.frame}
+\alias{bbs_plot_population.matrix}
+\alias{bbs_plot_population.list}
+\title{Plot Population}
 \usage{
-bbs_plot_population(population, annual = TRUE)
+bbs_plot_population(x, ...)
+
+\method{bbs_plot_population}{data.frame}(x, annual = TRUE, ...)
+
+\method{bbs_plot_population}{matrix}(x, annual = TRUE, ...)
+
+\method{bbs_plot_population}{list}(x, annual = TRUE, ...)
 }
 \arguments{
-\item{population}{A matrix of the population by stage and period (output of \code{\link[=bbs_population]{bbs_population()}} or \code{\link[=bbs_population_caribou]{bbs_population_caribou()}}).}
+\item{x}{The object.}
+
+\item{...}{Unused parameters.}
 
 \item{annual}{A flag indicating whether to show annual population (as opposed to monthly).}
 }
 \value{
-A nlist object with projected abundance at each stage, period and simulation.
+A ggplot object.
+
+A ggplot object.
+
+A ggplot object.
 }
 \description{
-Plot simulated population (i.e., from output of \code{bb_simulate_population()}).
+Plots population abundance by period and stage.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{bbs_plot_population(data.frame)}: Plot population abundance by period and stage for a data frame (output of \link{bbs_simulate_caribou()$abundance}).
+
+\item \code{bbs_plot_population(matrix)}: Plot population abundance by period and stage for a matrix (output of \code{\link[=bbs_population_caribou]{bbs_population_caribou()}}).
+
+\item \code{bbs_plot_population(list)}: Plot population abundance by period and stage for a matrix (output of \code{\link[=bbs_simulate_caribou]{bbs_simulate_caribou()}}).
+
+}}

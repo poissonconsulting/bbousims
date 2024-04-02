@@ -1,6 +1,7 @@
 #' Parameter Descriptions for bboutools Functions
 #'
 #' @param ... Unused parameters.
+#' @param x The object.
 #' @param survival_adult_female A number between 0 and 1 of the annual female adult survival. 
 #' @param survival_calf_female A number between 0 and 1 of the annual female calf survival. 
 #' @param calves_per_adult_female A number of the calves per adult female. 

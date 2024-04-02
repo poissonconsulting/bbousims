@@ -6,6 +6,8 @@
 \arguments{
 \item{...}{Unused parameters.}
 
+\item{x}{The object.}
+
 \item{survival_adult_female}{A number between 0 and 1 of the annual female adult survival.}
 
 \item{survival_calf_female}{A number between 0 and 1 of the annual female calf survival.}

@@ -9,8 +9,8 @@ matrix_tbl <- function(x, values_to){
 abundance_tbl <- function(population){
   population %>%
     dplyr::as_tibble(.name_repair = NULL) %>%
-    dplyr::mutate(Stage = c("calf", "calf", "yearling", "yearling", "adult", "adult"),
-                  Sex = rep(c("female", "male"), 3)) %>%
+    dplyr::mutate(Stage = c("Female Calf", "Male Calf", "Female Yearling", "Male Yearling", "Female Adult", "Male Adult"),
+                  Sex = rep(c("Female", "Male"), 3)) %>%
     tidyr::pivot_longer(dplyr::contains("V"), names_to = "Period", values_to = "Abundance") %>%
     dplyr::mutate(Period = as.integer(gsub("V", "", Period)),
                   Year = period_to_year(Period),

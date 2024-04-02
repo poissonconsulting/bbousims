@@ -120,7 +120,7 @@ test_that("assign population to groups in declining population", {
   nstep <- ncol(population)
   # check different values ----
   min_size <- 2
-  max_proportion <- 0.75
+  max_proportion <- 1
   lambda <- 6
   theta <- 1
   

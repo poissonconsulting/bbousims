@@ -1,35 +1,33 @@
 test_that("bbs_simulate_caribou works", {
   x <- bbs_simulate_caribou()
-  nstage <- 6L
-  nyear <- 5L
-  nperiod_within_year <- 12L
-  pop0 <- rep(1000, nstage)
+  expect_true(is.list(x))
+  expect_identical(names(x), c("survival", "recruitment", "abundance"))
+  expect_true(all(unlist(lapply(x, is.data.frame))))
+})
+
+test_that("bbs_simulate_caribou works with bboutools", {
+  x <- bbs_simulate_caribou(adult_females = 500, 
+                            proportion_adult_female = 0.55, 
+                            survival_trend_adult_female = -0.2, 
+                            nyear = 50L,
+                            calves_per_adult_female_trend = 0,
+                            group_coverage = 0.5, 
+                            collared_adult_females = 30)
   
-  phi <- survival_period(
-    intercept = 4.45, 
-    stage = c(-0.1, -0.1, 0, 0, 0.1, 0.1), 
-    trend = 0.1,
-    annual_sd = 0.3, 
-    period_sd = 0.2,
-    annual_period_sd = 0.1, 
-    nyear = nyear, 
-    nperiod_within_year = nperiod_within_year)
+  fit_r <- bboutools::bb_fit_recruitment(x$recruitment, 
+                                         adult_female_proportion = NULL, 
+                                         yearling_female_proportion = 0.5, 
+                                         year_trend = TRUE)
   
-  survival <- matrix_survival_period(phi)
+  View(coef(fit_r, include_random = FALSE))
   
-  fec <- fecundity_year(
-    intercept = -0.8, 
-    stage = c(NA, NA, -1.5, NA, 0, NA), 
-    trend = -0.05,
-    annual_sd = 0.1,
-    nyear = 5)
+  x$survival$PopulationName <- "A"
+  fit_s <- bboutools::bb_fit_survival(x$survival, 
+                                      min_random_year = Inf,
+                                      year_trend = TRUE, 
+                                      nthin = 10L)
   
-  birth <- matrix_birth_year(fec, female_proportion = 0.6)
-  
-  age <- matrix_age(c(3, 4, 5, 6, 5, 6))
-  
-  set.seed(101)
-  x <- simulate_population(pop0, birth = birth, age = age, survival = survival)
+  View(coef(fit_s, include_random = FALSE))
   
 })
 
