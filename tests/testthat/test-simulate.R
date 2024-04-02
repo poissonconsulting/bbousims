@@ -1,4 +1,5 @@
-test_that("bb_sims works", {
+test_that("bbs_simulate_caribou works", {
+  x <- bbs_simulate_caribou()
   nstage <- 6L
   nyear <- 5L
   nperiod_within_year <- 12L
