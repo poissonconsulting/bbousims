@@ -40,6 +40,7 @@ add_male_population <- function(population,
 #' @param age An age process matrix (output of [bbs_matrix_age]).
 #' @param survival An array of the survival matrices (output of [bbs_matrix_survival_period()]).
 #'
+#' @export
 #' @return A matrix of the population by stage and period.
 #'
 bbs_population <- function(population_init,
