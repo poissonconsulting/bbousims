@@ -87,6 +87,8 @@ bbs_population <- function(population_init,
       }
     }
   }
+  
+  class(abundance) <- c("bbou_population")
   abundance
 }
 
@@ -98,7 +100,8 @@ bbs_population <- function(population_init,
 #' Initial population is determined by calculating the stable age distribution (output of [bbs_demographic_summary()]).
 #' Survival and fecundity rates are generated from [bbs_survival_caribou()] and [bbs_fecundity_caribou()]
 #' and these are converted into processes matrices using [bbs_matrix_survival_period()] and [bbs_matrix_birth_year()].
-#' [bbs_population()] is called internally to project population.
+#' [bbs_population()] is called internally to project population. 
+#' Yearling female survival is assumed to be the same as adult female survival.
 #'
 #' @inheritParams params
 #'
@@ -206,5 +209,6 @@ bbs_population_caribou <- function(adult_females = 1000,
   
   attr(x, "survival") <- phi
   attr(x, "fecundity") <- fec
+  class(x) <- c("bbou_population_caribou")
   x
 }

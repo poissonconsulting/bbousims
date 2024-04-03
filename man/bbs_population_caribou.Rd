@@ -74,4 +74,5 @@ Initial population is determined by calculating the stable age distribution (out
 Survival and fecundity rates are generated from \code{\link[=bbs_survival_caribou]{bbs_survival_caribou()}} and \code{\link[=bbs_fecundity_caribou]{bbs_fecundity_caribou()}}
 and these are converted into processes matrices using \code{\link[=bbs_matrix_survival_period]{bbs_matrix_survival_period()}} and \code{\link[=bbs_matrix_birth_year]{bbs_matrix_birth_year()}}.
 \code{\link[=bbs_population]{bbs_population()}} is called internally to project population.
+Yearling female survival is assumed to be the same as adult female survival.
 }
