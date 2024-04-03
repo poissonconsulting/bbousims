@@ -6,7 +6,13 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of bbousims is to …
+`bbousims` contains some general functionality for simulating population
+change of life stages over time from survival, ageing and birth
+processes.
+
+In addition, there are more user-friendly functions for simulating
+Boreal Caribou population change, recruitment data from hypothetical
+composition surveys and survival data from hypothetical collaring.
 
 ## Installation
 
@@ -18,38 +24,303 @@ You can install the development version of bbousims from
 devtools::install_github("poissonconsulting/bbousims")
 ```
 
-## Example
+## General simulation of populations from BAS model
 
-This is a basic example which shows you how to solve a common problem:
+### Survival and fecundity rates
 
-``` r
-library(bbousims)
-## basic example code
-```
-
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+`bbs_survival()` and `bbs_fecundity()` can be used to stochastically
+generate survival and fecundity rates over time. Survival varies by
+period (e.g., month, season) with options to set the intercept, year
+trend, annual random effect, period random effect and period within
+annual random effect for each stage, on the log-odds scale.
 
 ``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+survival <- bbs_survival(intercept = logit(c(0.94, 0.98)),
+                         trend = c(0, 0.3),
+                         annual_sd = rep(0.05, 2),
+                         period_sd = rep(0.1, 2),
+                         nyear = 3, 
+                         nperiod_within_year = 4)
+survival
+#> , , 1
+#> 
+#>           [,1]      [,2]      [,3]
+#> [1,] 0.9465737 0.9469217 0.9424059
+#> [2,] 0.9394499 0.9398414 0.9347647
+#> [3,] 0.9424386 0.9428119 0.9379693
+#> [4,] 0.9485973 0.9489329 0.9445782
+#> 
+#> , , 2
+#> 
+#>           [,1]      [,2]      [,3]
+#> [1,] 0.9832576 0.9866263 0.9900616
+#> [2,] 0.9782917 0.9826419 0.9870872
+#> [3,] 0.9807307 0.9845999 0.9885496
+#> [4,] 0.9795545 0.9836559 0.9878448
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
+Fecundity varies by year, with options to set the intercept, year trend
+and annual random effect for each stage, on the log-odds scale. Setting
+intercept to NA will force all rates in that stage to be 0.
 
-You can also embed plots, for example:
+``` r
+fecundity <- bbs_fecundity(intercept = c(NA, logit(0.4)),
+                           trend = c(0, -0.2),
+                           annual_sd = c(0, 0.1),
+                           nyear = 3)
+fecundity
+#>      [,1]      [,2]
+#> [1,]    0 0.3958492
+#> [2,]    0 0.3938377
+#> [3,]    0 0.3015242
+```
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
+### Process matrices
 
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+Survival and fecundity rate arrays can be converted into process
+matrices for use in BAS population projection. In this example there are
+two stages representing recruit and adult.  
+We can set the male recruit stage to be NULL to indicate that there is
+only one recruit stage.
+
+``` r
+survival_mat <- bbs_matrix_survival_period(survival)
+birth_mat <- bbs_matrix_birth_year(fecundity, female_recruit_stage = 1, male_recruit_stage = NULL)
+# first period, first year
+survival_mat[,,1,1]
+#>           [,1]      [,2]
+#> [1,] 0.9465737 0.0000000
+#> [2,] 0.0000000 0.9832576
+
+# first year
+birth_mat[,,1]
+#>      [,1]      [,2]
+#> [1,]    1 0.1979246
+#> [2,]    0 1.0000000
+```
+
+`bbs_matrix_age()` is used to generate an age process matrix, which does
+not vary in time. The input vector denotes which stage that stage will
+age into (i.e., stage 1 ages to stage 2, stage 2 collects).
+
+``` r
+age_mat <- bbs_matrix_age(c(2, 2))
+age_mat
+#>      [,1] [,2]
+#> [1,]    0    0
+#> [2,]    1    1
+```
+
+### Population projection
+
+`bbousims` contains a custom infix operator `%*b%` to perform matrix
+multiplication with stochasticity. Instead of multiplying the population
+at each stage by the corresponding rate, `%*b%` draws from a binomial
+distribution, where size is the population and probability is the rate
+of interest.
+
+For example, with an initial population vector and survival process
+matrix for the first period of the first year
+
+``` r
+pop0 <- c(25, 52)
+survival_mat1 <- survival_mat[,,1,1]
+```
+
+regular (deterministic) matrix multiplication yields
+
+``` r
+survival_mat1 %*% pop0
+#>          [,1]
+#> [1,] 23.66434
+#> [2,] 51.12940
+```
+
+and stochastic matrix multiplication yields
+
+``` r
+survival_mat1 %*b% pop0
+#> [1] 24 50
+```
+
+`bbs_population()` is used to project population forward in time from
+survival, age and birth process matrices.
+
+``` r
+population <- bbs_population(pop0, 
+                             birth = birth_mat, 
+                             age = age_mat, 
+                             survival = survival_mat)
+population
+#>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]
+#> [1,]   25   24   24   23   10    9    8    8   15    15    13    13    14
+#> [2,]   52   52   50   50   72   72   70   70   78    78    76    76    88
+```
+
+### Group allocation
+
+`bbs_population_groups()` is used to randomly allocate individuals at
+each time step into groups. Group sizes are randomly drawn from a
+gamma-poisson distribution with user-specified `lambda` and `theta`
+values. Minimum and maximum (i.e., as a maximum proportion of the total
+population) groups sizes can be set. Group sizes are drawn until the
+cumulative size exceeds the total individuals. The remaining individuals
+comprise the final group. If the remaining number of individuals is \<
+min_size specified, these will be added to the previous group.
+
+The output is a list of lists containing the individuals identified by
+stage in each group at each time period.
+
+``` r
+groups <- bbs_population_groups(population, group_size_lambda = 20, group_size_theta = 0)
+groups[[1]]
+#> [[1]]
+#>  [1] 2 2 1 2 1 2 2 2 2 2 1 2 1 2 1 2 2
+#> 
+#> [[2]]
+#>  [1] 2 1 2 2 2 2 2 2 2 2 2 1 2 1 2 2 1 1 2
+#> 
+#> [[3]]
+#>  [1] 2 1 1 2 1 2 2 2 1 2 2 1 2
+#> 
+#> [[4]]
+#>  [1] 1 2 2 2 1 2 1 2 2 1 2 1 1 1 2 1 2 2
+#> 
+#> [[5]]
+#>  [1] 1 2 2 2 2 1 2 2 2 2
+```
+
+`bbs_population_groups_pairs()` behaves similarly but keeps calf-cow
+pairs (or equivalent for different animals) together in groups whenever
+possible.
+
+`bbs_population_groups_survey()` allocates individuals into groups once
+a year (month of composition survey relative to biological year start)
+and allows the user to set the sample coverage (i.e., the proportion of
+groups observed). Groups are sampled randomly.
+
+``` r
+groups <- bbs_population_groups_survey(population, group_size_lambda = 20, month_composition = 3L, group_coverage = 0.2)
+groups[[1]]
+#> [[1]]
+#> [1] 2 2 2 1 2
+#> 
+#> [[2]]
+#>  [1] 2 2 1 2 1 2 1 1 2 1 2 2 2 1 1
+```
+
+## Boreal Caribou simulation
+
+More user-friendly functionality exists for simulating Boreal Caribou
+population, where it is assumed that there are six stages: female calf,
+male calf, female yearling, male yearling, female adult and male adult.
+
+### Boreal Caribou population projection
+
+The survival/fecundity rates are generated for the female stages and
+population is projected for those stages. Abundance at each male stage
+is ‘filled in’ based on provided sex ratios. The initial population
+vector is determined by calculating stable stage distribution. Given key
+parameters, `bbs_demographic_summary()` provides stable stage
+distribution, estimated lambda, estimated recruitment and calf-cow
+ratio.
+
+`bbs_survival_caribou()` and `bbs_fecundity_caribou()` are used to
+generate rates varying over time.
+
+`bbs_population_caribou()` allows the user to set the intercept, trend,
+annual random effect standard deviation, monthly random effect standard
+deviation and month within annual random effect standard deviation for
+female adult survival and female calf survival separately. Yearling
+abundance is determined from a user-specified effect on female adult
+survival (`yearling_effect`). Intercept, trend and annual random effect
+standard deviation can also be set for the calves per adult female
+(`calves_per_adut_female`).
+
+In all cases, the intercept (i.e. `survival_adult_female`,
+`survival_calf_female` `calves_per_adult_female`) is the annual rate and
+trend/standard deviations are on the log-odds scale. Year is scaled to
+(Year - 1) so that the intercept represents the rate in the first year.
+
+``` r
+set.seed(1)
+population <- bbs_population_caribou(nyear = 50, 
+                                     survival_adult_female = 0.85,
+                                     survival_calf_female = 0.5,
+                                     calves_per_adult_female = 0.7)
+bbs_plot_population(population)
+```
+
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
+Adding a negative trend and high standard deviation of the annual random
+effect in the adult female survival will cause higher variation and
+downward projection of population.
+
+``` r
+set.seed(1)
+population <- bbs_population_caribou(nyear = 50, 
+                                     survival_adult_female = 0.85,
+                                     survival_calf_female = 0.5,
+                                     calves_per_adult_female = 0.7, 
+                                     survival_trend_adult_female = -0.01,
+                                     survival_annual_sd_adult_female = 0.5)
+bbs_plot_population(population)
+```
+
+<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
+
+### Boreal Caribou survival and recruitment data
+
+`bbs_simulate_caribou()` combines `bbs_population_caribou()`,
+`bbs_population_groups_survey()` and `bbs_survival_collared()`
+functionality to simulate recruitment data from composition surveys and
+survival data from collaring. Recruitment and survival data share the
+same survival and fecundity rates, which are generated once for each
+simulation.
+
+The recruitment and survival data are formatted to be used as input for
+`bboutools` model fitting functions.
+
+``` r
+data <- bbs_simulate_caribou(nyear = 30, 
+                             adult_females = 500,
+                             survival_adult_female = 0.85,
+                             survival_calf_female = 0.5,
+                             calves_per_adult_female = 0.7, 
+                             survival_trend_calf_female = -0.01,
+                             group_size = 15,
+                             group_coverage = 0.3,
+                             collared_adult_females = 30)
+
+data$survival
+#> # A tibble: 360 × 6
+#>     Year Month PopulationName StartTotal MortalitiesCertain MortalitiesUncertain
+#>    <int> <int> <chr>               <dbl>              <int>                <int>
+#>  1     1     1 A                      30                  0                    0
+#>  2     1     2 A                      30                  0                    0
+#>  3     1     3 A                      30                  0                    0
+#>  4     1     4 A                      30                  0                    0
+#>  5     1     5 A                      30                  0                    0
+#>  6     1     6 A                      30                  0                    0
+#>  7     1     7 A                      30                  0                    0
+#>  8     1     8 A                      30                  0                    0
+#>  9     1     9 A                      30                  0                    0
+#> 10     1    10 A                      30                  0                    0
+#> # ℹ 350 more rows
+
+data$recruitment
+#> # A tibble: 509 × 9
+#>     Year Month PopulationName   Day  Cows Bulls Yearlings Calves UnknownAdults
+#>    <int> <int> <chr>          <dbl> <int> <int>     <int>  <int>         <int>
+#>  1     1     9 A                  1     5     4         3      1             0
+#>  2     1     9 A                  1     4     4         2      2             0
+#>  3     1     9 A                  1     6     2         5      5             0
+#>  4     1     9 A                  1     7     1         5      5             0
+#>  5     1     9 A                  1    10     4         1      1             0
+#>  6     1     9 A                  1     3     4         1      6             0
+#>  7     1     9 A                  1    11     9         0      5             0
+#>  8     1     9 A                  1     5     2         3      3             0
+#>  9     1     9 A                  1     7     3         2      3             0
+#> 10     1     9 A                  1     4     2         2      4             0
+#> # ℹ 499 more rows
+```
