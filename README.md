@@ -45,18 +45,18 @@ survival
 #> , , 1
 #> 
 #>           [,1]      [,2]      [,3]
-#> [1,] 0.9465737 0.9469217 0.9424059
-#> [2,] 0.9394499 0.9398414 0.9347647
-#> [3,] 0.9424386 0.9428119 0.9379693
-#> [4,] 0.9485973 0.9489329 0.9445782
+#> [1,] 0.9464043 0.9435460 0.9468495
+#> [2,] 0.9318042 0.9282264 0.9323620
+#> [3,] 0.9379070 0.9346269 0.9384182
+#> [4,] 0.9385573 0.9353091 0.9390634
 #> 
 #> , , 2
 #> 
 #>           [,1]      [,2]      [,3]
-#> [1,] 0.9832576 0.9866263 0.9900616
-#> [2,] 0.9782917 0.9826419 0.9870872
-#> [3,] 0.9807307 0.9845999 0.9885496
-#> [4,] 0.9795545 0.9836559 0.9878448
+#> [1,] 0.9782409 0.9828061 0.9886974
+#> [2,] 0.9809347 0.9849434 0.9901098
+#> [3,] 0.9807419 0.9847905 0.9900088
+#> [4,] 0.9823092 0.9860330 0.9908290
 ```
 
 Fecundity varies by year, with options to set the intercept, year trend
@@ -70,9 +70,9 @@ fecundity <- bbs_fecundity(intercept = c(NA, logit(0.4)),
                            nyear = 3)
 fecundity
 #>      [,1]      [,2]
-#> [1,]    0 0.3958492
-#> [2,]    0 0.3938377
-#> [3,]    0 0.3015242
+#> [1,]    0 0.4123006
+#> [2,]    0 0.3509773
+#> [3,]    0 0.3199666
 ```
 
 ### Process matrices
@@ -80,8 +80,8 @@ fecundity
 Survival and fecundity rate arrays can be converted into process
 matrices for use in BAS population projection. In this example there are
 two stages representing recruit and adult.  
-We can set the male recruit stage to be NULL to indicate that there is
-only one recruit stage.
+`male_recruit_stage` is set to NULL to indicate that there is only one
+recruit stage.
 
 ``` r
 survival_mat <- bbs_matrix_survival_period(survival)
@@ -89,13 +89,13 @@ birth_mat <- bbs_matrix_birth_year(fecundity, female_recruit_stage = 1, male_rec
 # first period, first year
 survival_mat[,,1,1]
 #>           [,1]      [,2]
-#> [1,] 0.9465737 0.0000000
-#> [2,] 0.0000000 0.9832576
+#> [1,] 0.9464043 0.0000000
+#> [2,] 0.0000000 0.9782409
 
 # first year
 birth_mat[,,1]
 #>      [,1]      [,2]
-#> [1,]    1 0.1979246
+#> [1,]    1 0.2061503
 #> [2,]    0 1.0000000
 ```
 
@@ -132,15 +132,15 @@ regular (deterministic) matrix multiplication yields
 ``` r
 survival_mat1 %*% pop0
 #>          [,1]
-#> [1,] 23.66434
-#> [2,] 51.12940
+#> [1,] 23.66011
+#> [2,] 50.86853
 ```
 
 and stochastic matrix multiplication yields
 
 ``` r
 survival_mat1 %*b% pop0
-#> [1] 24 50
+#> [1] 24 52
 ```
 
 `bbs_population()` is used to project population forward in time from
@@ -153,8 +153,8 @@ population <- bbs_population(pop0,
                              survival = survival_mat)
 population
 #>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]
-#> [1,]   25   24   24   23   10    9    8    8   15    15    13    13    14
-#> [2,]   52   52   50   50   72   72   70   70   78    78    76    76    88
+#> [1,]   25   24   22   21   10    9    8    7   10    10    10     9     9
+#> [2,]   52   51   50   50   69   66   65   64   69    68    67    66    74
 ```
 
 ### Group allocation
@@ -175,19 +175,22 @@ stage in each group at each time period.
 groups <- bbs_population_groups(population, group_size_lambda = 20, group_size_theta = 0)
 groups[[1]]
 #> [[1]]
-#>  [1] 2 2 1 2 1 2 2 2 2 2 1 2 1 2 1 2 2
+#>  [1] 2 2 1 2 1 1 2 2 1 2 1 2 1 1
 #> 
 #> [[2]]
-#>  [1] 2 1 2 2 2 2 2 2 2 2 2 1 2 1 2 2 1 1 2
+#>  [1] 1 1 2 2 1 2 2 2 2 2 2 1 2 2 1 2 2
 #> 
 #> [[3]]
-#>  [1] 2 1 1 2 1 2 2 2 1 2 2 1 2
+#>  [1] 1 2 2 2 2 2 1 2 1 1 1 1 1 2 2 2 2
 #> 
 #> [[4]]
-#>  [1] 1 2 2 2 1 2 1 2 2 1 2 1 1 1 2 1 2 2
+#>  [1] 2 1 2 1 2 1 2 2 2 2 2 2 2 2 1 2
 #> 
 #> [[5]]
-#>  [1] 1 2 2 2 2 1 2 2 2 2
+#>  [1] 2 2 1 2 2 2 1 2 2 2
+#> 
+#> [[6]]
+#> [1] 2 2 2
 ```
 
 `bbs_population_groups_pairs()` behaves similarly but keeps calf-cow
@@ -203,10 +206,7 @@ groups observed). Groups are sampled randomly.
 groups <- bbs_population_groups_survey(population, group_size_lambda = 20, month_composition = 3L, group_coverage = 0.2)
 groups[[1]]
 #> [[1]]
-#> [1] 2 2 2 1 2
-#> 
-#> [[2]]
-#>  [1] 2 2 1 2 1 2 1 1 2 1 2 2 2 1 1
+#>  [1] 2 1 2 2 1 1 2 2 2 1 2 2 2 1 2
 ```
 
 ## Boreal Caribou simulation

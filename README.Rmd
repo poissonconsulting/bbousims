@@ -63,7 +63,7 @@ fecundity
 ### Process matrices
 Survival and fecundity rate arrays can be converted into process matrices for use in BAS population projection. 
 In this example there are two stages representing recruit and adult.  
-We can set the male recruit stage to be NULL to indicate that there is only one recruit stage. 
+`male_recruit_stage` is set to NULL to indicate that there is only one recruit stage. 
 
 ```{r}
 survival_mat <- bbs_matrix_survival_period(survival)
