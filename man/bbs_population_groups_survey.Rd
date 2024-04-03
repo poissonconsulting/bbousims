@@ -17,7 +17,7 @@ bbs_population_groups_survey(
 \arguments{
 \item{population}{A matrix of the population by stage and period (output of \code{\link[=bbs_population]{bbs_population()}} or \code{\link[=bbs_population_caribou]{bbs_population_caribou()}}).}
 
-\item{month_composition}{A whole number between 1 and 12 of the month that composition surveys take place, relative to the start of the caribou year.}
+\item{month_composition}{A whole number between 1 and 12 of the month that composition surveys take place, relative to the start of the biological year.}
 
 \item{group_size_lambda}{A number of the lambda value of the gamma-poisson distribution to draw group sizes from.}
 

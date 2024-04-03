@@ -37,7 +37,7 @@
 #' @param group_size_theta A number of the theta value of the gamma-poisson distribution to draw group sizes from. 
 #' @param group_max_proportion A number between 0 and 1 of the maximum group size as proportion of the total population. 
 #' @param group_min_size A whole positive number of the minimum group size.
-#' @param month_composition A whole number between 1 and 12 of the month that composition surveys take place, relative to the start of the caribou year.  
+#' @param month_composition A whole number between 1 and 12 of the month that composition surveys take place, relative to the start of the biological year.  
 #' @param group_coverage A number between 0 and 1 of the proportion of groups sampled. 
 #' @param recruit_stages A vector of whole numbers indicating the recruit stages (e.g., calf).
 #' @param reproductive_female_stages A vector of whole numbers indicating the reproductive female stages (e.g., cows).

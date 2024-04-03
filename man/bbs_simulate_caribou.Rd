@@ -75,7 +75,7 @@ bbs_simulate_caribou(
 
 \item{probability_unsexed_adult_male}{A number between 0 and 1 of the probability that an adult male is unsexed.}
 
-\item{month_composition}{A whole number between 1 and 12 of the month that composition surveys take place, relative to the start of the caribou year.}
+\item{month_composition}{A whole number between 1 and 12 of the month that composition surveys take place, relative to the start of the biological year.}
 
 \item{collared_adult_females}{A whole positive number of the number of collared adult females.
 The number of collared adult females is 'topped up' each year at \code{month_collar}.}

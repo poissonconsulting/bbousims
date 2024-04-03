@@ -75,7 +75,7 @@ The number of collared adult females is 'topped up' each year at \code{month_col
 
 \item{group_min_size}{A whole positive number of the minimum group size.}
 
-\item{month_composition}{A whole number between 1 and 12 of the month that composition surveys take place, relative to the start of the caribou year.}
+\item{month_composition}{A whole number between 1 and 12 of the month that composition surveys take place, relative to the start of the biological year.}
 
 \item{group_coverage}{A number between 0 and 1 of the proportion of groups sampled.}
 
