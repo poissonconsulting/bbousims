@@ -10,7 +10,11 @@ matrix_tbl <- function(x, values_to){
 
 abundance_tbl <- function(population, population_name = "A"){
   colnames(population) <- 1:ncol(population)
-  rownames(population) <- c("Female Calf", "Male Calf", "Female Yearling", "Male Yearling", "Female Adult", "Male Adult")
+  if(nrow(population) == 6){
+    rownames(population) <- c("Female Calf", "Male Calf", "Female Yearling", "Male Yearling", "Female Adult", "Male Adult")
+  } else{
+    rownames(population) <- as.character(1:nrow(population))
+  }
   population %>%
     as_tibble(rownames = "Stage") %>% 
     pivot_longer(-1, names_to = "Period", values_to = "Abundance") %>%

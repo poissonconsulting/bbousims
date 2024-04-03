@@ -22,14 +22,16 @@ bbs_plot_population.data.frame <- function(x, annual = TRUE, ...) {
     Abundance = c(0)
   ))
   
-  x <- 
-    x %>% mutate(Stage = factor(.data$Stage, levels = c("Female Adult", 
-                                 "Male Adult", 
-                                 "Female Yearling", 
-                                 "Male Yearling", 
-                                 "Female Calf", 
-                                 "Male Calf")))
- 
+  if(length(unique(x$Stage)) == 6){
+    x <- 
+      x %>% mutate(Stage = factor(.data$Stage, levels = c("Female Adult", 
+                                                          "Male Adult", 
+                                                          "Female Yearling", 
+                                                          "Male Yearling", 
+                                                          "Female Calf", 
+                                                          "Male Calf")))
+  }
+
   if (annual) {
     x <-
       x %>%
