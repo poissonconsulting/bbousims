@@ -37,7 +37,7 @@ bbs_survival_collared <- function(collared_adult_females,
     } else {
       starttotal <<- c(starttotal, update)
     }
-    tibble::tibble(Year = year, 
+    tibble(Year = year, 
                    Month = month,
                    PopulationName = population_name,
                    StartTotal = last,

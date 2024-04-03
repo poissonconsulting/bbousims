@@ -1,7 +1,7 @@
 test_that("can plot population data.frame", {
   set.seed(101)
   x <- bbs_simulate_caribou()
-  gp <- bbs_plot_population(x$abundance,)
+  gp <- bbs_plot_population(x$abundance)
   expect_s3_class(gp, "ggplot")
   expect_snapshot_plot(gp, "population_dataframe")
 })

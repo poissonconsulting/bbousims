@@ -11,11 +11,12 @@
 #'
 #' @inheritParams params
 #' @param population_name A string of the population name. This does not affect simulation but can be used as a unique identifier.
+#' @param group_size A whole number of the average group size. Group sizes are drawn from a poisson distribution with lambda of `group_size`. 
 #'
 #' @return A list of three tibbles.
 #' The first named survival has columns Year, Month, StartTotal, MortalitiesCertain and MortalitiesUncertain.
 #' The second named recruitment has columns Year, Month, Cows, Bulls, UnknownAdults, Yearlings and Calves.
-#' And the final named abundance has columns Year, Month, Sex, Stage, Abundance.
+#' And the final named abundance has columns Year, Month, Stage, Abundance.
 #' @export
 #'
 #' @examples

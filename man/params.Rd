@@ -8,6 +8,8 @@
 
 \item{x}{The object.}
 
+\item{population_name}{A string of the population name. This does not affect simulation but can be used as a unique identifier.}
+
 \item{survival_adult_female}{A number between 0 and 1 of the annual female adult survival.}
 
 \item{survival_calf_female}{A number between 0 and 1 of the annual female calf survival.}
@@ -47,17 +49,17 @@ The number of collared adult females is 'topped up' each year at \code{month_col
 
 \item{survival_trend_calf_female}{A number of the effect of an increase of one year on the log-odds calf female survival.}
 
-\item{survival_annual_sd_adult_females}{A number of the standard deviation of the annual variation in log-odds adult female survival.}
+\item{survival_annual_sd_adult_female}{A number of the standard deviation of the annual variation in log-odds adult female survival.}
 
-\item{survival_annual_sd_calf_females}{A number of the standard deviation of the annual variation in log-odds calf female survival.}
+\item{survival_annual_sd_calf_female}{A number of the standard deviation of the annual variation in log-odds calf female survival.}
 
-\item{survival_month_sd_adult_females}{A number of the standard deviation of the monthly variation in log-odds adult female survival.}
+\item{survival_month_sd_adult_female}{A number of the standard deviation of the monthly variation in log-odds adult female survival.}
 
-\item{survival_month_sd_calf_females}{A number of the standard deviation of the monthly variation in log-odds calf female survival.}
+\item{survival_month_sd_calf_female}{A number of the standard deviation of the monthly variation in log-odds calf female survival.}
 
-\item{survival_annual_month_sd_adult_females}{A number of the standard deviation of the month within annual variation in log-odds adult female survival.}
+\item{survival_annual_month_sd_adult_female}{A number of the standard deviation of the month within annual variation in log-odds adult female survival.}
 
-\item{survival_annual_month_sd_calf_females}{A number of the standard deviation of the month within annual variation in log-odds calf female survival.}
+\item{survival_annual_month_sd_calf_female}{A number of the standard deviation of the month within annual variation in log-odds calf female survival.}
 
 \item{calves_per_adult_female_trend}{A number of the effect of an increase of one year on the log-odds calves per adult female.}
 
@@ -72,6 +74,10 @@ The number of collared adult females is 'topped up' each year at \code{month_col
 \item{group_max_proportion}{A number between 0 and 1 of the maximum group size as proportion of the total population.}
 
 \item{group_min_size}{A whole positive number of the minimum group size.}
+
+\item{month_composition}{A whole number between 1 and 12 of the month that composition surveys take place, relative to the start of the caribou year.}
+
+\item{group_coverage}{A number between 0 and 1 of the proportion of groups sampled.}
 
 \item{recruit_stages}{A vector of whole numbers indicating the recruit stages (e.g., calf).}
 

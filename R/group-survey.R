@@ -4,8 +4,6 @@
 #' Groups are sampled in each composition survey in proportion to `group_coverage`. 
 #' 
 #' @inheritParams params
-#' @param month_composition A whole number between 1 and 12 of the month that composition surveys take place, relative to the start of the caribou year.  
-#' @param group_coverage A number between 0 and 1 of the proportion of groups sampled. 
 #' 
 #' @export
 #' @return A list of observed groups in each composition survey.

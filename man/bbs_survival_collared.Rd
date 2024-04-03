@@ -6,23 +6,26 @@
 \usage{
 bbs_survival_collared(
   collared_adult_females,
-  month_collar,
   survival_adult_female_month_year,
-  probability_uncertain_mortality,
-  probability_uncertain_survival
+  probability_uncertain_mortality = 0,
+  probability_uncertain_survival = 0,
+  month_collar = 3L,
+  population_name = "A"
 )
 }
 \arguments{
 \item{collared_adult_females}{A whole positive number of the number of collared adult females.
 The number of collared adult females is 'topped up' each year at \code{month_collar}.}
 
-\item{month_collar}{A whole number between 1 and 12 of the collaring month.}
-
 \item{survival_adult_female_month_year}{A matrix of the female adult survival rates with dimensions month and year.}
 
 \item{probability_uncertain_mortality}{A number between 0 and 1 of the probability of uncertain mortality.}
 
 \item{probability_uncertain_survival}{A number between 0 and 1 of the probability of uncertain survival.}
+
+\item{month_collar}{A whole number between 1 and 12 of the collaring month.}
+
+\item{population_name}{A string of the population name. This does not affect simulation but can be used as a unique identifier.}
 }
 \value{
 A data.frame of the number of collared adult females, certain mortalities and uncertain mortalities in each year and month.

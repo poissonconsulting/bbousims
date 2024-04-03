@@ -6,7 +6,7 @@
 \usage{
 bbs_survival_caribou(
   survival_adult_female,
-  survival_calf_female,
+  survival_calf_female = 0.5,
   nyear = 10,
   trend_adult_female = 0,
   annual_sd_adult_female = 0,

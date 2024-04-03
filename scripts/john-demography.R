@@ -12,13 +12,13 @@ library(popbio)
 #sex ratio at birth and yearlings
 sexratio<-0.5
 #adult female survival
-Saf<-0.95
+Saf<-0.85
 #yearling survival
-Sy<-0.95
+Sy<-0.85
 #calf survival
 Sc<-0.5
 #fecundity 
-Fa<-0.9
+Fa<-0.22
 #product that estimates female calves produced  
 SRSafFa<-sexratio*Saf*Fa
 

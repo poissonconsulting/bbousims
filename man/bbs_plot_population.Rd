@@ -34,7 +34,7 @@ Plots population abundance by period and stage.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{bbs_plot_population(data.frame)}: Plot population abundance by period and stage for a data frame (output of \link{bbs_simulate_caribou()$abundance}).
+\item \code{bbs_plot_population(data.frame)}: Plot population abundance by period and stage for a data frame (abundance data.frame in output \code{\link[=bbs_simulate_caribou]{bbs_simulate_caribou()}}).
 
 \item \code{bbs_plot_population(matrix)}: Plot population abundance by period and stage for a matrix (output of \code{\link[=bbs_population_caribou]{bbs_population_caribou()}}).
 

@@ -1,22 +1,24 @@
 matrix_tbl <- function(x, values_to){
+  colnames(x) <- 1:ncol(x)
   x %>%
-    dplyr::as_tibble(rownames = "month", .name_repair = NULL) %>%
-    tidyr::pivot_longer(dplyr::contains("V"), names_to = "year", values_to = values_to) %>%
-    dplyr::mutate(year = as.integer(gsub("V", "", year))) %>%
-    dplyr::select(year, month, dplyr::everything())
+    as_tibble(rownames = "month") %>%
+    pivot_longer(-1, names_to = "year", values_to = values_to) %>%
+    mutate(year = as.integer(.data$year),
+                  month = as.integer(.data$month)) %>%
+    select("year", "month", everything())
 }
 
 abundance_tbl <- function(population, population_name = "A"){
+  colnames(population) <- 1:ncol(population)
+  rownames(population) <- c("Female Calf", "Male Calf", "Female Yearling", "Male Yearling", "Female Adult", "Male Adult")
   population %>%
-    dplyr::as_tibble(.name_repair = NULL) %>%
-    dplyr::mutate(Stage = c("Female Calf", "Male Calf", "Female Yearling", "Male Yearling", "Female Adult", "Male Adult"),
-                  Sex = rep(c("Female", "Male"), 3)) %>%
-    tidyr::pivot_longer(dplyr::contains("V"), names_to = "Period", values_to = "Abundance") %>%
-    dplyr::mutate(Period = as.integer(gsub("V", "", Period)),
-                  Year = period_to_year(Period),
-                  Month = period_to_month(Period),
+    as_tibble(rownames = "Stage") %>% 
+    pivot_longer(-1, names_to = "Period", values_to = "Abundance") %>%
+    mutate(Period = as.integer(.data$Period),
+                  Year = period_to_year(.data$Period),
+                  Month = period_to_month(.data$Period),
                   PopulationName = population_name) %>%
-    dplyr::select(Year, Month, PopulationName, Sex, Stage, Abundance)
+    select("Year", "Month", "PopulationName", "Stage", "Abundance")
 }
 
 recruitment_tbl <- function(groups,
@@ -38,7 +40,7 @@ recruitment_tbl <- function(groups,
       males_known <- males - males_unknown
       adults_unknown <- males_unknown + females_unknown
 
-      dplyr::tibble(Year = x,
+      tibble(Year = x,
                     Month = month_composition,
                     PopulationName = population_name,
                     Day = 1,

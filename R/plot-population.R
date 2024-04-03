@@ -8,7 +8,7 @@ bbs_plot_population <- function(x, ...) {
   UseMethod("bbs_plot_population")
 }
 
-#' @describeIn bbs_plot_population Plot population abundance by period and stage for a data frame (output of [bbs_simulate_caribou()$abundance]).
+#' @describeIn bbs_plot_population Plot population abundance by period and stage for a data frame (abundance data.frame in output [bbs_simulate_caribou()]).
 #' @inheritParams params
 #' @param annual A flag indicating whether to show annual population (as opposed to monthly).
 #' @return A ggplot object.
@@ -21,17 +21,26 @@ bbs_plot_population.data.frame <- function(x, annual = TRUE, ...) {
     Year = c(0),
     Abundance = c(0)
   ))
+  
+  x <- 
+    x %>% mutate(Stage = factor(.data$Stage, levels = c("Female Adult", 
+                                 "Male Adult", 
+                                 "Female Yearling", 
+                                 "Male Yearling", 
+                                 "Female Calf", 
+                                 "Male Calf")))
  
   if (annual) {
     x <-
       x %>%
-      dplyr::arrange(Month) %>%
-      dplyr::group_by(Year, Stage) %>%
-      dplyr::slice(1) %>%
-      dplyr::ungroup()
+      arrange(.data$Month) %>%
+      group_by(.data$Year, .data$Stage) %>%
+      slice(1) %>%
+      ungroup()
   }
-  ggplot2::ggplot(data = x) +
-    ggplot2::geom_line(ggplot2::aes(x = Year, y = Abundance, color = Stage)) 
+  ggplot(data = x) +
+    geom_line(aes(x = .data$Year, y = .data$Abundance, color = .data$Stage)) +
+    scale_color_manual(values = c("#000000", "#3063A3", "#E8613C", "#F7B500", "#821C65", "#63BB42"))
 }
 
 #' @describeIn bbs_plot_population Plot population abundance by period and stage for a matrix (output of [bbs_population_caribou()]).

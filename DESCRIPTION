@@ -20,10 +20,11 @@ Imports:
     dplyr,
     extras,
     ggplot2,
-    poispalette,
+    magrittr,
     popbio,
     purrr,
-    sims
+    sims,
+    tidyr
 Suggests: 
     covr,
     knitr,

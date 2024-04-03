@@ -44,6 +44,18 @@ bbs_population_caribou(
 
 \item{survival_trend_calf_female}{A number of the effect of an increase of one year on the log-odds calf female survival.}
 
+\item{survival_annual_sd_adult_female}{A number of the standard deviation of the annual variation in log-odds adult female survival.}
+
+\item{survival_annual_sd_calf_female}{A number of the standard deviation of the annual variation in log-odds calf female survival.}
+
+\item{survival_month_sd_adult_female}{A number of the standard deviation of the monthly variation in log-odds adult female survival.}
+
+\item{survival_month_sd_calf_female}{A number of the standard deviation of the monthly variation in log-odds calf female survival.}
+
+\item{survival_annual_month_sd_adult_female}{A number of the standard deviation of the month within annual variation in log-odds adult female survival.}
+
+\item{survival_annual_month_sd_calf_female}{A number of the standard deviation of the month within annual variation in log-odds calf female survival.}
+
 \item{calves_per_adult_female_trend}{A number of the effect of an increase of one year on the log-odds calves per adult female.}
 
 \item{calves_per_adult_female_annual_sd}{A number of the standard deviation of the annual variation on the log-odds calves per adult female.}

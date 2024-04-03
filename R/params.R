@@ -2,6 +2,7 @@
 #'
 #' @param ... Unused parameters.
 #' @param x The object.
+#' @param population_name A string of the population name. This does not affect simulation but can be used as a unique identifier.
 #' @param survival_adult_female A number between 0 and 1 of the annual female adult survival. 
 #' @param survival_calf_female A number between 0 and 1 of the annual female calf survival. 
 #' @param calves_per_adult_female A number of the calves per adult female. 
@@ -23,12 +24,12 @@
 #' @param proportion_yearling_female A number between 0 and 1 of the proportion of yearlings that are female.
 #' @param survival_trend_adult_female A number of the effect of an increase of one year on the log-odds adult female survival. 
 #' @param survival_trend_calf_female A number of the effect of an increase of one year on the log-odds calf female survival. 
-#' @param survival_annual_sd_adult_females A number of the standard deviation of the annual variation in log-odds adult female survival. 
-#' @param survival_annual_sd_calf_females A number of the standard deviation of the annual variation in log-odds calf female survival. 
-#' @param survival_month_sd_adult_females A number of the standard deviation of the monthly variation in log-odds adult female survival. 
-#' @param survival_month_sd_calf_females A number of the standard deviation of the monthly variation in log-odds calf female survival. 
-#' @param survival_annual_month_sd_adult_females A number of the standard deviation of the month within annual variation in log-odds adult female survival. 
-#' @param survival_annual_month_sd_calf_females A number of the standard deviation of the month within annual variation in log-odds calf female survival. 
+#' @param survival_annual_sd_adult_female A number of the standard deviation of the annual variation in log-odds adult female survival. 
+#' @param survival_annual_sd_calf_female A number of the standard deviation of the annual variation in log-odds calf female survival. 
+#' @param survival_month_sd_adult_female A number of the standard deviation of the monthly variation in log-odds adult female survival. 
+#' @param survival_month_sd_calf_female A number of the standard deviation of the monthly variation in log-odds calf female survival. 
+#' @param survival_annual_month_sd_adult_female A number of the standard deviation of the month within annual variation in log-odds adult female survival. 
+#' @param survival_annual_month_sd_calf_female A number of the standard deviation of the month within annual variation in log-odds calf female survival. 
 #' @param calves_per_adult_female_trend A number of the effect of an increase of one year on the log-odds calves per adult female. 
 #' @param calves_per_adult_female_annual_sd A number of the standard deviation of the annual variation on the log-odds calves per adult female.
 #' @param population A matrix of the population by stage and period (output of [bbs_population()] or [bbs_population_caribou()]).
@@ -36,6 +37,8 @@
 #' @param group_size_theta A number of the theta value of the gamma-poisson distribution to draw group sizes from. 
 #' @param group_max_proportion A number between 0 and 1 of the maximum group size as proportion of the total population. 
 #' @param group_min_size A whole positive number of the minimum group size.
+#' @param month_composition A whole number between 1 and 12 of the month that composition surveys take place, relative to the start of the caribou year.  
+#' @param group_coverage A number between 0 and 1 of the proportion of groups sampled. 
 #' @param recruit_stages A vector of whole numbers indicating the recruit stages (e.g., calf).
 #' @param reproductive_female_stages A vector of whole numbers indicating the reproductive female stages (e.g., cows).
 #'

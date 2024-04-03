@@ -6,7 +6,7 @@
 #' @export
 #'
 #' @examples
-#' matrix_age(c(2, 3, 3)) %*% c(80, 50, 150)
+#' bbs_matrix_age(c(2, 3, 3)) %*% c(80, 50, 150)
 bbs_matrix_age <- function(age = c(2, 3, 3)){
   chk_whole_numeric(age)
   chk_range(age, range(0, length(age)))
