@@ -24,6 +24,8 @@ bbs_plot_population(x, ...)
 \item{...}{Unused parameters.}
 
 \item{annual}{A flag indicating whether to show annual population (as opposed to monthly).}
+
+\item{nperiod_within_year}{A whole number of the number of periods in a year.}
 }
 \value{
 A ggplot object.
