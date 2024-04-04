@@ -45,18 +45,18 @@ survival
 #> , , 1
 #> 
 #>           [,1]      [,2]      [,3]
-#> [1,] 0.9464043 0.9435460 0.9468495
-#> [2,] 0.9318042 0.9282264 0.9323620
-#> [3,] 0.9379070 0.9346269 0.9384182
-#> [4,] 0.9385573 0.9353091 0.9390634
+#> [1,] 0.9441423 0.9431978 0.9433089
+#> [2,] 0.9466733 0.9457691 0.9458755
+#> [3,] 0.9322544 0.9311236 0.9312566
+#> [4,] 0.9372642 0.9362112 0.9363351
 #> 
 #> , , 2
 #> 
 #>           [,1]      [,2]      [,3]
-#> [1,] 0.9782409 0.9828061 0.9886974
-#> [2,] 0.9809347 0.9849434 0.9901098
-#> [3,] 0.9807419 0.9847905 0.9900088
-#> [4,] 0.9823092 0.9860330 0.9908290
+#> [1,] 0.9811625 0.9854809 0.9884475
+#> [2,] 0.9807285 0.9851448 0.9881793
+#> [3,] 0.9790397 0.9838367 0.9871349
+#> [4,] 0.9826969 0.9866683 0.9893949
 ```
 
 Fecundity varies by year, with options to set the intercept, year trend
@@ -70,9 +70,9 @@ fecundity <- bbs_fecundity(intercept = c(NA, logit(0.4)),
                            nyear = 3)
 fecundity
 #>      [,1]      [,2]
-#> [1,]    0 0.4123006
-#> [2,]    0 0.3509773
-#> [3,]    0 0.3199666
+#> [1,]    0 0.4395099
+#> [2,]    0 0.3243536
+#> [3,]    0 0.2637759
 ```
 
 ### Process matrices
@@ -89,14 +89,14 @@ birth_mat <- bbs_matrix_birth_year(fecundity, female_recruit_stage = 1, male_rec
 # first period, first year
 survival_mat[,,1,1]
 #>           [,1]      [,2]
-#> [1,] 0.9464043 0.0000000
-#> [2,] 0.0000000 0.9782409
+#> [1,] 0.9441423 0.0000000
+#> [2,] 0.0000000 0.9811625
 
 # first year
 birth_mat[,,1]
-#>      [,1]      [,2]
-#> [1,]    1 0.2061503
-#> [2,]    0 1.0000000
+#>      [,1]     [,2]
+#> [1,]    1 0.219755
+#> [2,]    0 1.000000
 ```
 
 `bbs_matrix_age()` is used to generate an age process matrix, which does
@@ -132,15 +132,15 @@ regular (deterministic) matrix multiplication yields
 ``` r
 survival_mat1 %*% pop0
 #>          [,1]
-#> [1,] 23.66011
-#> [2,] 50.86853
+#> [1,] 23.60356
+#> [2,] 51.02045
 ```
 
 and stochastic matrix multiplication yields
 
 ``` r
 survival_mat1 %*b% pop0
-#> [1] 24 52
+#> [1] 25 49
 ```
 
 `bbs_population()` is used to project population forward in time from
@@ -153,8 +153,8 @@ population <- bbs_population(pop0,
                              survival = survival_mat)
 population
 #>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]
-#> [1,]   25   24   22   21   10    9    8    7   10    10    10     9     9
-#> [2,]   52   51   50   50   69   66   65   64   69    68    67    66    74
+#> [1,]   25   23   21   18   13   13   13   12   15    14    13    13    15
+#> [2,]   52   52   51   51   67   65   63   62   74    74    74    73    83
 ```
 
 ### Group allocation
@@ -175,22 +175,19 @@ stage in each group at each time period.
 groups <- bbs_population_groups(population, group_size_lambda = 20, group_size_theta = 0)
 groups[[1]]
 #> [[1]]
-#>  [1] 2 2 1 2 1 1 2 2 1 2 1 2 1 1
+#>  [1] 1 2 2 2 2 2 2 2 2 2 2 1 2 1
 #> 
 #> [[2]]
-#>  [1] 1 1 2 2 1 2 2 2 2 2 2 1 2 2 1 2 2
+#>  [1] 1 2 1 2 2 2 1 1 2 2 2 2 2 1 1 1
 #> 
 #> [[3]]
-#>  [1] 1 2 2 2 2 2 1 2 1 1 1 1 1 2 2 2 2
+#>  [1] 2 1 2 2 2 1 2 2 1 2 2 2 1 2 2 2
 #> 
 #> [[4]]
-#>  [1] 2 1 2 1 2 1 2 2 2 2 2 2 2 2 1 2
+#>  [1] 2 1 2 1 2 2 2 1 2 2 1 2 2 2 2 1
 #> 
 #> [[5]]
-#>  [1] 2 2 1 2 2 2 1 2 2 2
-#> 
-#> [[6]]
-#> [1] 2 2 2
+#>  [1] 1 1 2 2 1 2 2 2 2 1 2 2 1 1 2
 ```
 
 `bbs_population_groups_pairs()` behaves similarly but keeps calf-cow
@@ -206,7 +203,10 @@ groups observed). Groups are sampled randomly.
 groups <- bbs_population_groups_survey(population, group_size_lambda = 20, month_composition = 3L, group_coverage = 0.2)
 groups[[1]]
 #> [[1]]
-#>  [1] 2 1 2 2 1 1 2 2 2 1 2 2 2 1 2
+#> [1] 1 2 2 2
+#> 
+#> [[2]]
+#> [1] 2 2 2
 ```
 
 ## Boreal Caribou simulation
