@@ -19,7 +19,7 @@ test_that("can plot population matrix", {
   x <- bbs_population_caribou()
   gp <- bbs_plot_population(x)
   expect_s3_class(gp, "ggplot")
-  expect_snapshot_plot(gp, "population_matrix")
+  expect_snapshot_plot(gp, "population_caribou")
 })
 
 test_that("can plot population matrix 2 stages and 4 periods", {
@@ -53,7 +53,7 @@ test_that("can plot population matrix 2 stages and 4 periods", {
                       survival = survival_mat)
   gp <- bbs_plot_population(x, nperiod_within_year = 4)
   expect_s3_class(gp, "ggplot")
-  expect_snapshot_plot(gp, "population_matrix_stage")
+  expect_snapshot_plot(gp, "population_stage")
 })
 
 test_that("can plot population list", {
@@ -61,5 +61,5 @@ test_that("can plot population list", {
   x <- bbs_simulate_caribou()
   gp <- bbs_plot_population(x)
   expect_s3_class(gp, "ggplot")
-  expect_snapshot_plot(gp, "population_list")
+  expect_snapshot_plot(gp, "population_simulation")
 })

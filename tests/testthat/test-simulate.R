@@ -1,5 +1,6 @@
 test_that("bbs_simulate_caribou works", {
   x <- bbs_simulate_caribou(nyear = 10)
+  expect_s3_class(x, "bbou_simulation")
   expect_true(is.list(x))
   expect_identical(names(x), c("survival", "recruitment", "abundance"))
   expect_true(all(unlist(lapply(x, is.data.frame))))
