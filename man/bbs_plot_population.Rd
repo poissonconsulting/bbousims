@@ -3,17 +3,20 @@
 \name{bbs_plot_population}
 \alias{bbs_plot_population}
 \alias{bbs_plot_population.data.frame}
-\alias{bbs_plot_population.matrix}
-\alias{bbs_plot_population.list}
+\alias{bbs_plot_population.bbou_population}
+\alias{bbs_plot_population.bbou_simulation}
+\alias{bbs_plot_population.bbou_population_caribou}
 \title{Plot Population}
 \usage{
 bbs_plot_population(x, ...)
 
 \method{bbs_plot_population}{data.frame}(x, annual = TRUE, ...)
 
-\method{bbs_plot_population}{matrix}(x, annual = TRUE, ...)
+\method{bbs_plot_population}{bbou_population}(x, annual = TRUE, nperiod_within_year, ...)
 
-\method{bbs_plot_population}{list}(x, annual = TRUE, ...)
+\method{bbs_plot_population}{bbou_simulation}(x, annual = TRUE, ...)
+
+\method{bbs_plot_population}{bbou_population_caribou}(x, annual = TRUE, ...)
 }
 \arguments{
 \item{x}{The object.}
@@ -28,6 +31,8 @@ A ggplot object.
 A ggplot object.
 
 A ggplot object.
+
+A ggplot object.
 }
 \description{
 Plots population abundance by period and stage.
@@ -36,8 +41,10 @@ Plots population abundance by period and stage.
 \itemize{
 \item \code{bbs_plot_population(data.frame)}: Plot population abundance by period and stage for a data frame (abundance data.frame in output \code{\link[=bbs_simulate_caribou]{bbs_simulate_caribou()}}).
 
-\item \code{bbs_plot_population(matrix)}: Plot population abundance by period and stage for a matrix (output of \code{\link[=bbs_population_caribou]{bbs_population_caribou()}}).
+\item \code{bbs_plot_population(bbou_population)}: Plot population abundance by period and stage for a matrix (output of \code{\link[=bbs_population_caribou]{bbs_population_caribou()}}).
 
-\item \code{bbs_plot_population(list)}: Plot population abundance by period and stage for a matrix (output of \code{\link[=bbs_simulate_caribou]{bbs_simulate_caribou()}}).
+\item \code{bbs_plot_population(bbou_simulation)}: Plot population abundance by period and stage for a matrix (output of \code{\link[=bbs_simulate_caribou]{bbs_simulate_caribou()}}).
+
+\item \code{bbs_plot_population(bbou_population_caribou)}: Plot population abundance by period and stage for a matrix (output of \code{\link[=bbs_simulate_caribou]{bbs_simulate_caribou()}}).
 
 }}

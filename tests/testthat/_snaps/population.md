@@ -15,6 +15,8 @@
            [,39] [,40] [,41]
       [1,]    17    15     9
       [2,]   284   284   299
+      attr(,"class")
+      [1] "matrix"          "array"           "bbou_population"
 
 # bb_simulate_population deterministic works
 
@@ -808,4 +810,7 @@
       [48,]    0    0 0.72
       [49,]    0    0 0.72
       [50,]    0    0 0.72
+      attr(,"class")
+      [1] "matrix"                  "array"                  
+      [3] "bbou_population_caribou"
 

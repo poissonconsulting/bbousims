@@ -45,7 +45,7 @@ test_that("bb_simulate_population deterministic works", {
   
   expect_s3_class(population, "bbou_population_caribou")
   ats <- attributes(population)
-  expect_identical(names(ats), c("dim", "survival", "fecundity"))
+  expect_identical(names(ats), c("dim", "survival", "fecundity", "class"))
   expect_true(is.matrix(population))
   chk_whole_numeric(population)
   expect_snapshot(population)
