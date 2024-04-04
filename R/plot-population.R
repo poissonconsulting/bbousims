@@ -21,17 +21,23 @@ bbs_plot_population.data.frame <- function(x, annual = TRUE, ...) {
     Year = c(0),
     Abundance = c(0)
   ))
-
+  
   if (annual) {
     x <-
       x %>%
       group_by(.data$Year, .data$Stage) %>%
       slice(1) %>%
-      ungroup()
+      ungroup() 
+    
+    gp <- ggplot(data = x) +
+      geom_line(aes(x = .data$Year, y = .data$Abundance, color = .data$Stage))
+  } else {
+    gp <- ggplot(data = x) +
+      geom_line(aes(x = .data$Period, y = .data$Abundance, color = .data$Stage))
   }
-  ggplot(data = x) +
-    geom_line(aes(x = .data$Year, y = .data$Abundance, color = .data$Stage)) +
-    scale_color_manual(values = c("#000000", "#3063A3", "#E8613C", "#F7B500", "#821C65", "#63BB42"))
+  gp + scale_color_manual(values = c("#000000", "#3063A3", "#E8613C", "#F7B500", "#821C65", "#63BB42"))
+  
+  
 }
 
 #' @describeIn bbs_plot_population Plot population abundance by period and stage for a matrix (output of [bbs_population_caribou()]).

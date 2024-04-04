@@ -22,11 +22,12 @@ empty_matrix <- function(n, value = 0){
 
 population_tbl <- function(x, nperiod_within_year = 12){
   colnames(x) <- 1:ncol(x)
+  nstep <- ncol(x) + 1
   x %>%
     as.data.frame() %>%
     mutate(Stage = factor(1:nrow(x))) %>%
-    pivot_longer(-ncol(.), names_to = "Period", values_to = "Abundance") %>%
-    mutate(Period = as.integer(Period), 
+    pivot_longer(-all_of(nstep), names_to = "Period", values_to = "Abundance") %>%
+    mutate(Period = as.integer(Period) - 1, 
            Year = period_to_year(.data$Period, nperiod_within_year = nperiod_within_year))
 }
 
