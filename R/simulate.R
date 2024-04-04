@@ -99,7 +99,8 @@ bbs_simulate_caribou <- function(
   x <- list(survival = survival,
        recruitment = recruitment,
        abundance = abundance)
-  class(x) <- c(class(x), "bbou_simulation")
+  
+  x <- class_bbou_simulation(x)
   x
 }
 

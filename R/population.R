@@ -87,10 +87,7 @@ bbs_population <- function(population_init,
       }
     }
   }
-  bbou_population <- function(x) structure(x, class = c("matrix", "array", "bbou_population"))
-  abundance <- bbou_population(abundance)
-  
-  # class(abundance) <- c(class(abundance), "bbou_population")
+  abundance <- class_bbou_population(abundance)
   abundance
 }
 
@@ -211,6 +208,6 @@ bbs_population_caribou <- function(adult_females = 1000,
   
   attr(x, "survival") <- phi
   attr(x, "fecundity") <- fec
-  class(x) <- c(class(x), "bbou_population_caribou")
+  x <- class_bbou_population_caribou(x) 
   x
 }
