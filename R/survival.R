@@ -87,7 +87,6 @@ bbs_survival_caribou <- function(survival_adult_female,
 #' @param annual_sd A vector of the standard deviation of the annual variation of the log-odds survival by stage.
 #' @param period_sd A vector of the standard deviation of the period variation of the log-odds survival by stage.
 #' @param annual_period_sd A vector of the standard deviation of the period within annual variation on the log-odds survival by stage.
-#' @param nperiod_within_year A whole number of the number of periods in a year. 
 #'
 #' @return An array of survival rates with dimensions period, year, stage.
 #' @export
