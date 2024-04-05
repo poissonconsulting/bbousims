@@ -34,7 +34,7 @@ devtools::install_github("poissonconsulting/bbousims")
 
 
 
-## General simulation of populations from BAS model
+## General tools for simulating populations from survival, ageing and birth
 
 ### Survival and fecundity rates
 
