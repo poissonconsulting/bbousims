@@ -45,18 +45,18 @@ survival
 #> , , 1
 #> 
 #>           [,1]      [,2]      [,3]
-#> [1,] 0.9441423 0.9431978 0.9433089
-#> [2,] 0.9466733 0.9457691 0.9458755
-#> [3,] 0.9322544 0.9311236 0.9312566
-#> [4,] 0.9372642 0.9362112 0.9363351
+#> [1,] 0.9446680 0.9375849 0.9402208
+#> [2,] 0.9423232 0.9349605 0.9376999
+#> [3,] 0.9420882 0.9346976 0.9374473
+#> [4,] 0.9484292 0.9417978 0.9442664
 #> 
 #> , , 2
 #> 
 #>           [,1]      [,2]      [,3]
-#> [1,] 0.9811625 0.9854809 0.9884475
-#> [2,] 0.9807285 0.9851448 0.9881793
-#> [3,] 0.9790397 0.9838367 0.9871349
-#> [4,] 0.9826969 0.9866683 0.9893949
+#> [1,] 0.9767800 0.9818617 0.9857406
+#> [2,] 0.9805528 0.9848217 0.9880753
+#> [3,] 0.9840866 0.9875896 0.9902557
+#> [4,] 0.9805426 0.9848137 0.9880690
 ```
 
 Fecundity varies by year, with options to set the intercept, year trend
@@ -70,9 +70,9 @@ fecundity <- bbs_fecundity(intercept = c(NA, logit(0.4)),
                            nyear = 3)
 fecundity
 #>      [,1]      [,2]
-#> [1,]    0 0.4395099
-#> [2,]    0 0.3243536
-#> [3,]    0 0.2637759
+#> [1,]    0 0.3906827
+#> [2,]    0 0.2981297
+#> [3,]    0 0.2997099
 ```
 
 ### Process matrices
@@ -88,15 +88,15 @@ survival_mat <- bbs_matrix_survival_period(survival)
 birth_mat <- bbs_matrix_birth_year(fecundity, female_recruit_stage = 1, male_recruit_stage = NULL)
 # first period, first year
 survival_mat[,,1,1]
-#>           [,1]      [,2]
-#> [1,] 0.9441423 0.0000000
-#> [2,] 0.0000000 0.9811625
+#>          [,1]    [,2]
+#> [1,] 0.944668 0.00000
+#> [2,] 0.000000 0.97678
 
 # first year
 birth_mat[,,1]
-#>      [,1]     [,2]
-#> [1,]    1 0.219755
-#> [2,]    0 1.000000
+#>      [,1]      [,2]
+#> [1,]    1 0.1953413
+#> [2,]    0 1.0000000
 ```
 
 `bbs_matrix_age()` is used to generate an age process matrix, which does
@@ -132,15 +132,15 @@ regular (deterministic) matrix multiplication yields
 ``` r
 survival_mat1 %*% pop0
 #>          [,1]
-#> [1,] 23.60356
-#> [2,] 51.02045
+#> [1,] 23.61670
+#> [2,] 50.79256
 ```
 
 and stochastic matrix multiplication yields
 
 ``` r
 survival_mat1 %*b% pop0
-#> [1] 25 49
+#> [1] 24 49
 ```
 
 `bbs_population()` is used to project population forward in time from
@@ -153,8 +153,8 @@ population <- bbs_population(pop0,
                              survival = survival_mat)
 population
 #>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]
-#> [1,]   25   23   21   18   13   13   13   12   15    14    13    13    15
-#> [2,]   52   52   51   51   67   65   63   62   74    74    74    73    83
+#> [1,]   25   23   22   19   14   13   13   13    7     6     6     5     7
+#> [2,]   52   50   48   47   63   62   60   60   70    69    68    67    72
 ```
 
 ### Group allocation
@@ -162,32 +162,35 @@ population
 `bbs_population_groups()` is used to randomly allocate individuals at
 each time step into groups. Group sizes are randomly drawn from a
 gamma-poisson distribution with user-specified `lambda` and `theta`
-values. Minimum and maximum (i.e., as a maximum proportion of the total
-population) groups sizes can be set. Group sizes are drawn until the
-cumulative size exceeds the total individuals. The remaining individuals
-comprise the final group. If the remaining number of individuals is \<
-min_size specified, these will be added to the previous group.
+(dispersion parameter) values. Minimum and maximum (i.e., as a maximum
+proportion of the total population) groups sizes can be set. Group sizes
+are drawn until the cumulative size exceeds the total individuals. The
+remaining individuals comprise the final group. If the remaining number
+of individuals is \< minimum group size specified by the user, these
+will be added to the previous group.
 
-The output is a list of lists containing the individuals identified by
-stage in each group at each time period.
+The output is a list of lists containing the individuals (identified by
+stage) in each group at each time period.
 
 ``` r
 groups <- bbs_population_groups(population, group_size_lambda = 20, group_size_theta = 0)
+
+# first time period
 groups[[1]]
 #> [[1]]
-#>  [1] 1 2 2 2 2 2 2 2 2 2 2 1 2 1
+#>  [1] 2 1 2 2 2 2 2 2 1 1 1 2 1 2 2 2 2 2 1
 #> 
 #> [[2]]
-#>  [1] 1 2 1 2 2 2 1 1 2 2 2 2 2 1 1 1
+#>  [1] 1 2 2 2 2 2 1 1 2 2 2 2 1 2 2 1
 #> 
 #> [[3]]
-#>  [1] 2 1 2 2 2 1 2 2 1 2 2 2 1 2 2 2
+#>  [1] 2 1 2 2 1 1 2 2 2 1
 #> 
 #> [[4]]
-#>  [1] 2 1 2 1 2 2 2 1 2 2 1 2 2 2 2 1
+#>  [1] 1 1 1 2 2 2 2 2 2 2 2 1 2 2 2 2
 #> 
 #> [[5]]
-#>  [1] 1 1 2 2 1 2 2 2 2 1 2 2 1 1 2
+#>  [1] 2 1 2 2 2 2 1 2 2 1 2 1 1 2 2 1
 ```
 
 `bbs_population_groups_pairs()` behaves similarly but keeps calf-cow
@@ -201,12 +204,14 @@ groups observed). Groups are sampled randomly.
 
 ``` r
 groups <- bbs_population_groups_survey(population, group_size_lambda = 20, month_composition = 3L, group_coverage = 0.2)
+
+# sampled groups in first time period
 groups[[1]]
 #> [[1]]
-#> [1] 1 2 2 2
+#> [1] 2 2 2
 #> 
 #> [[2]]
-#> [1] 2 2 2
+#> [1] 2 2 2 2 1 2
 ```
 
 ## Boreal Caribou simulation
@@ -237,7 +242,7 @@ survival (`yearling_effect`). Intercept, trend and annual random effect
 standard deviation can also be set for the calves per adult female
 (`calves_per_adut_female`).
 
-In all cases, the intercept (i.e. `survival_adult_female`,
+In all cases, the intercept (i.e., `survival_adult_female`,
 `survival_calf_female` `calves_per_adult_female`) is the annual rate and
 trend/standard deviations are on the log-odds scale. Year is scaled to
 (Year - 1) so that the intercept represents the rate in the first year.
@@ -251,10 +256,10 @@ population <- bbs_population_caribou(nyear = 50,
 bbs_plot_population(population)
 ```
 
-<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
-Adding a negative trend and high standard deviation of the annual random
-effect in the adult female survival will cause higher variation and
-downward projection of population.
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" /> As
+an example, adding a negative trend and high standard deviation of the
+annual random effect in the adult female survival will cause higher
+variation and downward projection of population.
 
 ``` r
 set.seed(1)
@@ -275,8 +280,8 @@ bbs_plot_population(population)
 `bbs_population_groups_survey()` and `bbs_survival_collared()`
 functionality to simulate recruitment data from composition surveys and
 survival data from collaring. Recruitment and survival data share the
-same survival and fecundity rates, which are generated once for each
-simulation.
+same survival rates, which are generated once at the start of the
+`bbs_simulate_caribou()` function.
 
 The recruitment and survival data are formatted to be used as input for
 `bboutools` model fitting functions.
