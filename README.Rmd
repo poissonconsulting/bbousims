@@ -36,7 +36,7 @@ devtools::install_github("poissonconsulting/bbousims")
 
 
 
-## General simulation of populations from BAS model
+## General tools for simulating populations from survival, ageing and birth
 
 ### Survival and fecundity rates
 
@@ -118,16 +118,18 @@ population
 
 ### Group allocation
 `bbs_population_groups()` is used to randomly allocate individuals at each time step into groups. 
-Group sizes are randomly drawn from a gamma-poisson distribution with user-specified `lambda` and `theta` values. 
+Group sizes are randomly drawn from a gamma-poisson distribution with user-specified `lambda` and `theta` (dispersion parameter) values. 
 Minimum and maximum (i.e., as a maximum proportion of the total population) groups sizes can be set. 
 Group sizes are drawn until the cumulative size exceeds the total individuals. 
 The remaining individuals comprise the final group. 
-If the remaining number of individuals is < min_size specified, these will be added to the previous group.  
+If the remaining number of individuals is < minimum group size specified by the user, these will be added to the previous group.  
 
-The output is a list of lists containing the individuals identified by stage in each group at each time period. 
+The output is a list of lists containing the individuals (identified by stage) in each group at each time period. 
 
 ```{r}
 groups <- bbs_population_groups(population, group_size_lambda = 20, group_size_theta = 0)
+
+# first time period
 groups[[1]]
 ```
 
@@ -137,6 +139,8 @@ groups[[1]]
 
 ```{r}
 groups <- bbs_population_groups_survey(population, group_size_lambda = 20, month_composition = 3L, group_coverage = 0.2)
+
+# sampled groups in first time period
 groups[[1]]
 ```
 ## Boreal Caribou simulation
@@ -153,7 +157,7 @@ Given key parameters, `bbs_demographic_summary()` provides stable stage distribu
 `bbs_population_caribou()` allows the user to set the intercept, trend, annual random effect standard deviation, monthly random effect standard deviation and month within annual random effect standard deviation for female adult survival and female calf survival separately. 
 Yearling abundance is determined from a user-specified effect on female adult survival (`yearling_effect`). Intercept, trend and annual random effect standard deviation can also be set for the calves per adult female (`calves_per_adut_female`).  
 
-In all cases, the intercept (i.e. `survival_adult_female`, `survival_calf_female` `calves_per_adult_female`) is the annual rate and trend/standard deviations are on the log-odds scale.
+In all cases, the intercept (i.e., `survival_adult_female`, `survival_calf_female` `calves_per_adult_female`) is the annual rate and trend/standard deviations are on the log-odds scale.
 Year is scaled to (Year - 1) so that the intercept represents the rate in the first year. 
 
 ```{r}
@@ -164,7 +168,7 @@ population <- bbs_population_caribou(nyear = 50,
                                      calves_per_adult_female = 0.7)
 bbs_plot_population(population)
 ```
-Adding a negative trend and high standard deviation of the annual random effect in the adult female survival will cause higher variation and downward projection of population.
+As an example, adding a negative trend and high standard deviation of the annual random effect in the adult female survival will cause higher variation and downward projection of population.
 
 ```{r}
 set.seed(1)
@@ -179,7 +183,7 @@ bbs_plot_population(population)
 
 ### Boreal Caribou survival and recruitment data
 `bbs_simulate_caribou()` combines `bbs_population_caribou()`, `bbs_population_groups_survey()` and `bbs_survival_collared()` functionality to simulate recruitment data from composition surveys and survival data from collaring. 
-Recruitment and survival data share the same survival and fecundity rates, which are generated once for each simulation. 
+Recruitment and survival data share the same survival rates, which are generated once at the start of the `bbs_simulate_caribou()` function. 
 
 The recruitment and survival data are formatted to be used as input for `bboutools` model fitting functions. 
 

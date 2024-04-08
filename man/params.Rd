@@ -20,6 +20,8 @@
 
 \item{nyear}{A whole number of the number of years.}
 
+\item{nperiod_within_year}{A whole number of the number of periods in a year.}
+
 \item{female_recruit_stage}{A positive whole number of the stage representing female recruits.}
 
 \item{male_recruit_stage}{A positive whole number of the stage representing male recruits. Ignored if NULL.}

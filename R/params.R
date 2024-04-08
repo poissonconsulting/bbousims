@@ -8,6 +8,7 @@
 #' @param calves_per_adult_female A number of the calves per adult female. 
 #' @param proportion_female A number between 0 and 1 indicating the proportion of recruits that are female.
 #' @param nyear A whole number of the number of years. 
+#' @param nperiod_within_year A whole number of the number of periods in a year. 
 #' @param stochastic A flag indicating whether to 
 #' @param female_recruit_stage A positive whole number of the stage representing female recruits.
 #' @param male_recruit_stage A positive whole number of the stage representing male recruits. Ignored if NULL. 

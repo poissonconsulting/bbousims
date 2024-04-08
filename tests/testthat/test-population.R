@@ -26,6 +26,7 @@ test_that("simulating population base", {
                                age = age_mat, 
                                survival = survival_mat)
  
+  expect_s3_class(population, "bbou_population")
   expect_equal(population[c(1, 2),1], pop0)
   expect_true(is.matrix(population))
   nstep <- as.integer(nyear*4 + 1)
@@ -42,8 +43,9 @@ test_that("bb_simulate_population deterministic works", {
                                        survival_trend_adult_female = 0,
                                        survival_annual_sd_adult_female = 0.2)
   
+  expect_s3_class(population, "bbou_population_caribou")
   ats <- attributes(population)
-  expect_identical(names(ats), c("dim", "survival", "fecundity"))
+  expect_identical(names(ats), c("dim", "survival", "fecundity", "class"))
   expect_true(is.matrix(population))
   chk_whole_numeric(population)
   expect_snapshot(population)

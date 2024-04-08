@@ -96,9 +96,11 @@ bbs_simulate_caribou <- function(
                                 probability_uncertain_survival = probability_uncertain_survival, 
                                 population_name = population_name)
   
-  list(survival = survival,
+  x <- list(survival = survival,
        recruitment = recruitment,
        abundance = abundance)
-
+  
+  x <- class_bbou_simulation(x)
+  x
 }
 

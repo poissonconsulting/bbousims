@@ -1,28 +1,18 @@
-matrix_tbl <- function(x, values_to){
-  colnames(x) <- 1:ncol(x)
-  x %>%
-    as_tibble(rownames = "month") %>%
-    pivot_longer(-1, names_to = "year", values_to = values_to) %>%
-    mutate(year = as.integer(.data$year),
-                  month = as.integer(.data$month)) %>%
-    select("year", "month", everything())
-}
-
 abundance_tbl <- function(population, population_name = "A"){
   colnames(population) <- 1:ncol(population)
-  if(nrow(population) == 6){
-    rownames(population) <- c("Female Calf", "Male Calf", "Female Yearling", "Male Yearling", "Female Adult", "Male Adult")
-  } else{
-    rownames(population) <- as.character(1:nrow(population))
-  }
+  stages <- c("Female Calf", "Male Calf", "Female Yearling", "Male Yearling", "Female Adult", "Male Adult")
+  levels <- c("Female Adult", "Male Adult", "Female Yearling", "Male Yearling", "Female Calf", "Male Calf")
+  nstep <- ncol(population) + 1
   population %>%
-    as_tibble(rownames = "Stage") %>% 
-    pivot_longer(-1, names_to = "Period", values_to = "Abundance") %>%
-    mutate(Period = as.integer(.data$Period),
+    as.data.frame() %>%
+    mutate(Stage = stages,
+           Stage = factor(.data$Stage, levels = levels)) %>% 
+    pivot_longer(-all_of(nstep), names_to = "Period", values_to = "Abundance") %>%
+    mutate(Period = as.integer(.data$Period) - 1,
                   Year = period_to_year(.data$Period),
                   Month = period_to_month(.data$Period),
                   PopulationName = population_name) %>%
-    select("Year", "Month", "PopulationName", "Stage", "Abundance")
+    select("Year", "Month", "Period", "PopulationName", "Stage", "Abundance")
 }
 
 recruitment_tbl <- function(groups,
