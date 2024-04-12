@@ -1,0 +1,20 @@
+---
+title: "Simulate population from birth and survival rates and assign groups"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{general}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(bbousims)
+```
+
