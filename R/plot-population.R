@@ -59,10 +59,29 @@ bbs_plot_population.bbou_population <- function(x, annual = TRUE, nperiod_within
 #' @param annual A flag indicating whether to show annual population (as opposed to monthly).
 #' @return A ggplot object.
 #' @export
-bbs_plot_population.bbou_simulation <- function(x, annual = TRUE, ...) {
+bbs_plot_population.bbou_simulation <- function(x, annual = TRUE, alpha = 0.5, ...) {
   chk_unused(...)
   chk_flag(annual)
-  bbs_plot_population(x$abundance, annual = annual)
+  
+  x <- 
+    dplyr::bind_rows(purrr::map(x, ~ .x$abundance), .id = "sim") %>%
+    mutate(group = paste(.data$Stage, .data$sim))
+  
+  if (annual) {
+    x <-
+      x %>%
+      group_by(.data$Year, .data$Stage, .data$sim) %>%
+      slice(1) %>%
+      ungroup() 
+      
+    gp <- ggplot(data = x) +
+      geom_line(aes(x = .data$Year, y = .data$Abundance, color = .data$Stage, group = .data$group), alpha = alpha)
+  } else {
+    gp <- ggplot(data = x) +
+      geom_line(aes(x = .data$Period, y = .data$Abundance, color = .data$Stage, group = .data$group), alpha = alpha)
+  }
+  gp + scale_color_manual(values = c("#000000", "#3063A3", "#E8613C", "#F7B500", "#821C65", "#63BB42"))
+  
 }
 
 #' @describeIn bbs_plot_population Plot population abundance by period and stage for a matrix (output of [bbs_simulate_caribou()]).
