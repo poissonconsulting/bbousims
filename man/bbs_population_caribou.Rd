@@ -2,63 +2,27 @@
 % Please edit documentation in R/population.R
 \name{bbs_population_caribou}
 \alias{bbs_population_caribou}
-\title{Simulate Boreal Caribou population from BAS model}
+\title{Simulate Boreal Caribou population from survival, ageing and birth.}
 \usage{
 bbs_population_caribou(
+  survival,
+  fecundity,
   adult_females = 1000,
-  nyear = 20,
-  survival_adult_female = 0.85,
-  survival_calf_female = 0.5,
-  calves_per_adult_female = 0.7,
   proportion_adult_female = 0.65,
   proportion_yearling_female = 0.5,
-  survival_trend_adult_female = 0,
-  survival_trend_calf_female = 0,
-  survival_annual_sd_adult_female = 0,
-  survival_annual_sd_calf_female = 0,
-  survival_month_sd_adult_female = 0,
-  survival_month_sd_calf_female = 0,
-  survival_annual_month_sd_adult_female = 0,
-  survival_annual_month_sd_calf_female = 0,
-  calves_per_adult_female_trend = 0,
-  calves_per_adult_female_annual_sd = 0,
   stochastic = TRUE
 )
 }
 \arguments{
+\item{survival}{A list of the Caribou survival rates (output of \code{\link[=bbs_survival_caribou]{bbs_survival_caribou()}})}
+
+\item{fecundity}{A list of the Caribou fecundity rates (output of \code{\link[=bbs_fecundity_caribou]{bbs_fecundity_caribou()}})}
+
 \item{adult_females}{A number of the initial number of adult females in the population.}
-
-\item{nyear}{A whole number of the number of years.}
-
-\item{survival_adult_female}{A number between 0 and 1 of the annual female adult survival.}
-
-\item{survival_calf_female}{A number between 0 and 1 of the annual female calf survival.}
-
-\item{calves_per_adult_female}{A number of the calves per adult female.}
 
 \item{proportion_adult_female}{A number between 0 and 1 of the proportion of adults that are female.}
 
 \item{proportion_yearling_female}{A number between 0 and 1 of the proportion of yearlings that are female.}
-
-\item{survival_trend_adult_female}{A number of the effect of an increase of one year on the log-odds adult female survival.}
-
-\item{survival_trend_calf_female}{A number of the effect of an increase of one year on the log-odds calf female survival.}
-
-\item{survival_annual_sd_adult_female}{A number of the standard deviation of the annual variation in log-odds adult female survival.}
-
-\item{survival_annual_sd_calf_female}{A number of the standard deviation of the annual variation in log-odds calf female survival.}
-
-\item{survival_month_sd_adult_female}{A number of the standard deviation of the monthly variation in log-odds adult female survival.}
-
-\item{survival_month_sd_calf_female}{A number of the standard deviation of the monthly variation in log-odds calf female survival.}
-
-\item{survival_annual_month_sd_adult_female}{A number of the standard deviation of the month within annual variation in log-odds adult female survival.}
-
-\item{survival_annual_month_sd_calf_female}{A number of the standard deviation of the month within annual variation in log-odds calf female survival.}
-
-\item{calves_per_adult_female_trend}{A number of the effect of an increase of one year on the log-odds calves per adult female.}
-
-\item{calves_per_adult_female_annual_sd}{A number of the standard deviation of the annual variation on the log-odds calves per adult female.}
 
 \item{stochastic}{A flag indicating whether to include demographic stochasticity.}
 }
@@ -66,13 +30,13 @@ bbs_population_caribou(
 A matrix of the population by stage and period.
 }
 \description{
-Simulate population projection for Boreal Caribou from key survival and recruitment rates.
+Simulate population projection for Boreal Caribou from key survival and fecundity rates.
 }
 \details{
 This model assumes that survival occurs at the end of each period and survival, ageing and birth occur at the end of each year, in that order.
-Initial population is determined by calculating the stable age distribution (output of \code{\link[=bbs_demographic_summary]{bbs_demographic_summary()}}).
-Survival and fecundity rates are generated from \code{\link[=bbs_survival_caribou]{bbs_survival_caribou()}} and \code{\link[=bbs_fecundity_caribou]{bbs_fecundity_caribou()}}
-and these are converted into processes matrices using \code{\link[=bbs_matrix_survival_period]{bbs_matrix_survival_period()}} and \code{\link[=bbs_matrix_birth_year]{bbs_matrix_birth_year()}}.
+Initial population is determined by calculating the stable age distribution (output of \code{\link[=bbs_stable_stage_distribution]{bbs_stable_stage_distribution()}}).
+Survival and fecundity arguments accept outputs of \code{\link[=bbs_survival_caribou]{bbs_survival_caribou()}} and \code{\link[=bbs_fecundity_caribou]{bbs_fecundity_caribou()}}.
+These are converted into processes matrices using \code{\link[=bbs_matrix_survival_period]{bbs_matrix_survival_period()}} and \code{\link[=bbs_matrix_birth_year]{bbs_matrix_birth_year()}} prior to projection.
 \code{\link[=bbs_population]{bbs_population()}} is called internally to project population.
 Yearling female survival is assumed to be the same as adult female survival.
 }

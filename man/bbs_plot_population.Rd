@@ -14,7 +14,7 @@ bbs_plot_population(x, ...)
 
 \method{bbs_plot_population}{bbou_population}(x, annual = TRUE, nperiod_within_year, ...)
 
-\method{bbs_plot_population}{bbou_simulation}(x, annual = TRUE, ...)
+\method{bbs_plot_population}{bbou_simulation}(x, annual = TRUE, alpha = 0.5, ...)
 
 \method{bbs_plot_population}{bbou_population_caribou}(x, annual = TRUE, ...)
 }

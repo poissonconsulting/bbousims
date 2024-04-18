@@ -5,77 +5,46 @@
 \title{Simulate Boreal Caribou Data}
 \usage{
 bbs_simulate_caribou(
+  survival,
+  fecundity,
+  nsims = 1,
   adult_females = 1000,
-  nyear = 20,
-  survival_adult_female = 0.85,
-  survival_calf_female = 0.5,
-  calves_per_adult_female = 0.7,
   proportion_adult_female = 0.65,
   proportion_yearling_female = 0.5,
-  survival_trend_adult_female = 0,
-  survival_trend_calf_female = 0,
-  survival_annual_sd_adult_female = 0,
-  survival_annual_sd_calf_female = 0,
-  survival_month_sd_adult_female = 0,
-  survival_month_sd_calf_female = 0,
-  survival_annual_month_sd_adult_female = 0,
-  survival_annual_month_sd_calf_female = 0,
-  calves_per_adult_female_trend = 0,
-  calves_per_adult_female_annual_sd = 0,
   probability_unsexed_adult_female = 0,
   probability_unsexed_adult_male = 0,
   month_composition = 9L,
+  group_size = 5,
+  group_coverage = 0.3,
+  group_min_size = 2,
+  group_max_proportion = 1,
   collared_adult_females = 30,
   month_collar = 3L,
   probability_uncertain_mortality = 0,
   probability_uncertain_survival = 0,
-  group_size = 5,
-  group_coverage = 0.2,
-  group_min_size = 3,
-  group_max_proportion = 1,
   population_name = "A"
 )
 }
 \arguments{
 \item{adult_females}{A number of the initial number of adult females in the population.}
 
-\item{nyear}{A whole number of the number of years.}
-
-\item{survival_adult_female}{A number between 0 and 1 of the annual female adult survival.}
-
-\item{survival_calf_female}{A number between 0 and 1 of the annual female calf survival.}
-
-\item{calves_per_adult_female}{A number of the calves per adult female.}
-
 \item{proportion_adult_female}{A number between 0 and 1 of the proportion of adults that are female.}
 
 \item{proportion_yearling_female}{A number between 0 and 1 of the proportion of yearlings that are female.}
-
-\item{survival_trend_adult_female}{A number of the effect of an increase of one year on the log-odds adult female survival.}
-
-\item{survival_trend_calf_female}{A number of the effect of an increase of one year on the log-odds calf female survival.}
-
-\item{survival_annual_sd_adult_female}{A number of the standard deviation of the annual variation in log-odds adult female survival.}
-
-\item{survival_annual_sd_calf_female}{A number of the standard deviation of the annual variation in log-odds calf female survival.}
-
-\item{survival_month_sd_adult_female}{A number of the standard deviation of the monthly variation in log-odds adult female survival.}
-
-\item{survival_month_sd_calf_female}{A number of the standard deviation of the monthly variation in log-odds calf female survival.}
-
-\item{survival_annual_month_sd_adult_female}{A number of the standard deviation of the month within annual variation in log-odds adult female survival.}
-
-\item{survival_annual_month_sd_calf_female}{A number of the standard deviation of the month within annual variation in log-odds calf female survival.}
-
-\item{calves_per_adult_female_trend}{A number of the effect of an increase of one year on the log-odds calves per adult female.}
-
-\item{calves_per_adult_female_annual_sd}{A number of the standard deviation of the annual variation on the log-odds calves per adult female.}
 
 \item{probability_unsexed_adult_female}{A number between 0 and 1 of the probability that an adult female is unsexed.}
 
 \item{probability_unsexed_adult_male}{A number between 0 and 1 of the probability that an adult male is unsexed.}
 
 \item{month_composition}{A whole number between 1 and 12 of the month that composition surveys take place, relative to the start of the biological year.}
+
+\item{group_size}{A whole number of the average group size. Group sizes are drawn from a poisson distribution with lambda of \code{group_size}.}
+
+\item{group_coverage}{A number between 0 and 1 of the proportion of groups sampled.}
+
+\item{group_min_size}{A whole positive number of the minimum group size.}
+
+\item{group_max_proportion}{A number between 0 and 1 of the maximum group size as proportion of the total population.}
 
 \item{collared_adult_females}{A whole positive number of the number of collared adult females.
 The number of collared adult females is 'topped up' each year at \code{month_collar}.}
@@ -86,14 +55,6 @@ The number of collared adult females is 'topped up' each year at \code{month_col
 
 \item{probability_uncertain_survival}{A number between 0 and 1 of the probability of uncertain survival.}
 
-\item{group_size}{A whole number of the average group size. Group sizes are drawn from a poisson distribution with lambda of \code{group_size}.}
-
-\item{group_coverage}{A number between 0 and 1 of the proportion of groups sampled.}
-
-\item{group_min_size}{A whole positive number of the minimum group size.}
-
-\item{group_max_proportion}{A number between 0 and 1 of the maximum group size as proportion of the total population.}
-
 \item{population_name}{A string of the population name. This does not affect simulation but can be used as a unique identifier.}
 }
 \value{
@@ -103,10 +64,10 @@ The second named recruitment has columns Year, Month, Cows, Bulls, UnknownAdults
 And the final named abundance has columns Year, Month, Stage, Abundance.
 }
 \description{
-Simulate Boreal Caribou data from key demographic and sampling parameters.
+Simulate Boreal Caribou data from survival rates, fecundity rates and sampling parameters.
 }
 \details{
-See \code{\link[=bbs_survival_caribou]{bbs_survival_caribou()}} and \code{\link[=bbs_fecundity_caribou]{bbs_fecundity_caribou()}} for details on how rates are generated.
+See \code{\link[=bbs_survival_caribou]{bbs_survival_caribou()}} and \code{\link[=bbs_fecundity_caribou]{bbs_fecundity_caribou()}} for generating survival and fecundity rates.
 See \code{\link[=bbs_population_caribou]{bbs_population_caribou()}} for details on how population is simulated.
 See \code{\link[=bbs_population_groups_survey]{bbs_population_groups_survey()}} for details on how groups are assigned for each composition survey.
 See \code{\link[=bbs_survival_collared]{bbs_survival_collared()}} for details on how survival of collared adult female is determined.

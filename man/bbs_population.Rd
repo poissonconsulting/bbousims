@@ -2,7 +2,7 @@
 % Please edit documentation in R/population.R
 \name{bbs_population}
 \alias{bbs_population}
-\title{Simulate population from BAS model}
+\title{Simulate population from survival, ageing and birth}
 \usage{
 bbs_population(population_init, birth, age, survival, stochastic = TRUE)
 }
