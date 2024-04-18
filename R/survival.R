@@ -70,7 +70,7 @@ bbs_survival_caribou <- function(survival_adult_female,
                nperiod_within_year = 12)
   
   # add yearling effect
-  x[,,2] <- ilogit(logit(x[,,3]) + yearling_effect)
+  x$eSurvival[,,2] <- ilogit(logit(x$eSurvival[,,3]) + yearling_effect)
   x
 }
 
@@ -148,5 +148,10 @@ bbs_survival <- function(intercept,
       }
     }
   }
-  esurvival
+  list(eSurvival = esurvival,
+       b0 = intercept,
+       bYear = trend,
+       bAnnual = bannual,
+       bPeriod = bperiod, 
+       bAnnualPeriod = bannual_period)
 }

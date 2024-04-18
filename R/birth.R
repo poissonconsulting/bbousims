@@ -44,9 +44,12 @@ bbs_fecundity <- function(intercept,
         ilogit(intercept[stg] + trend[stg] * year[yr] + bannual[yr, stg])
     }
   }
-  
+
   efecundity[, zero] <- 0
-  efecundity
+  list(eFecundity = efecundity,
+       b0 = intercept,
+       bYear = trend,
+       bAnnual = bannual)
 }
 
 #' Get stochastic Boreal Caribou fecundity rates by year and stage.
