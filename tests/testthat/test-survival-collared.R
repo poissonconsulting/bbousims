@@ -1,8 +1,16 @@
 test_that("survival collared works", {
   set.seed(101)
   phi <- bbs_survival_caribou(0.84, survival_calf_female = 0.5)
-  x <- bbs_survival_collared(30, survival_adult_female_month_year = phi[,,3])
+  x <- bbs_survival_collared(30, month_collar = 3L, survival_adult_female_month_year = phi$eSurvival[,,3])
   expect_true(all(x$MortalitiesUncertain == 0))
+  expect_snapshot_data(x, "survival_collared")
+})
+
+test_that("survival collared works if month_collar = 1", {
+  set.seed(101)
+  phi <- bbs_survival_caribou(0.84, survival_calf_female = 0.5)
+  x <- bbs_survival_collared(30, month_collar = 1L, survival_adult_female_month_year = phi$eSurvival[,,3])
+  expect_true(all(x$StartTotal[x$Month == 1] == 30))
   expect_snapshot_data(x, "survival_collared")
 })
 
