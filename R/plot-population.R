@@ -75,7 +75,9 @@ bbs_plot_population.bbou_simulation <- function(x, annual = TRUE, alpha = 0.5, .
       ungroup() 
       
     gp <- ggplot(data = x) +
-      geom_line(aes(x = .data$Year, y = .data$Abundance, color = .data$Stage, group = .data$group), alpha = alpha)
+      geom_line(aes(x = factor(.data$Year), y = .data$Abundance, color = .data$Stage, group = .data$group), alpha = alpha) +
+      xlab("Year")
+    
   } else {
     gp <- ggplot(data = x) +
       geom_line(aes(x = .data$Period, y = .data$Abundance, color = .data$Stage, group = .data$group), alpha = alpha)
