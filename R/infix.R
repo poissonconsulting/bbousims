@@ -33,7 +33,7 @@
     }
     res[i] <- sum(bin)
   }
-  res
+  matrix(res, ncol = 1)
 }
 
 
