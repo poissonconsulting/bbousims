@@ -2,7 +2,9 @@ test_that("survival process matrix", {
   rates <- c(0.84, 0.85)
   x <- bbs_matrix_survival(rates)
   expect_identical(dim(x), c(2L, 2L))
-  expect_identical(as.vector(x), c(0.84, 0, 0, 0.85))
+  expect_snapshot({
+    print(x)
+  })
 })
 
 test_that("survival process matrices", {
@@ -31,4 +33,7 @@ test_that("survival process matrices", {
   x <- bbs_matrix_survival_period(rates)
   expect_identical(dim(x), c(2L, 2L, 2L, 4L))
   expect_identical(dim(x[, , 1, 1]), c(2L, 2L))
+  expect_snapshot({
+    print(x)
+  })
 })

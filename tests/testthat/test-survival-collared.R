@@ -1,35 +1,68 @@
 test_that("survival collared works", {
-  set.seed(101)
-  phi <- bbs_survival_caribou(0.84, survival_calf_female = 0.5)
-  x <- bbs_survival_collared(30, month_collar = 3L, survival_adult_female_month_year = phi$eSurvival[,,3])
-  expect_true(all(x$MortalitiesUncertain == 0))
-  expect_snapshot_data(x, "survival_collared")
+  withr::with_seed(10, {
+    ncollar <- 30
+    phi <- bbs_survival_caribou(0.84, survival_calf_female = 0.5)
+    saf <- phi$eSurvival[,,3]
+    x <- bbs_survival_collared(ncollar, 
+                               survival_adult_female_month_year = saf)
+    expect_true(all(x$StartTotal[x$Month == 1] == ncollar))
+    expect_snapshot({
+      print(x)
+    })
+  })
 })
 
-test_that("survival collared works if month_collar = 1", {
-  set.seed(101)
-  phi <- bbs_survival_caribou(0.84, survival_calf_female = 0.5)
-  x <- bbs_survival_collared(30, month_collar = 1L, survival_adult_female_month_year = phi$eSurvival[,,3])
-  expect_true(all(x$StartTotal[x$Month == 1] == 30))
-  expect_snapshot_data(x, "survival_collared")
+test_that("survival collared works with different collar month", {
+  withr::with_seed(10, {
+    month_collar <- 3
+    ncollar <- 30
+    phi <- bbs_survival_caribou(0.84, survival_calf_female = 0.5)
+    saf <- phi$eSurvival[,,3]
+    x <- bbs_survival_collared(ncollar, 
+                               month_collar = month_collar, 
+                               survival_adult_female_month_year = saf)
+    expect_true(all(x$StartTotal[x$Month == month_collar] == ncollar))
+    expect_snapshot({
+      print(x)
+    })
+  })
 })
 
-test_that("survival collared no uncertain works", {
-  set.seed(101)
-  phi <- bbs_survival_caribou(0.84, survival_calf_female = 0.5)
-  x <- bbs_survival_collared(30, 
-                             survival_adult_female_month_year = phi[,,3],
-                             probability_uncertain_mortality = 0.5)
-  expect_false(all(x$MortalitiesUncertain == 0))
-  expect_snapshot_data(x, "survival_collared_uncertain")
+test_that("survival collared works with uncertain mort", {
+  withr::with_seed(10, {
+    phi <- bbs_survival_caribou(0.84, survival_calf_female = 0.5)
+    saf <- phi$eSurvival[,,3]
+    x <- bbs_survival_collared(30, 
+                               survival_adult_female_month_year = saf,
+                               probability_uncertain_mortality = 0.5)
+    expect_snapshot({
+      print(x)
+    })
+  })
 })
 
 test_that("survival collared low survival works", {
-  set.seed(101)
-  phi <- bbs_survival_caribou(0.1, survival_calf_female = 0.5)
-  x <- bbs_survival_collared(20, 
-                             survival_adult_female_month_year = phi[,,3],
-                             probability_uncertain_mortality = 0.5)
-  expect_true(any(x$StartTotal == 0))
-  expect_snapshot_data(x, "survival_collared_dead")
+  withr::with_seed(10, {
+    phi <- bbs_survival_caribou(0.1, survival_calf_female = 0.5)
+    saf <- phi$eSurvival[,,3]
+    x <- bbs_survival_collared(30, 
+                               survival_adult_female_month_year = saf,
+                               probability_uncertain_mortality = 0.05)
+    expect_snapshot({
+      print(x)
+    })
+  })
+})
+
+test_that("survival collared low collars works", {
+  withr::with_seed(10, {
+    phi <- bbs_survival_caribou(0.1, survival_calf_female = 0.5)
+    saf <- phi$eSurvival[,,3]
+    x <- bbs_survival_collared(5, 
+                               survival_adult_female_month_year = saf,
+                               probability_uncertain_mortality = 0.05)
+    expect_snapshot({
+      print(x)
+    })
+  })
 })

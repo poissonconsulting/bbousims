@@ -1,67 +1,81 @@
 test_that("bbs_simulate_caribou works", {
-  x <- bbs_simulate_caribou(nyear = 10)
-  expect_s3_class(x, "bbou_simulation")
-  expect_true(is.list(x))
-  expect_identical(names(x), c("survival", "recruitment", "abundance"))
-  expect_true(all(unlist(lapply(x, is.data.frame))))
-  
-  expect_equal(max(x$survival$Year), 10)
+  withr::with_seed(10, {
+    nsims <- 3
+    nyear = 5
+    survival <- bbs_survival_caribou(0.84, nyear = nyear)
+    fecundity <- bbs_fecundity_caribou(0.7, nyear = nyear)
+    x <- bbs_simulate_caribou(survival, fecundity = fecundity, nsims = nsims)
+    expect_s3_class(x, "bbou_simulation")
+    expect_length(x, nsims)
+    expect_snapshot({
+      print(x)
+    })
+  })
 })
 
-test_that("bbs_simulate_caribou works with bboutools", {
+test_that("bbs_simulate_caribou works with bboutools and values can be recovered", {
   skip()
+  library(ggplot2)
+  library(bboutools)
+  
   survival_adult_female <- 0.85
   survival_calf_female <- 0.5
-  survival_trend <- 0
-  nyear <- 30L
-  calves_per_adult_female = 0.22
+  trend_adult_female <- 0
+  annual_sd_adult_female <- 0.3
+  nyear <- 20L
+  calves_per_adult_female = 0.7
+  nsims <- 1
   
-  dem <- bbs_demographic_summary(calves_per_adult_female = calves_per_adult_female,
-                                 survival_adult_female = survival_adult_female,
-                                 survival_calf = survival_calf_female, 
-                                 proportion_female = 0.5, 
-                                 survival_yearling = survival_adult_female)
-  dem
+  survival <- bbs_survival_caribou(nyear = nyear, 
+                                   survival_adult_female = survival_adult_female,
+                                   annual_sd_adult_female = annual_sd_adult_female,
+                                   survival_calf_female = survival_calf_female,
+                                   trend_adult_female = trend_adult_female)
   
-  x <- bbs_simulate_caribou(adult_females = 500, 
+  fecundity <- bbs_fecundity_caribou(calves_per_adult_female = calves_per_adult_female,
+                                     nyear = nyear)
+  
+  x <- bbs_simulate_caribou(survival, 
+                            fecundity = fecundity, 
+                            nsims = nsims,
+                            adult_females = 500, 
                             proportion_adult_female = 0.65, 
-                            survival_adult_female = survival_adult_female,
-                            survival_trend_adult_female = survival_trend, 
-                            nyear = nyear,
-                            calves_per_adult_female = calves_per_adult_female,
-                            survival_calf_female = survival_calf_female,
-                            group_coverage = 0.2, 
-                            group_size = 15,
-                            collared_adult_females = 30)
+                            group_coverage = 1, 
+                            group_size = 6,
+                            collared_adult_females = 200)
   
-  library(bboutools)
-  fit_r <- bboutools::bb_fit_recruitment(x$recruitment, 
+  fit_r <- bboutools::bb_fit_recruitment(x[[1]]$recruitment, 
                                          adult_female_proportion = NULL, 
-                                         yearling_female_proportion = 0.5, 
-                                         year_trend = TRUE)
+                                         yearling_female_proportion = 0.5)
   
-  View(coef(fit_r, include_random = FALSE))
+  # View(coef(fit_r, include_random = FALSE))
   
-  fit_s <- bboutools::bb_fit_survival(x$survival, 
+  fit_s <- bboutools::bb_fit_survival(x[[1]]$survival, 
                                       min_random_year = Inf,
-                                      year_trend = TRUE, 
-                                      nthin = 10L, year_start = 1L)
+                                      nthin = 30L, year_start = 1L)
 
+  # View(coef(fit_s, include_random = FALSE))
+  
+  saf <- survival$eSurvival[,,3]
+  nyear <- dim(saf)[2]
+  saf_annual <- vector(length = nyear)
+  for(yr in 1:nyear){
+    saf_annual[yr] <- prod(saf[,yr])
+  }
+  
+  fecundity$eFecundity
   
   # actual
   # sims trend is effect of one year change on monthly log-odds prob
   # bboutools trend is effect of scaled year change
   # sims intercept is first year
   # bboutools intercept is mean year
-  x <- ilogit(logit(ilogit(logit(survival_adult_female^(1/12)) + survival_trend * 0:(nyear - 1))^12))
-  year <- bb_predict_survival_trend(fit_s)
-  year$actual <- x
+  year <- bb_predict_survival(fit_s)
+  year$actual <- saf_annual
   
-  library(ggplot2)
   ggplot(data = year) +
-    geom_ribbon(aes(x = CaribouYear, y = estimate, ymin = lower, ymax = upper), alpha = 0.2) +
-    geom_line(aes(x = CaribouYear, y = actual), color = "red") +
-    geom_line(aes(x = CaribouYear, y = estimate), color = "black") 
+    geom_pointrange(aes(x = CaribouYear, y = estimate, ymin = lower, ymax = upper), alpha = 0.5) +
+    geom_point(aes(x = CaribouYear, y = actual), size = 2, color = "red") 
 
 })
 

@@ -1,26 +1,28 @@
 test_that("assign population to groups", {
-  set.seed(101)
-  population <- bbs_population_caribou(nyear = 10, 
-                                       adult_females = 1000)
-  
+  withr::with_seed(10, {
+    survival <- bbs_survival_caribou(0.84)
+    fecundity <- bbs_fecundity_caribou(0.2)
+    population <- bbs_population_caribou(survival = survival, fecundity = fecundity, adult_females = 1000)
+    
+    min_size <- 2
+    max_proportion <- 0.75
+    lambda <- 6
+    theta <- 1
+    group <- bbs_population_groups(
+      population,
+      group_size_lambda = lambda,
+      group_size_theta = theta,
+      group_max_proportion = max_proportion,
+      group_min_size = min_size
+    )
+    expect_snapshot({
+      print(group)
+    })
+  })
+
   nstep <- ncol(population)
-  # check different values ----
-  min_size <- 2
-  max_proportion <- 0.75
-  lambda <- 6
-  theta <- 1
-  
-  group <- bbs_population_groups(
-    population,
-    group_size_lambda = lambda,
-    group_size_theta = theta,
-    group_max_proportion = max_proportion,
-    group_min_size = min_size
-  )
-  expect_true(is.list(group))
   expect_identical(length(group), nstep)
-  expect_true(is.list(group[[1]]))
-  
+
   # check same individuals as in population for each period when unlist groups
   individuals <-
     purrr::map(1:ncol(population), ~ sort(population_individuals(population[, .x])))
@@ -40,28 +42,31 @@ test_that("assign population to groups", {
 })
 
 test_that("sample groups from population", {
-  set.seed(101)
-  population <- bbs_population_caribou(nyear = 10, 
-                                       adult_females = 1000)
-  
+  withr::with_seed(10, {
+    survival <- bbs_survival_caribou(0.84)
+    fecundity <- bbs_fecundity_caribou(0.2)
+    population <- bbs_population_caribou(survival = survival, fecundity = fecundity, adult_females = 1000)
+    
+    min_size <- 2
+    max_proportion <- 0.75
+    lambda <- 6
+    theta <- 1
+    group <- bbs_population_groups_survey(
+      population,
+      group_size_lambda = lambda,
+      group_size_theta = theta,
+      group_max_proportion = max_proportion,
+      group_min_size = min_size
+    )
+    
+    expect_snapshot({
+      print(group)
+    })
+  })
+
   nstep <- ncol(population)
-  # check different values ----
-  min_size <- 2
-  max_proportion <- 0.75
-  lambda <- 6
-  theta <- 1
-  
-  group <- bbs_population_groups_survey(
-    population,
-    group_size_lambda = lambda,
-    group_size_theta = theta,
-    group_max_proportion = max_proportion,
-    group_min_size = min_size
-  )
-  expect_true(is.list(group))
   expect_equal(length(group), (nstep - 1)/12)
-  expect_true(is.list(group[[1]]))
-  
+
   sizes <- lapply(group, function(x)
     sapply(x, length))
   expect_true(min(unlist(sizes)) >= min_size)
@@ -73,27 +78,29 @@ test_that("sample groups from population", {
 })
 
 test_that("assign population to groups by pairs", {
-  set.seed(101)
-  population <- bbs_population_caribou(nyear = 10, 
-                                       adult_females = 1000)
-  
+  withr::with_seed(10, {
+    survival <- bbs_survival_caribou(0.84)
+    fecundity <- bbs_fecundity_caribou(0.2)
+    population <- bbs_population_caribou(survival = survival, fecundity = fecundity, adult_females = 1000)
+    
+    min_size <- 2
+    max_proportion <- 0.75
+    lambda <- 6
+    theta <- 1
+    group <- bbs_population_groups_pairs(
+      population,
+      group_size_lambda = lambda,
+      group_size_theta = theta,
+      group_max_proportion = max_proportion,
+      group_min_size = min_size
+    )
+    
+    expect_snapshot({
+      print(group)
+    })
+  })
+
   nstep <- ncol(population)
-  # check different values ----
-  min_size <- 2
-  max_proportion <- 0.75
-  lambda <- 6
-  theta <- 1
-  
-  group <- bbs_population_groups_pairs(
-    population,
-    group_size_lambda = lambda,
-    group_size_theta = theta,
-    group_max_proportion = max_proportion,
-    group_min_size = min_size
-  )
-  expect_true(is.list(group))
-  expect_identical(length(group), nstep)
-  expect_true(is.list(group[[1]]))
   
   individuals <-
     purrr::map(1:ncol(population), ~ sort(population_individuals(population[, .x])))
@@ -111,30 +118,31 @@ test_that("assign population to groups by pairs", {
   }
 })
 
-test_that("assign population to groups in declining population", {
-  set.seed(101)
-  population <- bbs_population_caribou(nyear = 10, 
-                                       adult_females = 1000, 
-                                       survival_trend_adult_female = -0.5)
+test_that("assign population to groups in declining population to 0", {
+  withr::with_seed(101, {
+    survival <- bbs_survival_caribou(0.84)
+    fecundity <- bbs_fecundity_caribou(0.2)
+    population <- bbs_population_caribou(survival = survival, fecundity = fecundity, adult_females = 1000)
+    min_size <- 2
+    max_proportion <- 1
+    lambda <- 6
+    theta <- 1
+    group <- bbs_population_groups(
+      population,
+      group_size_lambda = lambda,
+      group_size_theta = theta,
+      group_max_proportion = max_proportion,
+      group_min_size = min_size
+    )
+    
+    expect_snapshot({
+      print(group)
+    })
+  })
   
   nstep <- ncol(population)
-  # check different values ----
-  min_size <- 2
-  max_proportion <- 1
-  lambda <- 6
-  theta <- 1
-  
-  group <- bbs_population_groups(
-    population,
-    group_size_lambda = lambda,
-    group_size_theta = theta,
-    group_max_proportion = max_proportion,
-    group_min_size = min_size
-  )
-  expect_true(is.list(group))
   expect_identical(length(group), nstep)
-  expect_true(is.list(group[[1]]))
-  
+
   # check same individuals as in population for each period when unlist groups
   individuals <-
     purrr::map(1:ncol(population), ~ sort(population_individuals(population[, .x])))

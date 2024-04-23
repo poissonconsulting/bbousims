@@ -1,7 +1,7 @@
 # demographic summary works
 
     Code
-      dem
+      print(x)
     Output
       $calf_cow_ratio
       [1] 0.3529412
@@ -19,7 +19,7 @@
 # initial population works
 
     Code
-      pop0
+      print(x)
     Output
           female_calf female_yearling    female_adult 
                   379             188            1000 
