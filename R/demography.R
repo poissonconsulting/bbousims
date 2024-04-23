@@ -37,8 +37,7 @@ leslie_matrix <- function(female_calves, survival_calf, survival_yearling, survi
          nrow = 3, byrow = TRUE)
 }
 
-bbs_stable_stage_distribution <- function(
-                                          calves_per_adult_female,
+bbs_stable_stage_distribution <- function(calves_per_adult_female,
                                           survival_adult_female,
                                           survival_calf, 
                                           survival_yearling, 
