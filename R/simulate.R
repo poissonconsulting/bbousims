@@ -36,7 +36,7 @@ bbs_simulate_caribou <- function(
     group_min_size = 2,
     group_max_proportion = 1,
     collared_adult_females = 30,
-    month_collar = 3L,
+    month_collar = 1L,
     probability_uncertain_mortality = 0,
     probability_uncertain_survival = 0,
     population_name = "A") {

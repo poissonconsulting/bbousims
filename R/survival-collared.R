@@ -15,7 +15,7 @@ bbs_survival_collared <- function(collared_adult_females,
                             survival_adult_female_month_year,
                             probability_uncertain_mortality = 0,
                             probability_uncertain_survival = 0,
-                            month_collar = 3L,
+                            month_collar = 1L,
                             population_name = "A"){
   starttotal <- collared_adult_females
   nyear <- ncol(survival_adult_female_month_year)
