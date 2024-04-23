@@ -119,15 +119,13 @@ bbs_population_caribou <- function(survival,
   .chk_fecundity(fecundity)
   chk_whole_number(adult_females)
   chk_gt(adult_females)
-  chk_whole_number(nyear)
-  chk_gt(nyear)
   chk_number(proportion_adult_female)
   chk_range(proportion_adult_female)
   chk_number(proportion_yearling_female)
   chk_range(proportion_yearling_female)
   chk_flag(stochastic)
   
-  stable_stage_dist <- bbs_stable_stage_distribution(proportion_female = proportion_yearling_female, 
+  stable_stage_dist <- stable_stage_distribution(proportion_female = proportion_yearling_female, 
                                                      calves_per_adult_female = fecundity$b0[3],
                                                      survival_calf = survival$b0[1], 
                                                      survival_yearling = survival$b0[3], 
