@@ -37,7 +37,7 @@ leslie_matrix <- function(female_calves, survival_calf, survival_yearling, survi
          nrow = 3, byrow = TRUE)
 }
 
-bbs_stable_stage_distribution <- function(calves_per_adult_female,
+stable_stage_distribution <- function(calves_per_adult_female,
                                           survival_adult_female,
                                           survival_calf, 
                                           survival_yearling, 
@@ -55,7 +55,7 @@ bbs_stable_stage_distribution <- function(calves_per_adult_female,
   popbio::stable.stage(leslie)
 }
 
-bbs_estimate_lambda <- function(calves_per_adult_female,
+estimate_lambda <- function(calves_per_adult_female,
                                 survival_adult_female,
                                 survival_calf, 
                                 survival_yearling, 
@@ -98,13 +98,13 @@ bbs_demographic_summary <- function(calves_per_adult_female,
   recruitment <- decesare_recruitment(calf_cow,
                                       proportion_female = proportion_female)
   
-  stage_dist <- bbs_stable_stage_distribution(calves_per_adult_female = calves_per_adult_female,
+  stage_dist <- stable_stage_distribution(calves_per_adult_female = calves_per_adult_female,
                                 survival_adult_female = survival_adult_female,
                                 survival_calf = survival_calf, 
                                 survival_yearling = survival_yearling, 
                                 proportion_female = proportion_female)
   
-  lambda <- bbs_estimate_lambda(calves_per_adult_female = calves_per_adult_female,
+  lambda <- estimate_lambda(calves_per_adult_female = calves_per_adult_female,
                                 survival_adult_female = survival_adult_female,
                                 survival_calf = survival_calf, 
                                 survival_yearling = survival_yearling, 
