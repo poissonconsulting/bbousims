@@ -17,6 +17,8 @@ library(bbousims)
 # bbousims
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/poissonconsulting/bbousims/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/poissonconsulting/bbousims/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/poissonconsulting/bbousims/branch/main/graph/badge.svg)](https://app.codecov.io/gh/poissonconsulting/bbousims?branch=main)
 <!-- badges: end -->
 
 `bbousims` contains some general functionality for simulating population change of life stages over time from survival, ageing and birth processes. 
