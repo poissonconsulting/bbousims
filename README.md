@@ -4,6 +4,10 @@
 # bbousims
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/poissonconsulting/bbousims/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/poissonconsulting/bbousims/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/poissonconsulting/bbousims/branch/main/graph/badge.svg)](https://app.codecov.io/gh/poissonconsulting/bbousims?branch=main)
 <!-- badges: end -->
 
 `bbousims` contains some general functionality for simulating population
@@ -45,18 +49,18 @@ survival
 #> , , 1
 #> 
 #>           [,1]      [,2]      [,3]
-#> [1,] 0.9394392 0.9374033 0.9340943
-#> [2,] 0.9474855 0.9457044 0.9428075
-#> [3,] 0.9445132 0.9426374 0.9395872
-#> [4,] 0.9433101 0.9413962 0.9382844
+#> [1,] 0.9428551 0.9384019 0.9432026
+#> [2,] 0.9397805 0.9351042 0.9401455
+#> [3,] 0.9355031 0.9305192 0.9358923
+#> [4,] 0.9487064 0.9446824 0.9490202
 #> 
 #> , , 2
 #> 
 #>           [,1]      [,2]      [,3]
-#> [1,] 0.9810416 0.9863769 0.9899272
-#> [2,] 0.9798400 0.9855084 0.9892826
-#> [3,] 0.9768512 0.9833457 0.9876761
-#> [4,] 0.9783373 0.9844215 0.9884754
+#> [1,] 0.9801348 0.9837630 0.9899028
+#> [2,] 0.9775668 0.9816552 0.9885828
+#> [3,] 0.9791850 0.9829836 0.9894149
+#> [4,] 0.9796768 0.9833872 0.9896676
 ```
 
 Fecundity varies by year, with options to set the intercept, year trend
@@ -70,9 +74,9 @@ fecundity <- bbs_fecundity(intercept = c(NA, logit(0.4)),
                            nyear = 3)
 fecundity
 #>      [,1]      [,2]
-#> [1,]    0 0.4056234
-#> [2,]    0 0.3497099
-#> [3,]    0 0.3408085
+#> [1,]    0 0.3477818
+#> [2,]    0 0.3037460
+#> [3,]    0 0.3347985
 ```
 
 ### Process matrices
@@ -89,13 +93,13 @@ birth_mat <- bbs_matrix_birth_year(fecundity, female_recruit_stage = 1, male_rec
 # first period, first year
 survival_mat[,,1,1]
 #>           [,1]      [,2]
-#> [1,] 0.9394392 0.0000000
-#> [2,] 0.0000000 0.9810416
+#> [1,] 0.9428551 0.0000000
+#> [2,] 0.0000000 0.9801348
 
 # first year
 birth_mat[,,1]
 #>      [,1]      [,2]
-#> [1,]    1 0.2028117
+#> [1,]    1 0.1738909
 #> [2,]    0 1.0000000
 ```
 
@@ -132,15 +136,15 @@ regular (deterministic) matrix multiplication yields
 ``` r
 survival_mat1 %*% pop0
 #>          [,1]
-#> [1,] 23.48598
-#> [2,] 51.01416
+#> [1,] 23.57138
+#> [2,] 50.96701
 ```
 
 and stochastic matrix multiplication yields
 
 ``` r
 survival_mat1 %*b% pop0
-#> [1] 23 49
+#> [1] 24 49
 ```
 
 `bbs_population()` is used to project population forward in time from
@@ -153,8 +157,8 @@ population <- bbs_population(pop0,
                              survival = survival_mat)
 population
 #>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]
-#> [1,]   25   22   22   20   15   15   13   12   12    11     9     9    13
-#> [2,]   52   52   51   50   66   66   64   63   72    72    70    69    77
+#> [1,]   25   21   20   18   24   22   20   20   13    13    13    10    16
+#> [2,]   52   51   48   48   65   63   61   60   79    78    77    77    87
 ```
 
 ### Group allocation
@@ -178,19 +182,19 @@ groups <- bbs_population_groups(population, group_size_lambda = 20, group_size_t
 # first time period
 groups[[1]]
 #> [[1]]
-#>  [1] 1 2 2 2 1 1 1 2 2 2 2 1 2 2 1 1 2 2 2
+#>  [1] 2 1 1 1 1 2 2 1 2 1 2 2 1 2 2 2 2 2
 #> 
 #> [[2]]
-#>  [1] 1 1 2 2 2 2 1 2 2 2 1 2 2 2 2 2 2 2
+#>  [1] 1 2 2 2 2 2 2 1 2 2 2 2 2 2
 #> 
 #> [[3]]
-#> [1] 1 1 1 2 2 1 1 1 2
+#>  [1] 2 1 2 1 2 1 1 2 2 2 1 2 1 2 2 2 2 2 2
 #> 
 #> [[4]]
-#>  [1] 2 2 1 2 2 2 2 2 2 1 2 2 1 1 2 2 2
+#>  [1] 1 1 1 1 2 2 1 1 2 2 2 2 1 1 2
 #> 
 #> [[5]]
-#>  [1] 2 2 1 2 1 2 2 2 1 2 2 2 1 2
+#>  [1] 2 2 2 2 1 2 2 2 1 2 2
 ```
 
 `bbs_population_groups_pairs()` behaves similarly but keeps calf-cow
@@ -208,10 +212,10 @@ groups <- bbs_population_groups_survey(population, group_size_lambda = 20, month
 # sampled groups in first time period
 groups[[1]]
 #> [[1]]
-#> [1] 2 1 1 1 1
+#> [1] 2 2 2 2 2 2 2
 #> 
 #> [[2]]
-#> [1] 2 2 2 2 2 2 2
+#> [1] 2 1 2 2
 ```
 
 ## Boreal Caribou simulation
