@@ -47,26 +47,6 @@ The number of collared adult females is 'topped up' each year at \code{month_col
 
 \item{proportion_yearling_female}{A number between 0 and 1 of the proportion of yearlings that are female.}
 
-\item{survival_trend_adult_female}{A number of the effect of an increase of one year on the log-odds adult female survival.}
-
-\item{survival_trend_calf_female}{A number of the effect of an increase of one year on the log-odds calf female survival.}
-
-\item{survival_annual_sd_adult_female}{A number of the standard deviation of the annual variation in log-odds adult female survival.}
-
-\item{survival_annual_sd_calf_female}{A number of the standard deviation of the annual variation in log-odds calf female survival.}
-
-\item{survival_month_sd_adult_female}{A number of the standard deviation of the monthly variation in log-odds adult female survival.}
-
-\item{survival_month_sd_calf_female}{A number of the standard deviation of the monthly variation in log-odds calf female survival.}
-
-\item{survival_annual_month_sd_adult_female}{A number of the standard deviation of the month within annual variation in log-odds adult female survival.}
-
-\item{survival_annual_month_sd_calf_female}{A number of the standard deviation of the month within annual variation in log-odds calf female survival.}
-
-\item{calves_per_adult_female_trend}{A number of the effect of an increase of one year on the log-odds calves per adult female.}
-
-\item{calves_per_adult_female_annual_sd}{A number of the standard deviation of the annual variation on the log-odds calves per adult female.}
-
 \item{population}{A matrix of the population by stage and period (output of \code{\link[=bbs_population]{bbs_population()}} or \code{\link[=bbs_population_caribou]{bbs_population_caribou()}}).}
 
 \item{group_size_lambda}{A number of the lambda value of the gamma-poisson distribution to draw group sizes from.}
