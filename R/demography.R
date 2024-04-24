@@ -83,7 +83,10 @@ estimate_lambda <- function(calves_per_adult_female,
 #' 
 #' @return A named list of the calf-cow ratio, DeCesare recruitment, leslie matrix, lambda estimate and stable-stage distribution. 
 #' @export
-#'
+#' @examples
+#' if (interactive()) {
+#'     x <- bbs_demographic_summary(0.7, survival_adult_female = 0.84, survival_calf = 0.5)
+#' }
 bbs_demographic_summary <- function(calves_per_adult_female, 
                                    survival_adult_female, 
                                    survival_calf, 

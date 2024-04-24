@@ -13,6 +13,13 @@ bbs_plot_population <- function(x, ...) {
 #' @param annual A flag indicating whether to show annual population (as opposed to monthly).
 #' @return A ggplot object.
 #' @export
+#' @examples
+#' if (interactive()) {
+#'     survival <- bbs_survival_caribou(0.84)
+#'     fecundity <- bbs_fecundity_caribou(0.7)
+#'     x <- bbs_population_caribou(survival, fecundity = fecundity)
+#'     bbs_plot_population(x[[1]]$abundance)
+#' }
 bbs_plot_population.data.frame <- function(x, annual = TRUE, ...) {
   chk_unused(...)
   chk_flag(annual)
@@ -45,7 +52,21 @@ bbs_plot_population.data.frame <- function(x, annual = TRUE, ...) {
 #' @param annual A flag indicating whether to show annual population (as opposed to monthly).
 #' @return A ggplot object.
 #' @export
-bbs_plot_population.bbou_population <- function(x, annual = TRUE, nperiod_within_year, ...) {
+#' @examples
+#' if (interactive()) {
+#'     pop0 <- c(100, 200)
+#'     survival <- bbs_survival(intercept = logit(c(0.95, 0.98)))
+#'     fecundity <- bbs_fecundity(intercept = c(NA, logit(0.4)))
+#'     survival_mat <- bbs_matrix_survival_period(survival$eSurvival)
+#'     birth_mat <- bbs_matrix_birth_year(fecundity$eFecundity, female_recruit_stage = 1, male_recruit_stage = NULL)
+#'     age_mat <- bbs_matrix_age(c(2, 2))
+#'     x <- bbs_population(pop0, 
+#'                         birth = birth_mat, 
+#'                         age = age_mat, 
+#'                         survival = survival_mat)
+#'     bbs_plot_population(x)
+#' }
+bbs_plot_population.bbou_population <- function(x, annual = TRUE, nperiod_within_year = 12, ...) {
   chk_unused(...)
   chk_flag(annual)
   chk_whole_number(nperiod_within_year)
@@ -59,6 +80,13 @@ bbs_plot_population.bbou_population <- function(x, annual = TRUE, nperiod_within
 #' @param annual A flag indicating whether to show annual population (as opposed to monthly).
 #' @return A ggplot object.
 #' @export
+#' @examples
+#' if (interactive()) {
+#'     survival <- bbs_survival_caribou(0.84)
+#'     fecundity <- bbs_fecundity_caribou(0.7)
+#'     x <- bbs_simulate_caribou(survival, fecundity = fecundity, nsims = 3, alpha = 0.7)
+#'     bbs_plot_population(x)
+#' }
 bbs_plot_population.bbou_simulation <- function(x, annual = TRUE, alpha = 0.5, ...) {
   chk_unused(...)
   chk_flag(annual)
@@ -91,6 +119,13 @@ bbs_plot_population.bbou_simulation <- function(x, annual = TRUE, alpha = 0.5, .
 #' @param annual A flag indicating whether to show annual population (as opposed to monthly).
 #' @return A ggplot object.
 #' @export
+#' @examples
+#' if (interactive()) {
+#'     survival <- bbs_survival_caribou(0.84)
+#'     fecundity <- bbs_fecundity_caribou(0.7)
+#'     x <- bbs_population_caribou(survival, fecundity = fecundity)
+#'     bbs_plot_population(x)
+#' }
 bbs_plot_population.bbou_population_caribou <- function(x, annual = TRUE, ...) {
   chk_unused(...)
   chk_flag(annual)

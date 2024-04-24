@@ -156,7 +156,13 @@ population1_groups_pairs <- function(population,
 #'
 #' @return A list of groups in each period.
 #' @export
-#'
+#' @examples
+#' if (interactive()) {
+#'     survival <- bbs_survival_caribou(0.84)
+#'     fecundity <- bbs_fecundity_caribou(0.7)
+#'     x <- bbs_population_caribou(survival, fecundity = fecundity, adult_females = 100)
+#'     bbs_population_groups(x)
+#' }
 bbs_population_groups <- function(population,
                               group_size_lambda = 5,
                               group_size_theta = 2,
@@ -199,7 +205,13 @@ bbs_population_groups <- function(population,
 #'
 #' @return A list of groups for each period.
 #' @export
-#'
+#' @examples
+#' if (interactive()) {
+#'     survival <- bbs_survival_caribou(0.84)
+#'     fecundity <- bbs_fecundity_caribou(0.7)
+#'     x <- bbs_population_caribou(survival, fecundity = fecundity, adult_females = 100)
+#'     bbs_population_groups_pairs(x)
+#' }
 bbs_population_groups_pairs <- function(population,
                               group_size_lambda = 5,
                               group_size_theta = 2,

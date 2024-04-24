@@ -42,7 +42,19 @@ add_male_population <- function(population,
 #'
 #' @export
 #' @return A matrix of the population by stage and period.
-#'
+#' @examples
+#' if (interactive()) {
+#'     pop0 <- c(100, 200)
+#'     survival <- bbs_survival(intercept = logit(c(0.95, 0.98)))
+#'     fecundity <- bbs_fecundity(intercept = c(NA, logit(0.4)))
+#'     survival_mat <- bbs_matrix_survival_period(survival$eSurvival)
+#'     birth_mat <- bbs_matrix_birth_year(fecundity$eFecundity, female_recruit_stage = 1, male_recruit_stage = NULL)
+#'     age_mat <- bbs_matrix_age(c(2, 2))
+#'     x <- bbs_population(pop0, 
+#'                         birth = birth_mat, 
+#'                         age = age_mat, 
+#'                         survival = survival_mat)
+#' }
 bbs_population <- function(population_init,
                            birth,
                            age,
@@ -96,7 +108,7 @@ bbs_population <- function(population_init,
 #' Simulate population projection for Boreal Caribou from key survival and fecundity rates.
 #'
 #' This model assumes that survival occurs at the end of each period and survival, ageing and birth occur at the end of each year, in that order.
-#' Initial population is determined by calculating the stable stage distribution (output of [stable_stage_distribution()]).
+#' Initial population size for all stages is determined from the initial number of adult females and the calculated stable stage distribution. 
 #' Survival and fecundity arguments accept outputs of [bbs_survival_caribou()] and [bbs_fecundity_caribou()].
 #' These are converted into processes matrices using [bbs_matrix_survival_period()] and [bbs_matrix_birth_year()] prior to projection.
 #' [bbs_population()] is called internally to project population. 
@@ -108,7 +120,12 @@ bbs_population <- function(population_init,
 #'
 #' @return A matrix of the population by stage and period. 
 #' @export
-#'
+#' @examples
+#' if (interactive()) {
+#'     survival <- bbs_survival_caribou(0.84)
+#'     fecundity <- bbs_fecundity_caribou(0.7)
+#'     x <- bbs_population_caribou(survival, fecundity = fecundity)
+#' }
 bbs_population_caribou <- function(survival, 
                                    fecundity,
                                    adult_females = 1000,

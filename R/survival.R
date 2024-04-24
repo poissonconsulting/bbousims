@@ -21,8 +21,9 @@
 #' @export
 #'
 #' @examples
-#' survival <- bbs_survival_caribou(0.84, survival_calf_female = 0.5)
-#' 
+#' if (interactive()) {
+#'     survival <- bbs_survival_caribou(0.84, survival_calf_female = 0.5)
+#' }
 bbs_survival_caribou <- function(survival_adult_female, 
                             survival_calf_female = 0.5, 
                             nyear = 10, 
@@ -92,8 +93,9 @@ bbs_survival_caribou <- function(survival_adult_female,
 #' @export
 #'
 #' @examples
-#' survival <- bbs_survival(intercept = logit(c(0.94, 0.98, 0.98)), trend = c(0, 0, 0.2))
-#' 
+#' if (interactive()) {
+#'     survival <- bbs_survival(intercept = logit(c(0.94, 0.98, 0.98)), trend = c(0, 0, 0.2))
+#' }
 bbs_survival <- function(intercept, 
                          nyear = 10,
                          trend = rep(0, length(intercept)), 

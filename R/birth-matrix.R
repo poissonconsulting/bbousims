@@ -7,7 +7,9 @@
 #' @export
 #'
 #' @examples
-#' bbs_matrix_birth(c(0, 0, 0.2, 0, 0.25, 0)) %*% rep(100, 6)
+#' if(interactive()){
+#'   bbs_matrix_birth(c(0, 0, 0.2, 0, 0.25, 0)) %*% rep(100, 6)
+#' }
 bbs_matrix_birth <- function(fecundity, 
                              female_recruit_stage = 1, 
                              male_recruit_stage = NULL, 
