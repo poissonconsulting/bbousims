@@ -19,13 +19,19 @@ bbs_simulate_caribou(
   group_min_size = 2,
   group_max_proportion = 1,
   collared_adult_females = 30,
-  month_collar = 3L,
+  month_collar = 1L,
   probability_uncertain_mortality = 0,
   probability_uncertain_survival = 0,
   population_name = "A"
 )
 }
 \arguments{
+\item{survival}{A list of the Caribou survival rates (output of \code{\link[=bbs_survival_caribou]{bbs_survival_caribou()}})}
+
+\item{fecundity}{A list of the Caribou fecundity rates (output of \code{\link[=bbs_fecundity_caribou]{bbs_fecundity_caribou()}})}
+
+\item{nsims}{A whole positive number of the number of simulations.}
+
 \item{adult_females}{A number of the initial number of adult females in the population.}
 
 \item{proportion_adult_female}{A number between 0 and 1 of the proportion of adults that are female.}
@@ -75,5 +81,9 @@ See \code{\link[=bbs_survival_collared]{bbs_survival_collared()}} for details on
 Survival and recrutiment data.frames generated are formatted to be used as input data to \code{\link[bboutools:bb_fit_survival]{bboutools::bb_fit_survival()}} and \code{\link[bboutools:bb_fit_recruitment]{bboutools::bb_fit_recruitment()}}, respectively.
 }
 \examples{
-bbs_simulate_caribou()
+if (interactive()) {
+    survival <- bbs_survival_caribou(0.84)
+    fecundity <- bbs_fecundity_caribou(0.7)
+    caribou <- bbs_simulate_caribou(survival, fecundity = fecundity, nsims = 2)
+}
 }

@@ -42,7 +42,9 @@
 #' @param group_coverage A number between 0 and 1 of the proportion of groups sampled. 
 #' @param recruit_stages A vector of whole numbers indicating the recruit stages (e.g., calf).
 #' @param reproductive_female_stages A vector of whole numbers indicating the reproductive female stages (e.g., cows).
-#'
+#' @param survival A list of the Caribou survival rates (output of [bbs_survival_caribou()])
+#' @param fecundity A list of the Caribou fecundity rates (output of [bbs_fecundity_caribou()])
+#' 
 #' @keywords internal
 #' @name params
 NULL

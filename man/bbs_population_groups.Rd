@@ -34,3 +34,11 @@ The remaining individuals comprise the final group.
 If the remaining number of individuals is < min_size specified, these will be added to the previous group.
 Groups are filled by drawing individuals randomly.
 }
+\examples{
+if (interactive()) {
+    survival <- bbs_survival_caribou(0.84)
+    fecundity <- bbs_fecundity_caribou(0.7)
+    x <- bbs_population_caribou(survival, fecundity = fecundity, adult_females = 100)
+    bbs_population_groups(x)
+}
+}

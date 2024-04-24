@@ -10,6 +10,7 @@
 #' Survival and recrutiment data.frames generated are formatted to be used as input data to [bboutools::bb_fit_survival()] and [bboutools::bb_fit_recruitment()], respectively. 
 #'
 #' @inheritParams params
+#' @param nsims A whole positive number of the number of simulations. 
 #' @param population_name A string of the population name. This does not affect simulation but can be used as a unique identifier.
 #' @param group_size A whole number of the average group size. Group sizes are drawn from a poisson distribution with lambda of `group_size`. 
 #'

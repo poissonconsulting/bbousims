@@ -48,7 +48,7 @@ add_male_population <- function(population,
 #'     survival <- bbs_survival(intercept = logit(c(0.95, 0.98)))
 #'     fecundity <- bbs_fecundity(intercept = c(NA, logit(0.4)))
 #'     survival_mat <- bbs_matrix_survival_period(survival$eSurvival)
-#'     birth_mat <- bbs_matrix_birth_year(fecundity$eFecundity, female_recruit_stage = 1, male_recruit_stage = NULL)
+#'     birth_mat <- bbs_matrix_birth_year(fecundity$eFecundity)
 #'     age_mat <- bbs_matrix_age(c(2, 2))
 #'     x <- bbs_population(pop0, 
 #'                         birth = birth_mat, 
@@ -115,8 +115,6 @@ bbs_population <- function(population_init,
 #' Yearling female survival is assumed to be the same as adult female survival.
 #'
 #' @inheritParams params
-#' @param survival A list of the Caribou survival rates (output of [bbs_survival_caribou()])
-#' @param fecundity A list of the Caribou fecundity rates (output of [bbs_fecundity_caribou()])
 #'
 #' @return A matrix of the population by stage and period. 
 #' @export

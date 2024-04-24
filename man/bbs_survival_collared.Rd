@@ -9,7 +9,7 @@ bbs_survival_collared(
   survival_adult_female_month_year,
   probability_uncertain_mortality = 0,
   probability_uncertain_survival = 0,
-  month_collar = 3L,
+  month_collar = 1L,
   population_name = "A"
 )
 }
@@ -35,4 +35,12 @@ The number of collared adult females is 'topped up' at each \code{month_collar}.
 Survival rates in each month/year determine the number of mortalities.
 The probability of uncertain mortality determines the proportion of mortalities that are uncertain.
 The probability of uncertain survival reduces the number of collared adult females without adding mortalities.
+}
+\examples{
+if (interactive()) {
+    survival <- bbs_survival_caribou(0.84)
+    survival_adult_female <- survival$eSurvival[,,3]
+    survival_collared <- bbs_survival_collared(collared_adult_females = 30, 
+    survival_adult_female_month_year = survival_adult_female)
+}
 }

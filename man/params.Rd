@@ -84,6 +84,10 @@ The number of collared adult females is 'topped up' each year at \code{month_col
 \item{recruit_stages}{A vector of whole numbers indicating the recruit stages (e.g., calf).}
 
 \item{reproductive_female_stages}{A vector of whole numbers indicating the reproductive female stages (e.g., cows).}
+
+\item{survival}{A list of the Caribou survival rates (output of \code{\link[=bbs_survival_caribou]{bbs_survival_caribou()}})}
+
+\item{fecundity}{A list of the Caribou fecundity rates (output of \code{\link[=bbs_fecundity_caribou]{bbs_fecundity_caribou()}})}
 }
 \description{
 Parameter Descriptions for bboutools Functions

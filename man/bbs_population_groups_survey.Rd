@@ -36,3 +36,11 @@ A list of observed groups in each composition survey.
 See \code{\link[=bbs_population_groups]{bbs_population_groups()}} for details on group assignment.
 Groups are sampled in each composition survey in proportion to \code{group_coverage}.
 }
+\examples{
+if (interactive()) {
+    survival <- bbs_survival_caribou(0.84)
+    fecundity <- bbs_fecundity_caribou(0.7)
+    x <- bbs_population_caribou(survival, fecundity = fecundity, adult_females = 100)
+    bbs_population_groups_survey(x, group_coverage = 0.1)
+}
+}

@@ -27,7 +27,7 @@ bbs_survival_collared <- function(collared_adult_females,
   nyear <- ncol(survival_adult_female_month_year)
   yearmon <- tidyr::expand_grid(year = 1:nyear, month = 1:12)
   # remove first months without collaring
-  yearmon <- dplyr::filter(yearmon, !(year == 1 & month < month_collar))
+  yearmon <- dplyr::filter(yearmon, !(.data$year == 1 & .data$month < month_collar))
   survival <- purrr::map_df(1:nrow(yearmon), ~ {
     month <- yearmon$month[.x]
     year <- yearmon$year[.x]

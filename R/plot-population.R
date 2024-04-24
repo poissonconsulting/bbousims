@@ -58,7 +58,7 @@ bbs_plot_population.data.frame <- function(x, annual = TRUE, ...) {
 #'     survival <- bbs_survival(intercept = logit(c(0.95, 0.98)))
 #'     fecundity <- bbs_fecundity(intercept = c(NA, logit(0.4)))
 #'     survival_mat <- bbs_matrix_survival_period(survival$eSurvival)
-#'     birth_mat <- bbs_matrix_birth_year(fecundity$eFecundity, female_recruit_stage = 1, male_recruit_stage = NULL)
+#'     birth_mat <- bbs_matrix_birth_year(fecundity$eFecundity)
 #'     age_mat <- bbs_matrix_age(c(2, 2))
 #'     x <- bbs_population(pop0, 
 #'                         birth = birth_mat, 
@@ -78,6 +78,7 @@ bbs_plot_population.bbou_population <- function(x, annual = TRUE, nperiod_within
 #' @describeIn bbs_plot_population Plot population abundance by period and stage for a matrix (output of [bbs_simulate_caribou()]).
 #' @inheritParams params
 #' @param annual A flag indicating whether to show annual population (as opposed to monthly).
+#' @param alpha A number between 0 and 1 of the point transparency.
 #' @return A ggplot object.
 #' @export
 #' @examples
@@ -90,6 +91,7 @@ bbs_plot_population.bbou_population <- function(x, annual = TRUE, nperiod_within
 bbs_plot_population.bbou_simulation <- function(x, annual = TRUE, alpha = 0.5, ...) {
   chk_unused(...)
   chk_flag(annual)
+  chk_range(alpha)
   
   x <- 
     dplyr::bind_rows(purrr::map(x, ~ .x$abundance), .id = "sim") %>%

@@ -34,9 +34,16 @@ Simulate population projection for Boreal Caribou from key survival and fecundit
 }
 \details{
 This model assumes that survival occurs at the end of each period and survival, ageing and birth occur at the end of each year, in that order.
-Initial population is determined by calculating the stable age distribution (output of \code{\link[=bbs_stable_stage_distribution]{bbs_stable_stage_distribution()}}).
+Initial population size for all stages is determined from the initial number of adult females and the calculated stable stage distribution.
 Survival and fecundity arguments accept outputs of \code{\link[=bbs_survival_caribou]{bbs_survival_caribou()}} and \code{\link[=bbs_fecundity_caribou]{bbs_fecundity_caribou()}}.
 These are converted into processes matrices using \code{\link[=bbs_matrix_survival_period]{bbs_matrix_survival_period()}} and \code{\link[=bbs_matrix_birth_year]{bbs_matrix_birth_year()}} prior to projection.
 \code{\link[=bbs_population]{bbs_population()}} is called internally to project population.
 Yearling female survival is assumed to be the same as adult female survival.
+}
+\examples{
+if (interactive()) {
+    survival <- bbs_survival_caribou(0.84)
+    fecundity <- bbs_fecundity_caribou(0.7)
+    x <- bbs_population_caribou(survival, fecundity = fecundity)
+}
 }

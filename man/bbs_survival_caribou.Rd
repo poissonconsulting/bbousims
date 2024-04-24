@@ -55,6 +55,7 @@ Variation from random effects is stochastic.
 Year is scaled to Year - 1 for trend, which ensures that the intercept is the rate in the first year.
 }
 \examples{
-survival <- bbs_survival_caribou(0.84, survival_calf_female = 0.5)
-
+if (interactive()) {
+    survival <- bbs_survival_caribou(0.84, survival_calf_female = 0.5)
+}
 }

@@ -30,3 +30,8 @@ A named list of the calf-cow ratio, DeCesare recruitment, leslie matrix, lambda 
 Generate calf-cow ratio, DeCesare recruitment, lambda, leslie matrix and stable-stage distribution
 from demographic parameters.
 }
+\examples{
+if (interactive()) {
+    x <- bbs_demographic_summary(0.7, survival_adult_female = 0.84, survival_calf = 0.5)
+}
+}

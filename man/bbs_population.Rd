@@ -26,3 +26,17 @@ Survival can vary by period (e.g., month) and year, birth can vary by year, and 
 This model assumes that survival occurs at the end of each period and survival, ageing and birth occur at the end of each year, in that order.
 The dimensions of birth, age and survival process matrices must be identical to the length of the initial population vector.
 }
+\examples{
+if (interactive()) {
+    pop0 <- c(100, 200)
+    survival <- bbs_survival(intercept = logit(c(0.95, 0.98)))
+    fecundity <- bbs_fecundity(intercept = c(NA, logit(0.4)))
+    survival_mat <- bbs_matrix_survival_period(survival$eSurvival)
+    birth_mat <- bbs_matrix_birth_year(fecundity$eFecundity)
+    age_mat <- bbs_matrix_age(c(2, 2))
+    x <- bbs_population(pop0, 
+                        birth = birth_mat, 
+                        age = age_mat, 
+                        survival = survival_mat)
+}
+}
