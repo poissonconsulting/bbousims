@@ -39,6 +39,7 @@ Survival and fecundity arguments accept outputs of \code{\link[=bbs_survival_car
 These are converted into processes matrices using \code{\link[=bbs_matrix_survival_period]{bbs_matrix_survival_period()}} and \code{\link[=bbs_matrix_birth_year]{bbs_matrix_birth_year()}} prior to projection.
 \code{\link[=bbs_population]{bbs_population()}} is called internally to project population.
 Yearling female survival is assumed to be the same as adult female survival.
+Stages 1-6 in output matrix correspond to female calf, male calf, female yearling, male yearling, female adult and male adult, respectively.
 }
 \examples{
 if (interactive()) {
