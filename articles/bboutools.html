@@ -91,14 +91,15 @@
 
     
     
-<p>Recruitment and survival data that are the output of
+<p>Recruitment and survival data from
 <code><a href="../reference/bbs_simulate_caribou.html">bbs_simulate_caribou()</a></code> are formatted to be used as input
 for <code>bboutools</code> model fitting functions.</p>
 <p>The ability of different models to recover the ‘true’ annual survival
 and recruitment rates can be assessed for any number of simulations.</p>
-<p>First we set up a stable population with annual variation in adult
-female survival and recruitment and generate three simulated datasets
-for illustration.</p>
+<p>To demonstrate, first set up a stable population with annual
+variation in adult female survival and recruitment and generate three
+simulated datasets for illustration. Variation in recruitment could also
+be achieved by adding annual variation calf survival.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">nyear</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
@@ -201,7 +202,9 @@ true value.</p>
 <span><span class="va">gp</span></span></code></pre></div>
 <p><img src="bboutools_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <p>The true recruitment rates can be calculated from the projected
-population at each composition survey month.</p>
+population at each composition survey month. First calculate calf-cow
+ratio and calculate DeCesare adjusted recruitment to match bboutools
+predictions.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">month_composition</span> <span class="op">&lt;-</span> <span class="fl">9L</span></span>
 <span><span class="va">survey</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">12</span> <span class="op">*</span> <span class="va">nyear</span>, by <span class="op">=</span> <span class="fl">12</span><span class="op">)</span> <span class="op">+</span> <span class="va">month_composition</span></span>
@@ -214,7 +217,7 @@ population at each composition survey month.</p>
 <span>  <span class="va">caf</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span>, <span class="va">i</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span>, <span class="va">i</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">3</span>, <span class="va">i</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">5</span>, <span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="co"># decesare adjusted recruitment to match bboutools predictions</span></span>
+<span><span class="co"># decesare adjusted recruitment </span></span>
 <span><span class="va">fcaf</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">caf</span> <span class="op">*</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="va">recruitment</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">fcaf</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">fcaf</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
