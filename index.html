@@ -53,10 +53,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/bboutools.html">Working with bboutools</a>
+      <a href="articles/bboutools.html">Work with bboutools</a>
     </li>
     <li>
-      <a href="articles/general.html">General tools for population projection and allocating groups</a>
+      <a href="articles/general.html">General tools (beyond Boreal Caribou)</a>
     </li>
   </ul>
 </li>
@@ -85,8 +85,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p><code>bbousims</code> is a package to simulate Boreal Caribou population abundance over time from survival, ageing and birth processes.<br>
-Survival and recruitment data from hypothetical composition surveys and collaring are simulated from key sampling parameters.</p>
+<p><code>bbousims</code> is a package to simulate Boreal Caribou population abundance over time from survival, ageing and birth processes. Survival and recruitment data from hypothetical composition surveys and collaring are simulated from key sampling parameters.</p>
 <p>The output of <code><a href="reference/bbs_simulate_caribou.html">bbs_simulate_caribou()</a></code> is intended to be used as input data for <a href="https://poissonconsulting.github.io/bboutools/" class="external-link">bboutools</a> functions for fitting survival and recruitment models and predicting population growth.</p>
 <p>In addition, there is more general functionality for simulating population abundance given any set of stages, period duration, and survival, ageing and birth process matrices.</p>
 <div class="section level2">
@@ -103,7 +102,7 @@ Survival and recruitment data from hypothetical composition surveys and collarin
 <div class="section level3">
 <h3 id="simulate-survival-and-fecundity-rates">Simulate survival and fecundity rates<a class="anchor" aria-label="anchor" href="#simulate-survival-and-fecundity-rates"></a>
 </h3>
-<p>Simulate survival rates for each month, year and stage and fecundity rates for each year and stage. Rates are generated for female stages (female calf, female yearling and female adult). Female calf and female adult survival rates are produced from separate linear models, whereas female yearling survival is determined as an effect on female adult survival. Variation in recruitment can be specified either through calf survival and/or calves per adult female.</p>
+<p>Simulate survival rates for each month, year and stage and fecundity rates for each year and stage. Rates are generated for female stages (female calf, female yearling and female adult). Female calf and female adult survival rates are determined from separate linear models, whereas female yearling survival is determined as an effect on female adult survival.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">survival</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bbs_survival_caribou.html">bbs_survival_caribou</a></span><span class="op">(</span>survival_adult_female <span class="op">=</span> <span class="fl">0.85</span>, </span>
@@ -214,7 +213,10 @@ Survival and recruitment data from hypothetical composition surveys and collarin
 <div class="section level2">
 <h2 id="information">Information<a class="anchor" aria-label="anchor" href="#information"></a>
 </h2>
-<p>Additional information is available from the <a href="https://poissonconsulting.github.io/bbousims/" class="external-link">bbousims website</a>, including more in-depth articles.</p>
+<p>Additional information is available from the <a href="https://poissonconsulting.github.io/bbousims/" class="external-link">bbousims website</a>, including more in-depth articles:<br>
+- <a href="https://poissonconsulting.github.io/bbousims/articles/bbousims.html" class="external-link">Get Started with bbousims</a>.<br>
+- <a href="https://poissonconsulting.github.io/bbousims/articles/bboutools.html" class="external-link">Work with bboutools</a>.<br>
+- <a href="https://poissonconsulting.github.io/bbousims/articles/general.html" class="external-link">General tools (beyond Boreal Caribou)</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="bbou-suite">bbou Suite<a class="anchor" aria-label="anchor" href="#bbou-suite"></a>
