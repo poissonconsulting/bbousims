@@ -7,9 +7,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-```
-
-```{r setup}
 library(bbousims)
 ```
 
@@ -19,7 +16,7 @@ The ability of different models to recover the 'true' annual survival and recrui
 
 ```{r}
 set.seed(1)
-nyear <- 10
+nyear <- 5
 survival <- bbs_survival_caribou(survival_adult_female = 0.85, 
                                  annual_sd_adult_female = 0.2,
                                  month_sd_adult_female = 0.1,
@@ -38,7 +35,7 @@ population <- bbs_population_caribou(survival,
                                      adult_females = 500, 
                                      stochastic = FALSE)
 
-nsims <- 10
+nsims <- 3
 data <- bbs_simulate_caribou(survival = survival,
                              fecundity = fecundity,
                              nsims = nsims,
@@ -63,7 +60,7 @@ saf_annual
 ```
 
 The model coefficient estimates can then be compared to the true survival rates. 
-```{r}
+```{r fig.height=5,fig.width=5}
 library(bboutools)
 library(purrr)
 library(dplyr)
@@ -83,8 +80,8 @@ fits_survival <- map(1:nsims, function(x){
 # check that all converged
 all(
   unlist(
-    x <- map(fits_survival, function(x){
-      glance(x)
+    map(fits_survival, function(x){
+      glance(x)$converged
     })
   )
 )
@@ -95,26 +92,19 @@ preds <- map_df(1:length(fits_survival), function(x){
   pred$sim <- x
   pred
 })
-
-# summarize across simulations
-preds <- 
-  preds %>%
-  group_by(CaribouYear) %>%
-  summarize(med = median(estimate), 
-            lower = quantile(estimate, 0.025),
-            upper = quantile(estimate, 0.0975)) %>%
-  ungroup()
   
 actual <- tibble(CaribouYear = 1:nyear, actual = saf_annual)
 
  gp <- 
     ggplot(data = preds) +
-    geom_pointrange(aes(x = CaribouYear, y = estimate, ymin = lower, ymax = upper)) +
+    geom_pointrange(aes(x = CaribouYear, y = estimate, ymin = lower, ymax = upper, group = sim), size = 0.2, position = position_dodge(width = 0.3)) +
     xlab("Year") +
     scale_y_continuous("Annual Survival") +
-    geom_point(data = actual, aes(x = CaribouYear, y = actual), color = "red") 
+    geom_point(data = actual, aes(x = CaribouYear, y = actual), color = "red", size = 2) 
  gp
 ```
+
+In this case, fits for each simulated data set contain the actual value in the 95% CI. 
 
 The true recruitment rates can be calculated from the projected population at each composition survey month as 
 ```{r}
@@ -133,22 +123,15 @@ for(i in 1:ncol(x)){
 fcaf <- (caf * 0.5) 
 recruitment <- (fcaf / (1 + fcaf))
 
-actual_recruitment <- tibble(Year = 1:length(recruitment),
-                             actual = recruitment)
+actual <- tibble(CaribouYear = 1:length(recruitment), actual = recruitment)
 ```
 
-```{r}
-library(bboutools)
-library(purrr)
-library(dplyr)
-library(ggplot2)
 
-# fit model for each simulation
-# we set year_start = 1 because we assume the projected population is for the biological year
+```{r, fig.height=5,fig.width=5}
 nsims <- length(data)
 fits_recruitment <- map(1:nsims, function(x){
-  recruitments <- data[[x]]$recruitments
-  bboutools::bb_fit_recruitments(data = recruitment, 
+  recruitment <- data[[x]]$recruitment
+  bboutools::bb_fit_recruitment(data = recruitment, 
                              year_start = 1L, 
                              quiet = TRUE, 
                              nthin = 100, 
@@ -158,34 +141,24 @@ fits_recruitment <- map(1:nsims, function(x){
 # check that all converged
 all(
   unlist(
-    x <- map(fits_recruitment, function(x){
-      glance(x)
+    map(fits_recruitment, function(x){
+      glance(x)$converged
     })
   )
 )
 
-# predict annual survival
+# predict annual recruitment
 preds <- map_df(1:length(fits_recruitment), function(x){
-  pred <- bboutools::bb_predict_survival(fits_recruitment[[x]])
+  pred <- bboutools::bb_predict_recruitment(fits_recruitment[[x]])
   pred$sim <- x
   pred
 })
-
-# summarize across simulations
-preds <- 
-  preds %>%
-  group_by(CaribouYear) %>%
-  summarize(med = median(estimate), 
-            lower = quantile(estimate, 0.025),
-            upper = quantile(estimate, 0.0975)) %>%
-  ungroup()
   
-actual <- tibble(CaribouYear = 1:nyear, actual = saf_annual)
-
  gp <- 
     ggplot(data = preds) +
-    geom_pointrange(aes(x = CaribouYear, y = estimate, ymin = lower, ymax = upper)) +
+    geom_pointrange(aes(x = CaribouYear, y = estimate, ymin = lower, ymax = upper, group = sim), size = 0.2, position = position_dodge(width = 0.3)) +
     xlab("Year") +
-    scale_y_continuous("Annual Recruitment") +
-    geom_point(data = actual, aes(x = CaribouYear, y = actual), color = "red") 
+    scale_y_continuous("Annual Survival") +
+    geom_point(data = actual, aes(x = CaribouYear, y = actual), color = "red", size = 2) 
  gp
+```
