@@ -102,44 +102,51 @@ for illustration.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">nyear</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
-<span><span class="va">survival</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_survival_caribou.html">bbs_survival_caribou</a></span><span class="op">(</span>survival_adult_female <span class="op">=</span> <span class="fl">0.85</span>, </span>
-<span>                                 annual_sd_adult_female <span class="op">=</span> <span class="fl">0.2</span>,</span>
-<span>                                 month_sd_adult_female <span class="op">=</span> <span class="fl">0.1</span>,</span>
-<span>                                 survival_calf_female <span class="op">=</span> <span class="fl">0.5</span>, </span>
-<span>                                 yearling_effect <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>                                 nyear <span class="op">=</span> <span class="va">nyear</span><span class="op">)</span></span>
+<span><span class="va">survival</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_survival_caribou.html">bbs_survival_caribou</a></span><span class="op">(</span></span>
+<span>  survival_adult_female <span class="op">=</span> <span class="fl">0.85</span>,</span>
+<span>  annual_sd_adult_female <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>  month_sd_adult_female <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  survival_calf_female <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  yearling_effect <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  nyear <span class="op">=</span> <span class="va">nyear</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fecundity</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_fecundity_caribou.html">bbs_fecundity_caribou</a></span><span class="op">(</span>calves_per_adult_female <span class="op">=</span> <span class="fl">0.7</span>, </span>
-<span>                                   annual_sd <span class="op">=</span> <span class="fl">0.1</span>,</span>
-<span>                                   trend <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>                                   nyear <span class="op">=</span> <span class="va">nyear</span><span class="op">)</span></span>
+<span><span class="va">fecundity</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_fecundity_caribou.html">bbs_fecundity_caribou</a></span><span class="op">(</span></span>
+<span>  calves_per_adult_female <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>  annual_sd <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  trend <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  nyear <span class="op">=</span> <span class="va">nyear</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># use stochastic=FALSE to use deterministic matrix multiplication</span></span>
-<span><span class="va">population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_population_caribou.html">bbs_population_caribou</a></span><span class="op">(</span><span class="va">survival</span>, </span>
-<span>                                     fecundity <span class="op">=</span> <span class="va">fecundity</span>, </span>
-<span>                                     adult_females <span class="op">=</span> <span class="fl">500</span>, </span>
-<span>                                     stochastic <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_population_caribou.html">bbs_population_caribou</a></span><span class="op">(</span><span class="va">survival</span>,</span>
+<span>  fecundity <span class="op">=</span> <span class="va">fecundity</span>,</span>
+<span>  adult_females <span class="op">=</span> <span class="fl">500</span>,</span>
+<span>  stochastic <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">nsims</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_simulate_caribou.html">bbs_simulate_caribou</a></span><span class="op">(</span>survival <span class="op">=</span> <span class="va">survival</span>,</span>
-<span>                             fecundity <span class="op">=</span> <span class="va">fecundity</span>,</span>
-<span>                             nsims <span class="op">=</span> <span class="va">nsims</span>,</span>
-<span>                             adult_females <span class="op">=</span> <span class="fl">500</span>,</span>
-<span>                             proportion_adult_female <span class="op">=</span> <span class="fl">0.65</span>,</span>
-<span>                             month_composition <span class="op">=</span> <span class="fl">9L</span>,</span>
-<span>                             collared_adult_females <span class="op">=</span> <span class="fl">30</span>,</span>
-<span>                             group_size <span class="op">=</span> <span class="fl">6</span>, </span>
-<span>                             group_coverage <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_simulate_caribou.html">bbs_simulate_caribou</a></span><span class="op">(</span></span>
+<span>  survival <span class="op">=</span> <span class="va">survival</span>,</span>
+<span>  fecundity <span class="op">=</span> <span class="va">fecundity</span>,</span>
+<span>  nsims <span class="op">=</span> <span class="va">nsims</span>,</span>
+<span>  adult_females <span class="op">=</span> <span class="fl">500</span>,</span>
+<span>  proportion_adult_female <span class="op">=</span> <span class="fl">0.65</span>,</span>
+<span>  month_composition <span class="op">=</span> <span class="fl">9L</span>,</span>
+<span>  collared_adult_females <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>  group_size <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>  group_coverage <span class="op">=</span> <span class="fl">0.5</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>The true annual adult female survival rates can be calculated from
 the projected population as the product of the monthly survival rates
 for each year</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">saf</span> <span class="op">&lt;-</span> <span class="va">survival</span><span class="op">$</span><span class="va">eSurvival</span><span class="op">[</span>,,<span class="fl">3</span><span class="op">]</span></span>
+<code class="sourceCode R"><span><span class="va">saf</span> <span class="op">&lt;-</span> <span class="va">survival</span><span class="op">$</span><span class="va">eSurvival</span><span class="op">[</span>, , <span class="fl">3</span><span class="op">]</span></span>
 <span><span class="va">nyear</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">saf</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
 <span></span>
 <span><span class="va">saf_annual</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a></span><span class="op">(</span>length <span class="op">=</span> <span class="va">nyear</span><span class="op">)</span></span>
-<span><span class="kw">for</span><span class="op">(</span><span class="va">yr</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">nyear</span><span class="op">)</span><span class="op">{</span></span>
-<span>  <span class="va">saf_annual</span><span class="op">[</span><span class="va">yr</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="va">saf</span><span class="op">[</span>,<span class="va">yr</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">yr</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">nyear</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">saf_annual</span><span class="op">[</span><span class="va">yr</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="va">saf</span><span class="op">[</span>, <span class="va">yr</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="va">saf_annual</span></span>
 <span><span class="co">#&gt; [1] 0.8322252 0.8552494 0.8257730 0.8886147 0.8590784</span></span></code></pre></div>
@@ -154,18 +161,20 @@ survival rates.</p>
 <span><span class="co"># fit model for each simulation</span></span>
 <span><span class="co"># we set year_start = 1 because we assume the projected population is for the biological year</span></span>
 <span><span class="va">nsims</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
-<span><span class="va">fits_survival</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">nsims</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span><span class="va">fits_survival</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">nsims</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">survival</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">survival</span></span>
-<span>  <span class="fu">bboutools</span><span class="fu">::</span><span class="fu"><a href="https://poissonconsulting.github.io/bboutools/reference/bb_fit_survival.html" class="external-link">bb_fit_survival</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">survival</span>, </span>
-<span>                             year_start <span class="op">=</span> <span class="fl">1L</span>, </span>
-<span>                             quiet <span class="op">=</span> <span class="cn">TRUE</span>, nthin <span class="op">=</span> <span class="fl">200</span>, </span>
-<span>                             niters <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
+<span>  <span class="fu">bboutools</span><span class="fu">::</span><span class="fu"><a href="https://poissonconsulting.github.io/bboutools/reference/bb_fit_survival.html" class="external-link">bb_fit_survival</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">survival</span>,</span>
+<span>    year_start <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>    quiet <span class="op">=</span> <span class="cn">TRUE</span>, nthin <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>    niters <span class="op">=</span> <span class="fl">500</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>Check that all models have converged</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">fits_survival</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">fits_survival</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>      <span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">converged</span></span>
 <span>    <span class="op">}</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
@@ -177,56 +186,58 @@ true value.</p>
 <code class="sourceCode R"><span><span class="va">actual</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>CaribouYear <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">nyear</span>, actual <span class="op">=</span> <span class="va">saf_annual</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># predict annual survival</span></span>
-<span><span class="va">preds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map_dfr.html" class="external-link">map_df</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">fits_survival</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span><span class="va">preds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map_dfr.html" class="external-link">map_df</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">fits_survival</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu">bboutools</span><span class="fu">::</span><span class="fu"><a href="https://poissonconsulting.github.io/bboutools/reference/bb_predict_survival.html" class="external-link">bb_predict_survival</a></span><span class="op">(</span><span class="va">fits_survival</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span>  <span class="va">pred</span><span class="op">$</span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="va">x</span></span>
 <span>  <span class="va">pred</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
-<span> <span class="va">gp</span> <span class="op">&lt;-</span> </span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">preds</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html" class="external-link">geom_pointrange</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">CaribouYear</span>, y <span class="op">=</span> <span class="va">estimate</span>, ymin <span class="op">=</span> <span class="va">lower</span>, ymax <span class="op">=</span> <span class="va">upper</span>, group <span class="op">=</span> <span class="va">sim</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.2</span>, position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Year"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span><span class="st">"Annual Survival"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">actual</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">CaribouYear</span>, y <span class="op">=</span> <span class="va">actual</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"red"</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> </span>
-<span> <span class="va">gp</span></span></code></pre></div>
+<span><span class="va">gp</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">preds</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html" class="external-link">geom_pointrange</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">CaribouYear</span>, y <span class="op">=</span> <span class="va">estimate</span>, ymin <span class="op">=</span> <span class="va">lower</span>, ymax <span class="op">=</span> <span class="va">upper</span>, group <span class="op">=</span> <span class="va">sim</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.2</span>, position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Year"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span><span class="st">"Annual Survival"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">actual</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">CaribouYear</span>, y <span class="op">=</span> <span class="va">actual</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"red"</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">gp</span></span></code></pre></div>
 <p><img src="bboutools_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <p>The true recruitment rates can be calculated from the projected
 population at each composition survey month.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">month_composition</span> <span class="op">=</span> <span class="fl">9L</span></span>
-<span><span class="va">survey</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">12</span><span class="op">*</span><span class="va">nyear</span>, by <span class="op">=</span> <span class="fl">12</span><span class="op">)</span> <span class="op">+</span> <span class="va">month_composition</span></span>
+<code class="sourceCode R"><span><span class="va">month_composition</span> <span class="op">&lt;-</span> <span class="fl">9L</span></span>
+<span><span class="va">survey</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">12</span> <span class="op">*</span> <span class="va">nyear</span>, by <span class="op">=</span> <span class="fl">12</span><span class="op">)</span> <span class="op">+</span> <span class="va">month_composition</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">population</span><span class="op">[</span>, <span class="va">survey</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># calves per adult female</span></span>
 <span><span class="va">caf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a></span><span class="op">(</span>length <span class="op">=</span> <span class="va">nyear</span><span class="op">)</span></span>
-<span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># female calves + male calves / female yearlings + female adults</span></span>
-<span>  <span class="va">caf</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span>,<span class="va">i</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span>,<span class="va">i</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">3</span>,<span class="va">i</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">5</span>, <span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="va">caf</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span>, <span class="va">i</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span>, <span class="va">i</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">3</span>, <span class="va">i</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">5</span>, <span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># decesare adjusted recruitment to match bboutools predictions</span></span>
-<span><span class="va">fcaf</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">caf</span> <span class="op">*</span> <span class="fl">0.5</span><span class="op">)</span> </span>
+<span><span class="va">fcaf</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">caf</span> <span class="op">*</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="va">recruitment</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">fcaf</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">fcaf</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">actual</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>CaribouYear <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">recruitment</span><span class="op">)</span>, actual <span class="op">=</span> <span class="va">recruitment</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">actual</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>CaribouYear <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">recruitment</span><span class="op">)</span>, actual <span class="op">=</span> <span class="va">recruitment</span><span class="op">)</span></span></code></pre></div>
 <p>The model coefficient estimates for each simulation can be compared
 to the true recruitment rates.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nsims</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
-<span><span class="va">fits_recruitment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">nsims</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span><span class="va">fits_recruitment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">nsims</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">recruitment</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">recruitment</span></span>
-<span>  <span class="fu">bboutools</span><span class="fu">::</span><span class="fu"><a href="https://poissonconsulting.github.io/bboutools/reference/bb_fit_recruitment.html" class="external-link">bb_fit_recruitment</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">recruitment</span>, </span>
-<span>                             year_start <span class="op">=</span> <span class="fl">1L</span>, </span>
-<span>                             quiet <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>                             nthin <span class="op">=</span> <span class="fl">100</span>, </span>
-<span>                             niters <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
+<span>  <span class="fu">bboutools</span><span class="fu">::</span><span class="fu"><a href="https://poissonconsulting.github.io/bboutools/reference/bb_fit_recruitment.html" class="external-link">bb_fit_recruitment</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">recruitment</span>,</span>
+<span>    year_start <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>    quiet <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    nthin <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>    niters <span class="op">=</span> <span class="fl">500</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>Ensure all models have converged.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">fits_recruitment</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">fits_recruitment</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>      <span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">converged</span></span>
 <span>    <span class="op">}</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
@@ -236,19 +247,19 @@ to the true recruitment rates.</p>
 contains true value.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># predict annual recruitment</span></span>
-<span><span class="va">preds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map_dfr.html" class="external-link">map_df</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">fits_recruitment</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span><span class="va">preds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map_dfr.html" class="external-link">map_df</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">fits_recruitment</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu">bboutools</span><span class="fu">::</span><span class="fu"><a href="https://poissonconsulting.github.io/bboutools/reference/bb_predict_recruitment.html" class="external-link">bb_predict_recruitment</a></span><span class="op">(</span><span class="va">fits_recruitment</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span>  <span class="va">pred</span><span class="op">$</span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="va">x</span></span>
 <span>  <span class="va">pred</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
-<span> <span class="va">gp</span> <span class="op">&lt;-</span> </span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">preds</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html" class="external-link">geom_pointrange</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">CaribouYear</span>, y <span class="op">=</span> <span class="va">estimate</span>, ymin <span class="op">=</span> <span class="va">lower</span>, ymax <span class="op">=</span> <span class="va">upper</span>, group <span class="op">=</span> <span class="va">sim</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.2</span>, position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Year"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span><span class="st">"Annual Survival"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">actual</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">CaribouYear</span>, y <span class="op">=</span> <span class="va">actual</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"red"</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> </span>
-<span> <span class="va">gp</span></span></code></pre></div>
+<span><span class="va">gp</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">preds</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html" class="external-link">geom_pointrange</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">CaribouYear</span>, y <span class="op">=</span> <span class="va">estimate</span>, ymin <span class="op">=</span> <span class="va">lower</span>, ymax <span class="op">=</span> <span class="va">upper</span>, group <span class="op">=</span> <span class="va">sim</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.2</span>, position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Year"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span><span class="st">"Annual Survival"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">actual</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">CaribouYear</span>, y <span class="op">=</span> <span class="va">actual</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"red"</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">gp</span></span></code></pre></div>
 <p><img src="bboutools_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
   </div>
 

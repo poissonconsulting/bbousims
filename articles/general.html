@@ -110,12 +110,14 @@ each stage.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co"># 2 stages</span></span>
-<span><span class="va">survival</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_survival.html">bbs_survival</a></span><span class="op">(</span>intercept <span class="op">=</span> <span class="fu"><a href="https://poissonconsulting.github.io/extras/reference/logit.html" class="external-link">logit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.94</span>, <span class="fl">0.98</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                         trend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.3</span><span class="op">)</span>,</span>
-<span>                         annual_sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span>                         period_sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span>                         nyear <span class="op">=</span> <span class="fl">3</span>, </span>
-<span>                         nperiod_within_year <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="va">survival</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_survival.html">bbs_survival</a></span><span class="op">(</span></span>
+<span>  intercept <span class="op">=</span> <span class="fu"><a href="https://poissonconsulting.github.io/extras/reference/logit.html" class="external-link">logit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.94</span>, <span class="fl">0.98</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  trend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.3</span><span class="op">)</span>,</span>
+<span>  annual_sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>  period_sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>  nyear <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  nperiod_within_year <span class="op">=</span> <span class="fl">4</span></span>
+<span><span class="op">)</span></span>
 <span><span class="va">survival</span><span class="op">$</span><span class="va">eSurvival</span></span>
 <span><span class="co">#&gt; , , 1</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -137,10 +139,12 @@ trend and annual random effect for each stage, on the log-odds scale.
 Setting intercept to NA will force all rates in that stage to be 0.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">fecundity</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_fecundity.html">bbs_fecundity</a></span><span class="op">(</span>intercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fu"><a href="https://poissonconsulting.github.io/extras/reference/logit.html" class="external-link">logit</a></span><span class="op">(</span><span class="fl">0.4</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                           trend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="op">-</span><span class="fl">0.2</span><span class="op">)</span>,</span>
-<span>                           annual_sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
-<span>                           nyear <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">fecundity</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_fecundity.html">bbs_fecundity</a></span><span class="op">(</span></span>
+<span>  intercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fu"><a href="https://poissonconsulting.github.io/extras/reference/logit.html" class="external-link">logit</a></span><span class="op">(</span><span class="fl">0.4</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  trend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="op">-</span><span class="fl">0.2</span><span class="op">)</span>,</span>
+<span>  annual_sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  nyear <span class="op">=</span> <span class="fl">3</span></span>
+<span><span class="op">)</span></span>
 <span><span class="va">fecundity</span><span class="op">$</span><span class="va">eFecundity</span></span>
 <span><span class="co">#&gt;      [,1]      [,2]</span></span>
 <span><span class="co">#&gt; [1,]    0 0.3850636</span></span>
@@ -157,16 +161,17 @@ only one recruit stage.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">survival_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_matrix_survival_period.html">bbs_matrix_survival_period</a></span><span class="op">(</span><span class="va">survival</span><span class="op">$</span><span class="va">eSurvival</span><span class="op">)</span></span>
 <span><span class="va">birth_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_matrix_birth_year.html">bbs_matrix_birth_year</a></span><span class="op">(</span><span class="va">fecundity</span><span class="op">$</span><span class="va">eFecundity</span>,</span>
-<span>                                   female_recruit_stage <span class="op">=</span> <span class="fl">1</span>, </span>
-<span>                                   male_recruit_stage <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span>  female_recruit_stage <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  male_recruit_stage <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co"># first period, first year</span></span>
-<span><span class="va">survival_mat</span><span class="op">[</span>,,<span class="fl">1</span>,<span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">survival_mat</span><span class="op">[</span>, , <span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span></span>
 <span><span class="co">#&gt;          [,1]      [,2]</span></span>
 <span><span class="co">#&gt; [1,] 0.940975 0.0000000</span></span>
 <span><span class="co">#&gt; [2,] 0.000000 0.9840585</span></span>
 <span></span>
 <span><span class="co"># first year</span></span>
-<span><span class="va">birth_mat</span><span class="op">[</span>,,<span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">birth_mat</span><span class="op">[</span>, , <span class="fl">1</span><span class="op">]</span></span>
 <span><span class="co">#&gt;      [,1]      [,2]</span></span>
 <span><span class="co">#&gt; [1,]    1 0.1925318</span></span>
 <span><span class="co">#&gt; [2,]    0 1.0000000</span></span></code></pre></div>
@@ -193,7 +198,7 @@ is the population and probability is the rate of interest.</p>
 matrix for the first period of the first year</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pop0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">52</span><span class="op">)</span></span>
-<span><span class="va">survival_mat1</span> <span class="op">&lt;-</span> <span class="va">survival_mat</span><span class="op">[</span>,,<span class="fl">1</span>,<span class="fl">1</span><span class="op">]</span></span></code></pre></div>
+<span><span class="va">survival_mat1</span> <span class="op">&lt;-</span> <span class="va">survival_mat</span><span class="op">[</span>, , <span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span></span></code></pre></div>
 <p>regular (deterministic) matrix multiplication yields</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">survival_mat1</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">pop0</span></span>
@@ -212,10 +217,11 @@ in time from survival, age and birth process matrices. Survival occur at
 the end of each period, and survival, ageing and birth occur at the end
 of each year, in that order.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_population.html">bbs_population</a></span><span class="op">(</span><span class="va">pop0</span>, </span>
-<span>                             birth <span class="op">=</span> <span class="va">birth_mat</span>, </span>
-<span>                             age <span class="op">=</span> <span class="va">age_mat</span>, </span>
-<span>                             survival <span class="op">=</span> <span class="va">survival_mat</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_population.html">bbs_population</a></span><span class="op">(</span><span class="va">pop0</span>,</span>
+<span>  birth <span class="op">=</span> <span class="va">birth_mat</span>,</span>
+<span>  age <span class="op">=</span> <span class="va">age_mat</span>,</span>
+<span>  survival <span class="op">=</span> <span class="va">survival_mat</span></span>
+<span><span class="op">)</span></span>
 <span><span class="va">population</span></span>
 <span><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]</span></span>
 <span><span class="co">#&gt; [1,]   25   23   23   20   10   10   10   10   15    13    12    12    15</span></span>
@@ -237,9 +243,10 @@ previous group.</p>
 <p>The output is a list of lists containing the individuals (identified
 by stage) in each group at each time period.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_population_groups.html">bbs_population_groups</a></span><span class="op">(</span><span class="va">population</span>, </span>
-<span>                                group_size_lambda <span class="op">=</span> <span class="fl">20</span>, </span>
-<span>                                group_size_theta <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_population_groups.html">bbs_population_groups</a></span><span class="op">(</span><span class="va">population</span>,</span>
+<span>  group_size_lambda <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>  group_size_theta <span class="op">=</span> <span class="fl">0</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># first time period</span></span>
 <span><span class="va">groups</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
@@ -266,10 +273,11 @@ biological year start) and allows the user to set the sample coverage
 (i.e., the proportion of groups observed). Groups are sampled
 randomly.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_population_groups_survey.html">bbs_population_groups_survey</a></span><span class="op">(</span><span class="va">population</span>, </span>
-<span>                                       group_size_lambda <span class="op">=</span> <span class="fl">20</span>, </span>
-<span>                                       month_composition <span class="op">=</span> <span class="fl">3L</span>, </span>
-<span>                                       group_coverage <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_population_groups_survey.html">bbs_population_groups_survey</a></span><span class="op">(</span><span class="va">population</span>,</span>
+<span>  group_size_lambda <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>  month_composition <span class="op">=</span> <span class="fl">3L</span>,</span>
+<span>  group_coverage <span class="op">=</span> <span class="fl">0.2</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># sampled groups in first time period</span></span>
 <span><span class="va">groups</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>

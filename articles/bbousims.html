@@ -153,17 +153,21 @@ female.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">nyear</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
-<span><span class="va">survival</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_survival_caribou.html">bbs_survival_caribou</a></span><span class="op">(</span>survival_adult_female <span class="op">=</span> <span class="fl">0.85</span>, </span>
-<span>                                 annual_sd_adult_female <span class="op">=</span> <span class="fl">0.2</span>,</span>
-<span>                                 month_sd_adult_female <span class="op">=</span> <span class="fl">0.1</span>,</span>
-<span>                                 survival_calf_female <span class="op">=</span> <span class="fl">0.5</span>, </span>
-<span>                                 yearling_effect <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>                                 nyear <span class="op">=</span> <span class="va">nyear</span><span class="op">)</span></span>
+<span><span class="va">survival</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_survival_caribou.html">bbs_survival_caribou</a></span><span class="op">(</span></span>
+<span>  survival_adult_female <span class="op">=</span> <span class="fl">0.85</span>,</span>
+<span>  annual_sd_adult_female <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>  month_sd_adult_female <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  survival_calf_female <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  yearling_effect <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  nyear <span class="op">=</span> <span class="va">nyear</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fecundity</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_fecundity_caribou.html">bbs_fecundity_caribou</a></span><span class="op">(</span>calves_per_adult_female <span class="op">=</span> <span class="fl">0.7</span>, </span>
-<span>                                   annual_sd <span class="op">=</span> <span class="fl">0.1</span>,</span>
-<span>                                   trend <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>                                   nyear <span class="op">=</span> <span class="va">nyear</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">fecundity</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_fecundity_caribou.html">bbs_fecundity_caribou</a></span><span class="op">(</span></span>
+<span>  calves_per_adult_female <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>  annual_sd <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  trend <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  nyear <span class="op">=</span> <span class="va">nyear</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>The output of <code><a href="../reference/bbs_survival_caribou.html">bbs_survival_caribou()</a></code> is a list
 containing the intercept (<code>b0</code>), trend (<code>bYear</code>),
 individual random effects (<code>bAnnual</code>, <code>bMonth</code>,
@@ -173,7 +177,7 @@ and <code>bAnnualMonth</code>) and the expected monthly survival,
 month, year and stage.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># adult female survival rates for the first 5 years</span></span>
-<span><span class="va">survival</span><span class="op">$</span><span class="va">eSurvival</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">3</span><span class="op">]</span></span>
+<span><span class="va">survival</span><span class="op">$</span><span class="va">eSurvival</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">3</span><span class="op">]</span></span>
 <span><span class="co">#&gt;            [,1]      [,2]      [,3]      [,4]      [,5]</span></span>
 <span><span class="co">#&gt;  [1,] 0.9834999 0.9859332 0.9828071 0.9893564 0.9863321</span></span>
 <span><span class="co">#&gt;  [2,] 0.9854934 0.9876364 0.9848830 0.9906491 0.9879876</span></span>
@@ -195,7 +199,7 @@ annual calves per adult female, <code>eFecundity</code>.</p>
 each year and stage.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># adult female fecundity rates</span></span>
-<span><span class="va">fecundity</span><span class="op">$</span><span class="va">eFecundity</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span></span>
+<span><span class="va">fecundity</span><span class="op">$</span><span class="va">eFecundity</span><span class="op">[</span>, <span class="fl">3</span><span class="op">]</span></span>
 <span><span class="co">#&gt; [1] 0.7194392 0.7269931 0.7323715 0.7482302 0.7550096</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -212,7 +216,7 @@ multiply by an initial population vector.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">initial_pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">80</span>, <span class="fl">180</span><span class="op">)</span></span>
-<span><span class="va">survival_mat1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_matrix_survival.html">bbs_matrix_survival</a></span><span class="op">(</span><span class="va">survival</span><span class="op">$</span><span class="va">eSurvival</span><span class="op">[</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">survival_mat1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_matrix_survival.html">bbs_matrix_survival</a></span><span class="op">(</span><span class="va">survival</span><span class="op">$</span><span class="va">eSurvival</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">survival_mat1</span> <span class="op"><a href="../reference/grapes-times-b-grapes.html">%*b%</a></span> <span class="va">initial_pop</span></span>
 <span><span class="co">#&gt;      [,1]</span></span>
 <span><span class="co">#&gt; [1,]   96</span></span>
@@ -226,16 +230,17 @@ intercept and sex ratio (see <code><a href="../reference/bbs_demographic_summary
 details). Population abundance for male stages are based on
 user-provided sex ratios.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_population_caribou.html">bbs_population_caribou</a></span><span class="op">(</span><span class="va">survival</span>, </span>
-<span>                                     fecundity <span class="op">=</span> <span class="va">fecundity</span>, </span>
-<span>                                     adult_females <span class="op">=</span> <span class="fl">500</span>,</span>
-<span>                                     proportion_adult_female <span class="op">=</span> <span class="fl">0.65</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_population_caribou.html">bbs_population_caribou</a></span><span class="op">(</span><span class="va">survival</span>,</span>
+<span>  fecundity <span class="op">=</span> <span class="va">fecundity</span>,</span>
+<span>  adult_females <span class="op">=</span> <span class="fl">500</span>,</span>
+<span>  proportion_adult_female <span class="op">=</span> <span class="fl">0.65</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>The output is a matrix with abundance for each period and stage. The
 first period is the initial population and period 13 is the final month
 of the first year.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># projected population for first year</span></span>
-<span><span class="va">population</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">13</span><span class="op">]</span></span>
+<span><span class="va">population</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">13</span><span class="op">]</span></span>
 <span><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]</span></span>
 <span><span class="co">#&gt; [1,]  177  163  149  145  136  129  123  118  113   108   102    98   173</span></span>
 <span><span class="co">#&gt; [2,]  152  178  158  148  134  133  128  118  104   107   116   103   172</span></span>
@@ -250,10 +255,12 @@ of the first year.</p>
 (i.e., lambda, recruitment, stable stage distribution) prior to
 simulating data, e.g., to assess the stability of the population.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/bbs_demographic_summary.html">bbs_demographic_summary</a></span><span class="op">(</span>calves_per_adult_female <span class="op">=</span> <span class="fl">0.7</span>,</span>
-<span>                        survival_adult_female <span class="op">=</span> <span class="fl">0.85</span>, </span>
-<span>                        survival_calf <span class="op">=</span> <span class="fl">0.5</span>, </span>
-<span>                        proportion_female <span class="op">=</span> <span class="fl">0.65</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/bbs_demographic_summary.html">bbs_demographic_summary</a></span><span class="op">(</span></span>
+<span>  calves_per_adult_female <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>  survival_adult_female <span class="op">=</span> <span class="fl">0.85</span>,</span>
+<span>  survival_calf <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  proportion_female <span class="op">=</span> <span class="fl">0.65</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co">#&gt; $calf_cow_ratio</span></span>
 <span><span class="co">#&gt; [1] 0.2745098</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -271,18 +278,23 @@ cause higher variation and downward projection of population.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">nyear</span> <span class="op">&lt;-</span> <span class="fl">20</span></span>
-<span><span class="va">survival2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_survival_caribou.html">bbs_survival_caribou</a></span><span class="op">(</span>survival_adult_female <span class="op">=</span> <span class="fl">0.85</span>, </span>
-<span>                                 annual_sd_adult_female <span class="op">=</span> <span class="fl">0.6</span>,</span>
-<span>                                 trend_adult_female <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span>,</span>
-<span>                                 nyear <span class="op">=</span> <span class="va">nyear</span><span class="op">)</span></span>
+<span><span class="va">survival2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_survival_caribou.html">bbs_survival_caribou</a></span><span class="op">(</span></span>
+<span>  survival_adult_female <span class="op">=</span> <span class="fl">0.85</span>,</span>
+<span>  annual_sd_adult_female <span class="op">=</span> <span class="fl">0.6</span>,</span>
+<span>  trend_adult_female <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span>,</span>
+<span>  nyear <span class="op">=</span> <span class="va">nyear</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fecundity2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_fecundity_caribou.html">bbs_fecundity_caribou</a></span><span class="op">(</span>calves_per_adult_female <span class="op">=</span> <span class="fl">0.8</span>,</span>
-<span>                                   nyear <span class="op">=</span> <span class="va">nyear</span><span class="op">)</span></span>
+<span><span class="va">fecundity2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_fecundity_caribou.html">bbs_fecundity_caribou</a></span><span class="op">(</span></span>
+<span>  calves_per_adult_female <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  nyear <span class="op">=</span> <span class="va">nyear</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_population_caribou.html">bbs_population_caribou</a></span><span class="op">(</span><span class="va">survival2</span>, </span>
-<span>                                     fecundity <span class="op">=</span> <span class="va">fecundity2</span>, </span>
-<span>                                     adult_females <span class="op">=</span> <span class="fl">500</span>,</span>
-<span>                                     proportion_adult_female <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="va">population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_population_caribou.html">bbs_population_caribou</a></span><span class="op">(</span><span class="va">survival2</span>,</span>
+<span>  fecundity <span class="op">=</span> <span class="va">fecundity2</span>,</span>
+<span>  adult_females <span class="op">=</span> <span class="fl">500</span>,</span>
+<span>  proportion_adult_female <span class="op">=</span> <span class="fl">0.5</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/bbs_plot_population.html">bbs_plot_population</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span></span></code></pre></div>
 <p><img src="bbousims_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
@@ -299,15 +311,17 @@ abundance, survival, and recruitment data.frames for each
 simulation.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_simulate_caribou.html">bbs_simulate_caribou</a></span><span class="op">(</span>survival <span class="op">=</span> <span class="va">survival</span>,</span>
-<span>                             fecundity <span class="op">=</span> <span class="va">fecundity</span>,</span>
-<span>                             nsims <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>                             adult_females <span class="op">=</span> <span class="fl">500</span>,</span>
-<span>                             proportion_adult_female <span class="op">=</span> <span class="fl">0.65</span>,</span>
-<span>                             month_composition <span class="op">=</span> <span class="fl">9L</span>,</span>
-<span>                             collared_adult_females <span class="op">=</span> <span class="fl">50</span>,</span>
-<span>                             group_size <span class="op">=</span> <span class="fl">6</span>, </span>
-<span>                             group_coverage <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_simulate_caribou.html">bbs_simulate_caribou</a></span><span class="op">(</span></span>
+<span>  survival <span class="op">=</span> <span class="va">survival</span>,</span>
+<span>  fecundity <span class="op">=</span> <span class="va">fecundity</span>,</span>
+<span>  nsims <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  adult_females <span class="op">=</span> <span class="fl">500</span>,</span>
+<span>  proportion_adult_female <span class="op">=</span> <span class="fl">0.65</span>,</span>
+<span>  month_composition <span class="op">=</span> <span class="fl">9L</span>,</span>
+<span>  collared_adult_females <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  group_size <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>  group_coverage <span class="op">=</span> <span class="fl">0.3</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Key sampling parameters for recruitment data include month of
 composition survey mean group size, minimum group size, maximum group
 size (as proportion of total population), proportion of groups observed
