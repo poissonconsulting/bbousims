@@ -82,229 +82,147 @@
 </h1></div>
 <!-- badges: start -->
 
-<p><code>bbousims</code> contains some general functionality for simulating population change of life stages over time from survival, ageing and birth processes.</p>
-<p>In addition, there are more user-friendly functions for simulating Boreal Caribou population change, recruitment data from hypothetical composition surveys and survival data from hypothetical collaring.</p>
+<p><code>bbousims</code> is a package to simulate Boreal Caribou population abundance over time from survival, ageing and birth processes.<br>
+Survival and recruitment data from hypothetical composition surveys and collaring are simulated from key sampling parameters.</p>
+<p>The output of <code><a href="reference/bbs_simulate_caribou.html">bbs_simulate_caribou()</a></code> is intended to be used as input data for <a href="https://poissonconsulting.github.io/bboutools/" class="external-link">bboutools</a> functions for fitting survival and recruitment models and predicting population growth.</p>
+<p>In addition, there is more general functionality for simulating population abundance given any set of stages, period duration, and survival, ageing and birth process matrices.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the development version of bbousims from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"poissonconsulting/bbousims"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"poissonconsulting/bbousims"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="general-tools-for-simulating-populations-from-survival-ageing-and-birth">General tools for simulating populations from survival, ageing and birth<a class="anchor" aria-label="anchor" href="#general-tools-for-simulating-populations-from-survival-ageing-and-birth"></a>
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <div class="section level3">
-<h3 id="survival-and-fecundity-rates">Survival and fecundity rates<a class="anchor" aria-label="anchor" href="#survival-and-fecundity-rates"></a>
+<h3 id="simulate-survival-and-fecundity-rates">Simulate survival and fecundity rates<a class="anchor" aria-label="anchor" href="#simulate-survival-and-fecundity-rates"></a>
 </h3>
-<p><code><a href="reference/bbs_survival.html">bbs_survival()</a></code> and <code><a href="reference/bbs_fecundity.html">bbs_fecundity()</a></code> can be used to stochastically generate survival and fecundity rates over time. Survival varies by period (e.g., month, season) with options to set the intercept, year trend, annual random effect, period random effect and period within annual random effect for each stage, on the log-odds scale.</p>
+<p>Simulate survival rates for each month, year and stage and fecundity rates for each year and stage. Rates are generated for female stages (female calf, female yearling and female adult). Female calf and female adult survival rates are produced from separate linear models, whereas female yearling survival is determined as an effect on female adult survival. Variation in recruitment can be specified either through calf survival and/or calves per adult female.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">survival</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bbs_survival.html">bbs_survival</a></span><span class="op">(</span>intercept <span class="op">=</span> <span class="fu"><a href="https://poissonconsulting.github.io/extras/reference/logit.html" class="external-link">logit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.94</span>, <span class="fl">0.98</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                         trend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.3</span><span class="op">)</span>,</span>
-<span>                         annual_sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span>                         period_sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span>                         nyear <span class="op">=</span> <span class="fl">3</span>, </span>
-<span>                         nperiod_within_year <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="va">survival</span></span>
-<span><span class="co">#&gt; , , 1</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;           [,1]      [,2]      [,3]</span></span>
-<span><span class="co">#&gt; [1,] 0.9428551 0.9384019 0.9432026</span></span>
-<span><span class="co">#&gt; [2,] 0.9397805 0.9351042 0.9401455</span></span>
-<span><span class="co">#&gt; [3,] 0.9355031 0.9305192 0.9358923</span></span>
-<span><span class="co">#&gt; [4,] 0.9487064 0.9446824 0.9490202</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; , , 2</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;           [,1]      [,2]      [,3]</span></span>
-<span><span class="co">#&gt; [1,] 0.9801348 0.9837630 0.9899028</span></span>
-<span><span class="co">#&gt; [2,] 0.9775668 0.9816552 0.9885828</span></span>
-<span><span class="co">#&gt; [3,] 0.9791850 0.9829836 0.9894149</span></span>
-<span><span class="co">#&gt; [4,] 0.9796768 0.9833872 0.9896676</span></span></code></pre></div>
-<p>Fecundity varies by year, with options to set the intercept, year trend and annual random effect for each stage, on the log-odds scale. Setting intercept to NA will force all rates in that stage to be 0.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">survival</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bbs_survival_caribou.html">bbs_survival_caribou</a></span><span class="op">(</span>survival_adult_female <span class="op">=</span> <span class="fl">0.85</span>, </span>
+<span>                                 annual_sd_adult_female <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>                                 trend_adult_female <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span>,</span>
+<span>                                 month_sd_adult_female <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>                                 survival_calf_female <span class="op">=</span> <span class="fl">0.5</span>, </span>
+<span>                                 yearling_effect <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>                                 nyear <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">fecundity</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bbs_fecundity_caribou.html">bbs_fecundity_caribou</a></span><span class="op">(</span>calves_per_adult_female <span class="op">=</span> <span class="fl">0.7</span>, </span>
+<span>                                   annual_sd <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>                                   nyear <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<p>View expected monthly survival rates (‘eSurvival’) for adult females (stage 3) by each month and year.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fecundity</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bbs_fecundity.html">bbs_fecundity</a></span><span class="op">(</span>intercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fu"><a href="https://poissonconsulting.github.io/extras/reference/logit.html" class="external-link">logit</a></span><span class="op">(</span><span class="fl">0.4</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                           trend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="op">-</span><span class="fl">0.2</span><span class="op">)</span>,</span>
-<span>                           annual_sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
-<span>                           nyear <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="va">fecundity</span></span>
-<span><span class="co">#&gt;      [,1]      [,2]</span></span>
-<span><span class="co">#&gt; [1,]    0 0.3477818</span></span>
-<span><span class="co">#&gt; [2,]    0 0.3037460</span></span>
-<span><span class="co">#&gt; [3,]    0 0.3347985</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">survival</span><span class="op">$</span><span class="va">eSurvival</span><span class="op">[</span>,,<span class="fl">3</span><span class="op">]</span></span>
+<span><span class="co">#&gt;            [,1]      [,2]      [,3]      [,4]      [,5]</span></span>
+<span><span class="co">#&gt;  [1,] 0.9834999 0.9844767 0.9790802 0.9856860 0.9797460</span></span>
+<span><span class="co">#&gt;  [2,] 0.9854934 0.9863539 0.9815977 0.9874188 0.9821849</span></span>
+<span><span class="co">#&gt;  [3,] 0.9858478 0.9866875 0.9820455 0.9877267 0.9826186</span></span>
+<span><span class="co">#&gt;  [4,] 0.9856192 0.9864723 0.9817566 0.9875280 0.9823388</span></span>
+<span><span class="co">#&gt;  [5,] 0.9843153 0.9852446 0.9801095 0.9863948 0.9807433</span></span>
+<span><span class="co">#&gt;  [6,] 0.9868873 0.9876661 0.9833596 0.9886298 0.9838915</span></span>
+<span><span class="co">#&gt;  [7,] 0.9853533 0.9862219 0.9814206 0.9872969 0.9820133</span></span>
+<span><span class="co">#&gt;  [8,] 0.9838201 0.9847783 0.9794844 0.9859644 0.9801376</span></span>
+<span><span class="co">#&gt;  [9,] 0.9810780 0.9821956 0.9760254 0.9835796 0.9767862</span></span>
+<span><span class="co">#&gt; [10,] 0.9863772 0.9871859 0.9827146 0.9881866 0.9832668</span></span>
+<span><span class="co">#&gt; [11,] 0.9847123 0.9856185 0.9806110 0.9867400 0.9812291</span></span>
+<span><span class="co">#&gt; [12,] 0.9847556 0.9856591 0.9806656 0.9867775 0.9812819</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="process-matrices">Process matrices<a class="anchor" aria-label="anchor" href="#process-matrices"></a>
+<h3 id="project-population">Project population<a class="anchor" aria-label="anchor" href="#project-population"></a>
 </h3>
-<p>Survival and fecundity rate arrays can be converted into process matrices for use in BAS population projection. In this example there are two stages representing recruit and adult.<br><code>male_recruit_stage</code> is set to NULL to indicate that there is only one recruit stage.</p>
+<p>Population is projected from survival and fecundity rates. Survival occurs at the end of each month and survival, ageing and birth occur at the end of each year, in that order.</p>
+<p>Initial population abundance for each stage is determined from the initial number of adult females set by the user and the calculated stable stage distribution (see <code><a href="reference/bbs_demographic_summary.html">bbs_demographic_summary()</a></code> for details). Population abundance for male stages are based on user-provided sex ratios.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">survival_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bbs_matrix_survival_period.html">bbs_matrix_survival_period</a></span><span class="op">(</span><span class="va">survival</span><span class="op">)</span></span>
-<span><span class="va">birth_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bbs_matrix_birth_year.html">bbs_matrix_birth_year</a></span><span class="op">(</span><span class="va">fecundity</span>, female_recruit_stage <span class="op">=</span> <span class="fl">1</span>, male_recruit_stage <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span><span class="co"># first period, first year</span></span>
-<span><span class="va">survival_mat</span><span class="op">[</span>,,<span class="fl">1</span>,<span class="fl">1</span><span class="op">]</span></span>
-<span><span class="co">#&gt;           [,1]      [,2]</span></span>
-<span><span class="co">#&gt; [1,] 0.9428551 0.0000000</span></span>
-<span><span class="co">#&gt; [2,] 0.0000000 0.9801348</span></span>
-<span></span>
-<span><span class="co"># first year</span></span>
-<span><span class="va">birth_mat</span><span class="op">[</span>,,<span class="fl">1</span><span class="op">]</span></span>
-<span><span class="co">#&gt;      [,1]      [,2]</span></span>
-<span><span class="co">#&gt; [1,]    1 0.1738909</span></span>
-<span><span class="co">#&gt; [2,]    0 1.0000000</span></span></code></pre></div>
-<p><code><a href="reference/bbs_matrix_age.html">bbs_matrix_age()</a></code> is used to generate an age process matrix, which does not vary in time. The input vector denotes which stage that stage will age into (i.e., stage 1 ages to stage 2, stage 2 collects).</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">population</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bbs_population_caribou.html">bbs_population_caribou</a></span><span class="op">(</span><span class="va">survival</span>,</span>
+<span>                                     fecundity <span class="op">=</span> <span class="va">fecundity</span>,</span>
+<span>                                     adult_females <span class="op">=</span> <span class="fl">500</span>, </span>
+<span>                                     proportion_adult_female <span class="op">=</span> <span class="fl">0.65</span><span class="op">)</span></span></code></pre></div>
+<p>The output is a matrix with abundance for each period and stage. The first period is the initial population and period 13 is the final month of the first year.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">age_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bbs_matrix_age.html">bbs_matrix_age</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">age_mat</span></span>
-<span><span class="co">#&gt;      [,1] [,2]</span></span>
-<span><span class="co">#&gt; [1,]    0    0</span></span>
-<span><span class="co">#&gt; [2,]    1    1</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="population-projection">Population projection<a class="anchor" aria-label="anchor" href="#population-projection"></a>
-</h3>
-<p><code>bbousims</code> contains a custom infix operator <code>%*b%</code> to perform matrix multiplication with stochasticity. Instead of multiplying the population at each stage by the corresponding rate, <code>%*b%</code> draws from a binomial distribution, where size is the population and probability is the rate of interest.</p>
-<p>For example, with an initial population vector and survival process matrix for the first period of the first year</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pop0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">52</span><span class="op">)</span></span>
-<span><span class="va">survival_mat1</span> <span class="op">&lt;-</span> <span class="va">survival_mat</span><span class="op">[</span>,,<span class="fl">1</span>,<span class="fl">1</span><span class="op">]</span></span></code></pre></div>
-<p>regular (deterministic) matrix multiplication yields</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">survival_mat1</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">pop0</span></span>
-<span><span class="co">#&gt;          [,1]</span></span>
-<span><span class="co">#&gt; [1,] 23.57138</span></span>
-<span><span class="co">#&gt; [2,] 50.96701</span></span></code></pre></div>
-<p>and stochastic matrix multiplication yields</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">survival_mat1</span> <span class="op"><a href="reference/grapes-times-b-grapes.html">%*b%</a></span> <span class="va">pop0</span></span>
-<span><span class="co">#&gt; [1] 24 49</span></span></code></pre></div>
-<p><code><a href="reference/bbs_population.html">bbs_population()</a></code> is used to project population forward in time from survival, age and birth process matrices.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">population</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bbs_population.html">bbs_population</a></span><span class="op">(</span><span class="va">pop0</span>, </span>
-<span>                             birth <span class="op">=</span> <span class="va">birth_mat</span>, </span>
-<span>                             age <span class="op">=</span> <span class="va">age_mat</span>, </span>
-<span>                             survival <span class="op">=</span> <span class="va">survival_mat</span><span class="op">)</span></span>
-<span><span class="va">population</span></span>
+<code class="sourceCode R"><span><span class="co"># projected population for first year</span></span>
+<span><span class="va">population</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">13</span><span class="op">]</span></span>
 <span><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]</span></span>
-<span><span class="co">#&gt; [1,]   25   21   20   18   24   22   20   20   13    13    13    10    16</span></span>
-<span><span class="co">#&gt; [2,]   52   51   48   48   65   63   61   60   79    78    77    77    87</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  177  169  155  142  138  129  122  116  112   107   102    97   180</span></span>
+<span><span class="co">#&gt; [2,]  163  167  143  138  142  138  119  128  108   114   120   101   180</span></span>
+<span><span class="co">#&gt; [3,]   97   96   96   94   94   93   91   89   87    86    84    83    94</span></span>
+<span><span class="co">#&gt; [4,]   96   93  104  102   91  102   90   99   96    84    93    76    97</span></span>
+<span><span class="co">#&gt; [5,]  500  491  480  473  469  460  447  436  432   429   424   418   492</span></span>
+<span><span class="co">#&gt; [6,]  263  257  273  237  239  259  238  245  225   252   234   228   271</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/bbs_plot_population.html">bbs_plot_population</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-6-1.png"><!-- --></p>
 </div>
 <div class="section level3">
-<h3 id="group-allocation">Group allocation<a class="anchor" aria-label="anchor" href="#group-allocation"></a>
+<h3 id="simulate-abundance-survival-and-recruitment-data">Simulate abundance, survival and recruitment data<a class="anchor" aria-label="anchor" href="#simulate-abundance-survival-and-recruitment-data"></a>
 </h3>
-<p><code><a href="reference/bbs_population_groups.html">bbs_population_groups()</a></code> is used to randomly allocate individuals at each time step into groups. Group sizes are randomly drawn from a gamma-poisson distribution with user-specified <code>lambda</code> and <code>theta</code> (dispersion parameter) values. Minimum and maximum (i.e., as a maximum proportion of the total population) groups sizes can be set. Group sizes are drawn until the cumulative size exceeds the total individuals. The remaining individuals comprise the final group. If the remaining number of individuals is &lt; minimum group size specified by the user, these will be added to the previous group.</p>
-<p>The output is a list of lists containing the individuals (identified by stage) in each group at each time period.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bbs_population_groups.html">bbs_population_groups</a></span><span class="op">(</span><span class="va">population</span>, group_size_lambda <span class="op">=</span> <span class="fl">20</span>, group_size_theta <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># first time period</span></span>
-<span><span class="va">groups</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; [[1]]</span></span>
-<span><span class="co">#&gt;  [1] 2 1 1 1 1 2 2 1 2 1 2 2 1 2 2 2 2 2</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[2]]</span></span>
-<span><span class="co">#&gt;  [1] 1 2 2 2 2 2 2 1 2 2 2 2 2 2</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[3]]</span></span>
-<span><span class="co">#&gt;  [1] 2 1 2 1 2 1 1 2 2 2 1 2 1 2 2 2 2 2 2</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[4]]</span></span>
-<span><span class="co">#&gt;  [1] 1 1 1 1 2 2 1 1 2 2 2 2 1 1 2</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[5]]</span></span>
-<span><span class="co">#&gt;  [1] 2 2 2 2 1 2 2 2 1 2 2</span></span></code></pre></div>
-<p><code><a href="reference/bbs_population_groups_pairs.html">bbs_population_groups_pairs()</a></code> behaves similarly but keeps calf-cow pairs (or equivalent for different animals) together in groups whenever possible.</p>
-<p><code><a href="reference/bbs_population_groups_survey.html">bbs_population_groups_survey()</a></code> allocates individuals into groups once a year (month of composition survey relative to biological year start) and allows the user to set the sample coverage (i.e., the proportion of groups observed). Groups are sampled randomly.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bbs_population_groups_survey.html">bbs_population_groups_survey</a></span><span class="op">(</span><span class="va">population</span>, group_size_lambda <span class="op">=</span> <span class="fl">20</span>, month_composition <span class="op">=</span> <span class="fl">3L</span>, group_coverage <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># sampled groups in first time period</span></span>
-<span><span class="va">groups</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; [[1]]</span></span>
-<span><span class="co">#&gt; [1] 2 2 2 2 2 2 2</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[2]]</span></span>
-<span><span class="co">#&gt; [1] 2 1 2 2</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level2">
-<h2 id="boreal-caribou-simulation">Boreal Caribou simulation<a class="anchor" aria-label="anchor" href="#boreal-caribou-simulation"></a>
-</h2>
-<p>More user-friendly functionality exists for simulating Boreal Caribou population, where it is assumed that there are six stages: female calf, male calf, female yearling, male yearling, female adult and male adult.</p>
-<div class="section level3">
-<h3 id="boreal-caribou-population-projection">Boreal Caribou population projection<a class="anchor" aria-label="anchor" href="#boreal-caribou-population-projection"></a>
-</h3>
-<p>The survival/fecundity rates are generated for the female stages and population is projected for those stages. Abundance at each male stage is ‘filled in’ based on provided sex ratios. The initial population vector is determined by calculating stable stage distribution. Given key parameters, <code><a href="reference/bbs_demographic_summary.html">bbs_demographic_summary()</a></code> provides stable stage distribution, estimated lambda, estimated recruitment and calf-cow ratio.</p>
-<p><code><a href="reference/bbs_survival_caribou.html">bbs_survival_caribou()</a></code> and <code><a href="reference/bbs_fecundity_caribou.html">bbs_fecundity_caribou()</a></code> are used to generate rates varying over time.</p>
-<p><code><a href="reference/bbs_population_caribou.html">bbs_population_caribou()</a></code> allows the user to set the intercept, trend, annual random effect standard deviation, monthly random effect standard deviation and month within annual random effect standard deviation for female adult survival and female calf survival separately. Yearling abundance is determined from a user-specified effect on female adult survival (<code>yearling_effect</code>). Intercept, trend and annual random effect standard deviation can also be set for the calves per adult female (<code>calves_per_adut_female</code>).</p>
-<p>In all cases, the intercept (i.e., <code>survival_adult_female</code>, <code>survival_calf_female</code> <code>calves_per_adult_female</code>) is the annual rate and trend/standard deviations are on the log-odds scale. Year is scaled to (Year - 1) so that the intercept represents the rate in the first year.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<p>Abundance, survival and recruitment data are simulated from hypothetical composition surveys and collaring, given the survival and fecundity rates used to project the population and a set of key sampling parameters. The output is a list of lists of the abundance, survival, and recruitment data.frames for each simulation.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">population</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bbs_population_caribou.html">bbs_population_caribou</a></span><span class="op">(</span>nyear <span class="op">=</span> <span class="fl">50</span>, </span>
-<span>                                     survival_adult_female <span class="op">=</span> <span class="fl">0.85</span>,</span>
-<span>                                     survival_calf_female <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>                                     calves_per_adult_female <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/bbs_plot_population.html">bbs_plot_population</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-12-1.png" width="100%"> As an example, adding a negative trend and high standard deviation of the annual random effect in the adult female survival will cause higher variation and downward projection of population.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">population</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bbs_population_caribou.html">bbs_population_caribou</a></span><span class="op">(</span>nyear <span class="op">=</span> <span class="fl">50</span>, </span>
-<span>                                     survival_adult_female <span class="op">=</span> <span class="fl">0.85</span>,</span>
-<span>                                     survival_calf_female <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>                                     calves_per_adult_female <span class="op">=</span> <span class="fl">0.7</span>, </span>
-<span>                                     survival_trend_adult_female <span class="op">=</span> <span class="op">-</span><span class="fl">0.01</span>,</span>
-<span>                                     survival_annual_sd_adult_female <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/bbs_plot_population.html">bbs_plot_population</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-13-1.png" width="100%"></p>
-</div>
-<div class="section level3">
-<h3 id="boreal-caribou-survival-and-recruitment-data">Boreal Caribou survival and recruitment data<a class="anchor" aria-label="anchor" href="#boreal-caribou-survival-and-recruitment-data"></a>
-</h3>
-<p><code><a href="reference/bbs_simulate_caribou.html">bbs_simulate_caribou()</a></code> combines <code><a href="reference/bbs_population_caribou.html">bbs_population_caribou()</a></code>, <code><a href="reference/bbs_population_groups_survey.html">bbs_population_groups_survey()</a></code> and <code><a href="reference/bbs_survival_collared.html">bbs_survival_collared()</a></code> functionality to simulate recruitment data from composition surveys and survival data from collaring. Recruitment and survival data share the same survival rates, which are generated once at the start of the <code><a href="reference/bbs_simulate_caribou.html">bbs_simulate_caribou()</a></code> function.</p>
-<p>The recruitment and survival data are formatted to be used as input for <code>bboutools</code> model fitting functions.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bbs_simulate_caribou.html">bbs_simulate_caribou</a></span><span class="op">(</span>nyear <span class="op">=</span> <span class="fl">30</span>, </span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bbs_simulate_caribou.html">bbs_simulate_caribou</a></span><span class="op">(</span>survival <span class="op">=</span> <span class="va">survival</span>,</span>
+<span>                             fecundity <span class="op">=</span> <span class="va">fecundity</span>,</span>
+<span>                             nsims <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>                             adult_females <span class="op">=</span> <span class="fl">500</span>,</span>
-<span>                             survival_adult_female <span class="op">=</span> <span class="fl">0.85</span>,</span>
-<span>                             survival_calf_female <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>                             calves_per_adult_female <span class="op">=</span> <span class="fl">0.7</span>, </span>
-<span>                             survival_trend_calf_female <span class="op">=</span> <span class="op">-</span><span class="fl">0.01</span>,</span>
-<span>                             group_size <span class="op">=</span> <span class="fl">15</span>,</span>
-<span>                             group_coverage <span class="op">=</span> <span class="fl">0.3</span>,</span>
-<span>                             collared_adult_females <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">data</span><span class="op">$</span><span class="va">survival</span></span>
-<span><span class="co">#&gt; # A tibble: 360 × 6</span></span>
+<span>                             proportion_adult_female <span class="op">=</span> <span class="fl">0.65</span>,</span>
+<span>                             month_composition <span class="op">=</span> <span class="fl">9L</span>,</span>
+<span>                             collared_adult_females <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>                             group_size <span class="op">=</span> <span class="fl">6</span>, </span>
+<span>                             group_coverage <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/bbs_plot_population.html">bbs_plot_population</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-8-1.png"><!-- --></p>
+<p>View collar survival data for the first simulation</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># collar survival data for first simulation</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">survival</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 60 × 6</span></span>
 <span><span class="co">#&gt;     Year Month PopulationName StartTotal MortalitiesCertain MortalitiesUncertain</span></span>
 <span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;               &lt;dbl&gt;              &lt;int&gt;                &lt;int&gt;</span></span>
-<span><span class="co">#&gt;  1     1     1 A                      30                  0                    0</span></span>
-<span><span class="co">#&gt;  2     1     2 A                      30                  0                    0</span></span>
-<span><span class="co">#&gt;  3     1     3 A                      30                  0                    0</span></span>
-<span><span class="co">#&gt;  4     1     4 A                      30                  0                    0</span></span>
-<span><span class="co">#&gt;  5     1     5 A                      30                  0                    0</span></span>
-<span><span class="co">#&gt;  6     1     6 A                      30                  0                    0</span></span>
-<span><span class="co">#&gt;  7     1     7 A                      30                  0                    0</span></span>
-<span><span class="co">#&gt;  8     1     8 A                      30                  0                    0</span></span>
-<span><span class="co">#&gt;  9     1     9 A                      30                  0                    0</span></span>
-<span><span class="co">#&gt; 10     1    10 A                      30                  0                    0</span></span>
-<span><span class="co">#&gt; # ℹ 350 more rows</span></span>
-<span></span>
-<span><span class="va">data</span><span class="op">$</span><span class="va">recruitment</span></span>
-<span><span class="co">#&gt; # A tibble: 509 × 9</span></span>
-<span><span class="co">#&gt;     Year Month PopulationName   Day  Cows Bulls Yearlings Calves UnknownAdults</span></span>
-<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;          &lt;dbl&gt; &lt;int&gt; &lt;int&gt;     &lt;int&gt;  &lt;int&gt;         &lt;int&gt;</span></span>
-<span><span class="co">#&gt;  1     1     9 A                  1     5     4         3      1             0</span></span>
-<span><span class="co">#&gt;  2     1     9 A                  1     4     4         2      2             0</span></span>
-<span><span class="co">#&gt;  3     1     9 A                  1     6     2         5      5             0</span></span>
-<span><span class="co">#&gt;  4     1     9 A                  1     7     1         5      5             0</span></span>
-<span><span class="co">#&gt;  5     1     9 A                  1    10     4         1      1             0</span></span>
-<span><span class="co">#&gt;  6     1     9 A                  1     3     4         1      6             0</span></span>
-<span><span class="co">#&gt;  7     1     9 A                  1    11     9         0      5             0</span></span>
-<span><span class="co">#&gt;  8     1     9 A                  1     5     2         3      3             0</span></span>
-<span><span class="co">#&gt;  9     1     9 A                  1     7     3         2      3             0</span></span>
-<span><span class="co">#&gt; 10     1     9 A                  1     4     2         2      4             0</span></span>
-<span><span class="co">#&gt; # ℹ 499 more rows</span></span></code></pre></div>
+<span><span class="co">#&gt;  1     1     1 A                      30                  1                    0</span></span>
+<span><span class="co">#&gt;  2     1     2 A                      29                  0                    0</span></span>
+<span><span class="co">#&gt;  3     1     3 A                      29                  2                    0</span></span>
+<span><span class="co">#&gt;  4     1     4 A                      27                  1                    0</span></span>
+<span><span class="co">#&gt;  5     1     5 A                      26                  0                    0</span></span>
+<span><span class="co">#&gt;  6     1     6 A                      26                  0                    0</span></span>
+<span><span class="co">#&gt;  7     1     7 A                      26                  1                    0</span></span>
+<span><span class="co">#&gt;  8     1     8 A                      25                  0                    0</span></span>
+<span><span class="co">#&gt;  9     1     9 A                      25                  0                    0</span></span>
+<span><span class="co">#&gt; 10     1    10 A                      25                  0                    0</span></span>
+<span><span class="co">#&gt; # ℹ 50 more rows</span></span></code></pre></div>
 </div>
+<div class="section level3">
+<h3 id="work-with-bboutools">Work with <code>bboutools</code>
+<a class="anchor" aria-label="anchor" href="#work-with-bboutools"></a>
+</h3>
+<p>The survival and recruitment data.frames in the output of <code><a href="reference/bbs_simulate_caribou.html">bbs_simulate_caribou()</a></code> are intended to be used as input data for model fitting functions in the <a href="%22https://poissonconsulting.github.io/bboutools/" class="external-link">bboutools package</a>.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># fit model for each simulation</span></span>
+<span><span class="co"># we set year_start = 1 because we assume the projected population is for the biological year</span></span>
+<span><span class="va">fits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">survival</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">survival</span></span>
+<span>  <span class="fu">bboutools</span><span class="fu">::</span><span class="fu"><a href="https://poissonconsulting.github.io/bboutools/reference/bb_fit_survival.html" class="external-link">bb_fit_survival</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">survival</span>, year_start <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="information">Information<a class="anchor" aria-label="anchor" href="#information"></a>
+</h2>
+<p>Additional information is available from the <a href="https://poissonconsulting.github.io/bbousims/" class="external-link">bbousims website</a>, including more in-depth articles.</p>
+</div>
+<div class="section level2">
+<h2 id="bbou-suite">bbou Suite<a class="anchor" aria-label="anchor" href="#bbou-suite"></a>
+</h2>
+<p><code>bbousims</code> is part of the bbou suite of tools. Other packages in this suite include:</p>
+<ul>
+<li><a href="https://github.com/poissonconsulting/bboudata" class="external-link">bboudata</a></li>
+<li><a href="https://github.com/poissonconsulting/bbouretro" class="external-link">bbouretro</a></li>
+<li><a href="https://github.com/poissonconsulting/bboushiny" class="external-link">bboushiny</a></li>
+<li><a href="https://github.com/poissonconsulting/bboutools" class="external-link">bboutools</a></li>
+</ul>
 </div>
 </div>
   </div>
@@ -339,12 +257,16 @@
 <ul class="list-unstyled">
 <li>Seb Dalgarno <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-3658-4517" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Joe Thorley <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-7683-4592" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>John Boulanger <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-8222-1445" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Ayla Pearson <br><small class="roles"> Author </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
 <li><a href="https://github.com/poissonconsulting/bbousims/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/poissonconsulting/bbousims/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://app.codecov.io/gh/poissonconsulting/bbousims?branch=main" class="external-link"><img src="https://codecov.io/gh/poissonconsulting/bbousims/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
@@ -356,7 +278,7 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Seb Dalgarno, Joe Thorley.</p>
+<p>Developed by Seb Dalgarno, Joe Thorley, John Boulanger, Ayla Pearson.</p>
 </div>
 
 <div class="pkgdown">
