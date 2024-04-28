@@ -1,5 +1,5 @@
 ---
-title: "Working with bboutools"
+title: "Work with bboutools"
 ---
 
 ```{r, include = FALSE}

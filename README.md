@@ -13,9 +13,9 @@ coverage](https://codecov.io/gh/poissonconsulting/bbousims/branch/main/graph/bad
 <!-- badges: end -->
 
 `bbousims` is a package to simulate Boreal Caribou population abundance
-over time from survival, ageing and birth processes.  
-Survival and recruitment data from hypothetical composition surveys and
-collaring are simulated from key sampling parameters.
+over time from survival, ageing and birth processes. Survival and
+recruitment data from hypothetical composition surveys and collaring are
+simulated from key sampling parameters.
 
 The output of `bbs_simulate_caribou()` is intended to be used as input
 data for [bboutools](https://poissonconsulting.github.io/bboutools/)
@@ -43,10 +43,9 @@ remotes::install_github("poissonconsulting/bbousims")
 Simulate survival rates for each month, year and stage and fecundity
 rates for each year and stage. Rates are generated for female stages
 (female calf, female yearling and female adult). Female calf and female
-adult survival rates are produced from separate linear models, whereas
+adult survival rates are determined from separate linear models, whereas
 female yearling survival is determined as an effect on female adult
-survival. Variation in recruitment can be specified either through calf
-survival and/or calves per adult female.
+survival.
 
 ``` r
 set.seed(1)
@@ -193,7 +192,13 @@ fits <- lapply(1:length(data), function(x){
 
 Additional information is available from the [bbousims
 website](https://poissonconsulting.github.io/bbousims/), including more
-in-depth articles.
+in-depth articles:  
+- [Get Started with
+bbousims](https://poissonconsulting.github.io/bbousims/articles/bbousims.html).  
+- [Work with
+bboutools](https://poissonconsulting.github.io/bbousims/articles/bboutools.html).  
+- [General tools (beyond Boreal
+Caribou)](https://poissonconsulting.github.io/bbousims/articles/general.html).
 
 ## bbou Suite
 

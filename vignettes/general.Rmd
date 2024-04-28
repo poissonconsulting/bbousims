@@ -1,5 +1,5 @@
 ---
-title: "General tools for population projection and allocating groups"
+title: "General tools (beyond Boreal Caribou)"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{general}

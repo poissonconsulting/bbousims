@@ -133,7 +133,10 @@ fits <- lapply(1:length(data), function(x){
 
 ## Information
 
-Additional information is available from the [bbousims website](https://poissonconsulting.github.io/bbousims/), including more in-depth articles.
+Additional information is available from the [bbousims website](https://poissonconsulting.github.io/bbousims/), including more in-depth articles:  
+- [Get Started with bbousims](https://poissonconsulting.github.io/bbousims/articles/bbousims.html).  
+- [Work with bboutools](https://poissonconsulting.github.io/bbousims/articles/bboutools.html).  
+- [General tools (beyond Boreal Caribou)](https://poissonconsulting.github.io/bbousims/articles/general.html).  
 
 ## bbou Suite
 
