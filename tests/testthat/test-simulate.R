@@ -1,7 +1,7 @@
 test_that("bbs_simulate_caribou works", {
   withr::with_seed(10, {
     nsims <- 3
-    nyear = 5
+    nyear <- 5
     survival <- bbs_survival_caribou(0.84, nyear = nyear)
     fecundity <- bbs_fecundity_caribou(0.7, nyear = nyear)
     x <- bbs_simulate_caribou(survival, fecundity = fecundity, nsims = nsims)
@@ -23,7 +23,7 @@ test_that("bbs_simulate_caribou works with bboutools and values can be recovered
   trend_adult_female <- 0
   annual_sd_adult_female <- 0.3
   nyear <- 20L
-  calves_per_adult_female = 0.7
+  calves_per_adult_female <- 0.7
   nsims <- 1
 
   survival <- bbs_survival_caribou(
@@ -54,14 +54,10 @@ test_that("bbs_simulate_caribou works with bboutools and values can be recovered
     yearling_female_proportion = 0.5
   )
 
-  # View(coef(fit_r, include_random = FALSE))
-
   fit_s <- bboutools::bb_fit_survival(x[[1]]$survival,
     min_random_year = Inf,
     nthin = 30L, year_start = 1L
   )
-
-  # View(coef(fit_s, include_random = FALSE))
 
   saf <- survival$eSurvival[, , 3]
   nyear <- dim(saf)[2]

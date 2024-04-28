@@ -26,9 +26,9 @@
 
   res <- vector(length = nrow(x))
 
-  for (i in 1:nrow(x)) {
+  for (i in seq_len(nrow(x))) {
     bin <- vector(length = nrow(x))
-    for (j in 1:length(bin)) {
+    for (j in seq_along(bin)) {
       bin[j] <- rbinom(1, size = as.integer(y[j, 1]), prob = x[i, j])
     }
     res[i] <- sum(bin)
@@ -61,8 +61,8 @@
   chk_identical(nrow(x), nrow(y))
 
   res <- matrix(0, ncol = ncol(x), nrow = nrow(x))
-  for (i in 1:nrow(x)) {
-    for (j in 1:ncol(x)) {
+  for (i in seq_len(nrow(x))) {
+    for (j in seq_len(ncol(x))) {
       res[i, j] <- rbinom(1, size = x[i, j], prob = y[i, j])
     }
   }

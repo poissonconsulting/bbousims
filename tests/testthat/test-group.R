@@ -25,17 +25,19 @@ test_that("assign population to groups", {
 
   # check same individuals as in population for each period when unlist groups
   individuals <-
-    purrr::map(1:ncol(population), ~ sort(population_individuals(population[, .x])))
+    purrr::map(seq_len(ncol(population)), ~ sort(population_individuals(population[, .x])))
   for (i in seq_along(individuals)) {
     expect_identical(individuals[[i]], sort(unlist(group[[i]])))
   }
 
   # check min and max group sizes
-  sizes <- lapply(group, function(x)
-    sapply(x, length))
+  sizes <- lapply(group, function(x) {
+    sapply(x, length)
+  })
   expect_true(min(unlist(sizes)) >= min_size)
-  totals <- lapply(sizes, function(x)
-    sum(x) * max_proportion)
+  totals <- lapply(sizes, function(x) {
+    sum(x) * max_proportion
+  })
   for (i in seq_along(totals)) {
     expect_true(all(sizes[[i]] <= totals[[i]]))
   }
@@ -67,11 +69,13 @@ test_that("sample groups from population", {
   nstep <- ncol(population)
   expect_equal(length(group), (nstep - 1) / 12)
 
-  sizes <- lapply(group, function(x)
-    sapply(x, length))
+  sizes <- lapply(group, function(x) {
+    sapply(x, length)
+  })
   expect_true(min(unlist(sizes)) >= min_size)
-  totals <- lapply(sizes, function(x)
-    sum(x) * max_proportion)
+  totals <- lapply(sizes, function(x) {
+    sum(x) * max_proportion
+  })
   for (i in seq_along(totals)) {
     expect_true(all(sizes[[i]] <= totals[[i]]))
   }
@@ -103,16 +107,18 @@ test_that("assign population to groups by pairs", {
   nstep <- ncol(population)
 
   individuals <-
-    purrr::map(1:ncol(population), ~ sort(population_individuals(population[, .x])))
+    purrr::map(seq_len(ncol(population)), ~ sort(population_individuals(population[, .x])))
   for (i in seq_along(individuals)) {
     expect_identical(individuals[[i]], sort(unlist(group[[i]])))
   }
 
-  sizes <- lapply(group, function(x)
-    sapply(x, length))
+  sizes <- lapply(group, function(x) {
+    sapply(x, length)
+  })
   expect_true(min(unlist(sizes)) >= min_size)
-  totals <- lapply(sizes, function(x)
-    sum(x) * max_proportion)
+  totals <- lapply(sizes, function(x) {
+    sum(x) * max_proportion
+  })
   for (i in seq_along(totals)) {
     expect_true(all(sizes[[i]] <= totals[[i]]))
   }
@@ -145,13 +151,14 @@ test_that("assign population to groups in declining population to 0", {
 
   # check same individuals as in population for each period when unlist groups
   individuals <-
-    purrr::map(1:ncol(population), ~ sort(population_individuals(population[, .x])))
+    purrr::map(seq_len(ncol(population)), ~ sort(population_individuals(population[, .x])))
   for (i in seq_along(individuals)) {
     expect_identical(individuals[[i]], sort(unlist(group[[i]])))
   }
 
   # check min and max group sizes
-  sizes <- lapply(group, function(x)
-    sapply(x, length))
+  sizes <- lapply(group, function(x) {
+    sapply(x, length)
+  })
   expect_true(min(unlist(sizes)) >= min_size | min(unlist(sizes)) == 0)
 })

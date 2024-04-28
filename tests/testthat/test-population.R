@@ -1,6 +1,6 @@
 test_that("bbs_population works", {
   withr::with_seed(10, {
-    nyear = 10
+    nyear <- 10
     pop0 <- c(100, 100)
     survival <- bbs_survival(
       intercept = logit(c(0.94, 0.98)),
@@ -38,7 +38,7 @@ test_that("bbs_population works", {
 
 test_that("bbs_population_caribou works", {
   withr::with_seed(10, {
-    nyear = 10
+    nyear <- 10
     survival <- bbs_survival_caribou(
       survival_adult_female = 0.84,
       nyear = nyear

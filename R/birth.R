@@ -84,11 +84,6 @@ bbs_fecundity_caribou <- function(calves_per_adult_female,
   chk_gte(nyear)
   chk_whole_number(nyear)
 
-  nstage <- 3
-  efecundity <- matrix(0, nrow = nyear, ncol = nstage)
-  bannual <- vector(length = nyear)
-  year <- 1:nyear - 1
-
   intercept <- c(NA, NA, logit(calves_per_adult_female))
   trend <- c(0, 0, trend)
   annual_sd <- c(0, 0, annual_sd)

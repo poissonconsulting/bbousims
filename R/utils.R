@@ -15,17 +15,16 @@ period_to_month <- function(x) {
   scale(x, center = TRUE, scale = FALSE)
 }
 
-# ncol = nrow
 empty_matrix <- function(n, value = 0) {
-  x <- matrix(rep(value, n * n), ncol = n)
+  matrix(rep(value, n * n), ncol = n)
 }
 
 population_tbl <- function(x, nperiod_within_year = 12) {
-  colnames(x) <- 1:ncol(x)
+  colnames(x) <- seq_len(ncol(x))
   nstep <- ncol(x) + 1
   x %>%
     as.data.frame() %>%
-    mutate(Stage = factor(1:nrow(x))) %>%
+    mutate(Stage = factor(seq_len(nrow(x)))) %>%
     pivot_longer(-all_of(nstep), names_to = "Period", values_to = "Abundance") %>%
     mutate(
       Period = as.integer(.data$Period) - 1,

@@ -1,5 +1,5 @@
 abundance_tbl <- function(population, population_name = "A") {
-  colnames(population) <- 1:ncol(population)
+  colnames(population) <- seq_len(ncol(population))
   stages <- c("Female Calf", "Male Calf", "Female Yearling", "Male Yearling", "Female Adult", "Male Adult")
   levels <- c("Female Adult", "Male Adult", "Female Yearling", "Male Yearling", "Female Calf", "Male Calf")
   nstep <- ncol(population) + 1

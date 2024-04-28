@@ -107,7 +107,7 @@ Plot predicted survival estimates to assess whether 95% CI contains true value.
 actual <- tibble(CaribouYear = 1:nyear, actual = saf_annual)
 
 # predict annual survival
-preds <- map_df(1:length(fits_survival), function(x) {
+preds <- map_df(seq_along(fits_survival), function(x) {
   pred <- bboutools::bb_predict_survival(fits_survival[[x]])
   pred$sim <- x
   pred
@@ -124,13 +124,13 @@ gp
 
 The true recruitment rates can be calculated from the projected population at each composition survey month.
 ```{r}
-month_composition = 9L
+month_composition <- 9L
 survey <- seq(1, 12 * nyear, by = 12) + month_composition
 x <- population[, survey]
 
 # calves per adult female
 caf <- vector(length = nyear)
-for (i in 1:ncol(x)) {
+for (i in seq_len(ncol(x))) {
   # female calves + male calves / female yearlings + female adults
   caf[i] <- (x[1, i] + x[2, i]) / (x[3, i] + x[5, i])
 }
@@ -139,7 +139,7 @@ for (i in 1:ncol(x)) {
 fcaf <- (caf * 0.5)
 recruitment <- (fcaf / (1 + fcaf))
 
-actual <- tibble(CaribouYear = 1:length(recruitment), actual = recruitment)
+actual <- tibble(CaribouYear = seq_along(recruitment), actual = recruitment)
 ```
 
 The model coefficient estimates for each simulation can be compared to the true recruitment rates. 
@@ -173,7 +173,7 @@ Plot predicted recruitment estimates to assess whether 95% CI contains true valu
 
 ```{r}
 # predict annual recruitment
-preds <- map_df(1:length(fits_recruitment), function(x) {
+preds <- map_df(seq_along(fits_recruitment), function(x) {
   pred <- bboutools::bb_predict_recruitment(fits_recruitment[[x]])
   pred$sim <- x
   pred

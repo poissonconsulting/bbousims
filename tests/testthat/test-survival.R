@@ -119,7 +119,7 @@ test_that("bbs_survival with rndm period and annual works", {
 test_that("bbs_survival_caribou works with intercepts", {
   survival_adult_female <- 0.84
   survival_calf_female <- 0.5
-  yearling_effect = 0.2
+  yearling_effect <- 0.2
   nyear <- 5
 
   x <-
@@ -142,7 +142,7 @@ test_that("bbs_survival_caribou works with intercepts", {
 test_that("bbs_survival_caribou works with trend", {
   survival_adult_female <- 0.84
   survival_calf_female <- 0.5
-  yearling_effect = 0.2
+  yearling_effect <- 0.2
   nyear <- 5
 
   x <-

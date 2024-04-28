@@ -58,7 +58,7 @@ population_individuals <- function(population, shuffle = TRUE) {
 
 # create recruit-female pairs, #pairs = min(recruits, females)
 individuals_to_pairs <- function(x, recruit_stages, reproductive_female_stages) {
-  index <- 1:length(x)
+  index <- seq_along(x)
   recruits <- index[x %in% recruit_stages]
   females <- index[x %in% reproductive_female_stages]
   min_n <- min(length(females), length(recruits))
@@ -81,7 +81,7 @@ population1_groups <- function(population,
   index <- 1:total
 
   max_size <- total * group_max_proportion
-  min_size = group_min_size
+  min_size <- group_min_size
 
   if ((floor(max_size) - 1) <= min_size) {
     return(list(individuals))
@@ -113,7 +113,7 @@ population1_groups_pairs <- function(population,
     recruit_stages = recruit_stages,
     reproductive_female_stages = reproductive_female_stages
   )
-  names(pairs) <- 1:length(pairs)
+  names(pairs) <- seq_along(pairs)
 
   sizes <- sample_groups(total,
     lambda = group_size_lambda,
