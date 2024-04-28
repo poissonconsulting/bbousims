@@ -30,7 +30,7 @@ bbs_simulate_caribou <- function(
     survival,
     fecundity,
     nsims = 1,
-    adult_females = 1000,
+    adult_females = 500,
     proportion_adult_female = 0.65,
     proportion_yearling_female = 0.5,
     probability_unsexed_adult_female = 0,
