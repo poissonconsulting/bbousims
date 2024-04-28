@@ -27,12 +27,14 @@ The rates are provided as a vector with each element corresponding to each stage
 ```{r}
 set.seed(1)
 # 2 stages
-survival <- bbs_survival(intercept = logit(c(0.94, 0.98)),
-                         trend = c(0, 0.3),
-                         annual_sd = rep(0.05, 2),
-                         period_sd = rep(0.1, 2),
-                         nyear = 3, 
-                         nperiod_within_year = 4)
+survival <- bbs_survival(
+  intercept = logit(c(0.94, 0.98)),
+  trend = c(0, 0.3),
+  annual_sd = rep(0.05, 2),
+  period_sd = rep(0.1, 2),
+  nyear = 3,
+  nperiod_within_year = 4
+)
 survival$eSurvival
 ```
 
@@ -40,10 +42,12 @@ Fecundity varies by year, with options to set the intercept, year trend and annu
 
 ```{r}
 set.seed(1)
-fecundity <- bbs_fecundity(intercept = c(NA, logit(0.4)),
-                           trend = c(0, -0.2),
-                           annual_sd = c(0, 0.1),
-                           nyear = 3)
+fecundity <- bbs_fecundity(
+  intercept = c(NA, logit(0.4)),
+  trend = c(0, -0.2),
+  annual_sd = c(0, 0.1),
+  nyear = 3
+)
 fecundity$eFecundity
 ```
 ### Process matrices
@@ -54,13 +58,14 @@ In this example there are two stages representing recruit and adult.
 ```{r}
 survival_mat <- bbs_matrix_survival_period(survival$eSurvival)
 birth_mat <- bbs_matrix_birth_year(fecundity$eFecundity,
-                                   female_recruit_stage = 1, 
-                                   male_recruit_stage = NULL)
+  female_recruit_stage = 1,
+  male_recruit_stage = NULL
+)
 # first period, first year
-survival_mat[,,1,1]
+survival_mat[, , 1, 1]
 
 # first year
-birth_mat[,,1]
+birth_mat[, , 1]
 ```
 
 `bbs_matrix_age()` is used to generate an age process matrix, which does not vary in time. 
@@ -77,7 +82,7 @@ age_mat
 For example, with an initial population vector and survival process matrix for the first period of the first year
 ```{r}
 pop0 <- c(25, 52)
-survival_mat1 <- survival_mat[,,1,1]
+survival_mat1 <- survival_mat[, , 1, 1]
 ```
 
 regular (deterministic) matrix multiplication yields
@@ -96,10 +101,11 @@ survival_mat1 %*b% pop0
 `bbs_population()` is used to project population forward in time from survival, age and birth process matrices. Survival occur at the end of each period, and survival, ageing and birth occur at the end of each year, in that order. 
 
 ```{r}
-population <- bbs_population(pop0, 
-                             birth = birth_mat, 
-                             age = age_mat, 
-                             survival = survival_mat)
+population <- bbs_population(pop0,
+  birth = birth_mat,
+  age = age_mat,
+  survival = survival_mat
+)
 population
 ```
 
@@ -114,9 +120,10 @@ If the remaining number of individuals is < minimum group size specified by the 
 The output is a list of lists containing the individuals (identified by stage) in each group at each time period. 
 
 ```{r}
-groups <- bbs_population_groups(population, 
-                                group_size_lambda = 20, 
-                                group_size_theta = 0)
+groups <- bbs_population_groups(population,
+  group_size_lambda = 20,
+  group_size_theta = 0
+)
 
 # first time period
 groups[[1]]
@@ -127,10 +134,11 @@ groups[[1]]
 `bbs_population_groups_survey()` allocates individuals into groups once a year (month of composition survey relative to biological year start) and allows the user to set the sample coverage (i.e., the proportion of groups observed). Groups are sampled randomly. 
 
 ```{r}
-groups <- bbs_population_groups_survey(population, 
-                                       group_size_lambda = 20, 
-                                       month_composition = 3L, 
-                                       group_coverage = 0.2)
+groups <- bbs_population_groups_survey(population,
+  group_size_lambda = 20,
+  month_composition = 3L,
+  group_coverage = 0.2
+)
 
 # sampled groups in first time period
 groups[[1]]

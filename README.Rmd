@@ -46,22 +46,26 @@ Female calf and female adult survival rates are determined from separate linear 
 
 ```{r}
 set.seed(1)
-survival <- bbs_survival_caribou(survival_adult_female = 0.85, 
-                                 annual_sd_adult_female = 0.2,
-                                 trend_adult_female = -0.1,
-                                 month_sd_adult_female = 0.1,
-                                 survival_calf_female = 0.5, 
-                                 yearling_effect = 0.05,
-                                 nyear = 5)
+survival <- bbs_survival_caribou(
+  survival_adult_female = 0.85,
+  annual_sd_adult_female = 0.2,
+  trend_adult_female = -0.1,
+  month_sd_adult_female = 0.1,
+  survival_calf_female = 0.5,
+  yearling_effect = 0.05,
+  nyear = 5
+)
 
-fecundity <- bbs_fecundity_caribou(calves_per_adult_female = 0.7, 
-                                   annual_sd = 0.1,
-                                   nyear = 5)
+fecundity <- bbs_fecundity_caribou(
+  calves_per_adult_female = 0.7,
+  annual_sd = 0.1,
+  nyear = 5
+)
 ```
 View expected monthly survival rates ('eSurvival') for adult females (stage 3) by each month and year.
 
 ```{r}
-survival$eSurvival[,,3]
+survival$eSurvival[, , 3]
 ```
 
 ### Project population
@@ -75,15 +79,16 @@ Population abundance for male stages are based on user-provided sex ratios.
 ```{r}
 set.seed(1)
 population <- bbs_population_caribou(survival,
-                                     fecundity = fecundity,
-                                     adult_females = 500, 
-                                     proportion_adult_female = 0.65)
+  fecundity = fecundity,
+  adult_females = 500,
+  proportion_adult_female = 0.65
+)
 ```
 The output is a matrix with abundance for each period and stage. The first period is the initial population and period 13 is the final month of the first year. 
 
 ```{r}
 # projected population for first year
-population[,1:13]
+population[, 1:13]
 ```
 
 ```{r, fig.height=4,fig.width=7}
@@ -98,15 +103,17 @@ The output is a list of lists of the abundance, survival, and recruitment data.f
 
 ```{r}
 set.seed(1)
-data <- bbs_simulate_caribou(survival = survival,
-                             fecundity = fecundity,
-                             nsims = 10,
-                             adult_females = 500,
-                             proportion_adult_female = 0.65,
-                             month_composition = 9L,
-                             collared_adult_females = 30,
-                             group_size = 6, 
-                             group_coverage = 0.3)
+data <- bbs_simulate_caribou(
+  survival = survival,
+  fecundity = fecundity,
+  nsims = 10,
+  adult_females = 500,
+  proportion_adult_female = 0.65,
+  month_composition = 9L,
+  collared_adult_females = 30,
+  group_size = 6,
+  group_coverage = 0.3
+)
 ```
 
 ```{r, fig.height=4,fig.width=7}
@@ -125,7 +132,7 @@ The survival and recruitment data.frames in the output of `bbs_simulate_caribou(
 ```{r, eval=FALSE}
 # fit model for each simulation
 # we set year_start = 1 because we assume the projected population is for the biological year
-fits <- lapply(1:length(data), function(x){
+fits <- lapply(1:length(data), function(x) {
   survival <- data[[x]]$survival
   bboutools::bb_fit_survival(data = survival, year_start = 1L)
 })

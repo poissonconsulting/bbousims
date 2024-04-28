@@ -5,9 +5,9 @@ test_that("birth process matrix works", {
     print(x)
   })
 
-  expect_identical(dim(x), c(3L,3L))
+  expect_identical(dim(x), c(3L, 3L))
   y <- x %*% c(100, 100, 100)
-  expect_identical(y[,1], c(110, 100, 100))
+  expect_identical(y[, 1], c(110, 100, 100))
 })
 
 test_that("birth process matrix can be matrix multiplied", {
@@ -25,10 +25,10 @@ test_that("birth process matrix with male recruit works", {
   expect_snapshot({
     print(x)
   })
-  
-  expect_identical(dim(x), c(3L,3L))
+
+  expect_identical(dim(x), c(3L, 3L))
   y <- x %*% c(100, 100, 100)
-  expect_identical(y[,1], c(120, 120, 100))
+  expect_identical(y[, 1], c(120, 120, 100))
 })
 
 test_that("can change female proportion", {
@@ -49,8 +49,10 @@ test_that("can change calf stage indices", {
 
 test_that("birth process matrices work", {
   # 4 seasons, 2 years, 2 stages
-  rates <- matrix(c(0, 0, 0.2,
-                    0, 0, 0.3), nrow = 2, byrow = TRUE)
+  rates <- matrix(c(
+    0, 0, 0.2,
+    0, 0, 0.3
+  ), nrow = 2, byrow = TRUE)
   x <- bbs_matrix_birth_year(rates)
   expect_identical(dim(x), c(3L, 3L, 2L))
   expect_snapshot({
@@ -70,9 +72,11 @@ test_that("works with bbs_fecundity", {
 
 test_that("works with bbs_fecundity_caribou", {
   b0 <- 0.8
-  rates <- bbs_fecundity_caribou(calves_per_adult_female = b0, 
-                                 trend = 0.2, 
-                                 nyear = 2)
+  rates <- bbs_fecundity_caribou(
+    calves_per_adult_female = b0,
+    trend = 0.2,
+    nyear = 2
+  )
   x <- bbs_matrix_birth_year(rates$eFecundity)
   expect_snapshot({
     print(x)

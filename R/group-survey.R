@@ -1,26 +1,26 @@
 #' Assign population into groups for each composition survey
-#' 
-#' See [bbs_population_groups()] for details on group assignment. 
-#' Groups are sampled in each composition survey in proportion to `group_coverage`. 
-#' 
+#'
+#' See [bbs_population_groups()] for details on group assignment.
+#' Groups are sampled in each composition survey in proportion to `group_coverage`.
+#'
 #' @inheritParams params
-#' 
+#'
 #' @export
 #' @return A list of observed groups in each composition survey.
 #' @examples
 #' if (interactive()) {
-#'     survival <- bbs_survival_caribou(0.84)
-#'     fecundity <- bbs_fecundity_caribou(0.7)
-#'     x <- bbs_population_caribou(survival, fecundity = fecundity, adult_females = 100)
-#'     bbs_population_groups_survey(x, group_coverage = 0.1)
+#'   survival <- bbs_survival_caribou(0.84)
+#'   fecundity <- bbs_fecundity_caribou(0.7)
+#'   x <- bbs_population_caribou(survival, fecundity = fecundity, adult_females = 100)
+#'   bbs_population_groups_survey(x, group_coverage = 0.1)
 #' }
-bbs_population_groups_survey <- function(population, 
-                                     month_composition = 9,
-                                     group_size_lambda = 5,
-                                     group_size_theta = 2,
-                                     group_max_proportion = 1/4,
-                                     group_min_size = 2,
-                                     group_coverage = 0.2){
+bbs_population_groups_survey <- function(population,
+                                         month_composition = 9,
+                                         group_size_lambda = 5,
+                                         group_size_theta = 2,
+                                         group_max_proportion = 1 / 4,
+                                         group_min_size = 2,
+                                         group_coverage = 0.2) {
   chk_matrix(population)
   chk_whole_numeric(population)
   chk_whole_number(month_composition)
@@ -35,20 +35,22 @@ bbs_population_groups_survey <- function(population,
   chk_gte(group_min_size)
   chk_number(group_coverage)
   chk_range(group_coverage)
-  
+
   nstep <- ncol(population)
-  nyear <- (nstep - 1)/12
+  nyear <- (nstep - 1) / 12
   composition_ind <- month_composition + 1
   survey <- c(composition_ind, composition_ind + 12 * 1:nyear)
   survey <- survey[survey <= nstep]
-  
+
   purrr::map(seq_along(survey), ~ {
-    pop <- population[,survey[.x]]
-    y <- population1_groups(population = pop,
-                            group_size_lambda = group_size_lambda,
-                            group_size_theta = group_size_theta,
-                            group_max_proportion = group_max_proportion,
-                            group_min_size = group_min_size)
+    pop <- population[, survey[.x]]
+    y <- population1_groups(
+      population = pop,
+      group_size_lambda = group_size_lambda,
+      group_size_theta = group_size_theta,
+      group_max_proportion = group_max_proportion,
+      group_min_size = group_min_size
+    )
     sample(y, round(group_coverage * length(y)))
   })
 }

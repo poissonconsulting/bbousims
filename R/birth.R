@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-#' if(interactive()){
+#' if (interactive()) {
 #'   bbs_fecundity(c(NA, logit(0.4)), trend = c(NA, 0.1), annual_sd = c(NA, 0.05))
 #' }
 #'
@@ -26,20 +26,20 @@ bbs_fecundity <- function(intercept,
   chk_length(annual_sd, length(intercept))
   chk_gte(nyear)
   chk_whole_number(nyear)
-  
+
   nstage <- length(intercept)
   efecundity <- array(0, dim = c(nyear, nstage))
   bannual <- array(0, dim = c(nyear, nstage))
   year <- 1:nyear - 1
   zero <- is.na(intercept)
   annual_sd[is.na(annual_sd)] <- 0
-  
+
   for (stg in 1:nstage) {
     for (yr in 1:nyear) {
       bannual[yr, stg] <- rnorm(1, 0, annual_sd[stg])
     }
   }
-  
+
   for (yr in 1:nyear) {
     for (stg in 1:nstage) {
       efecundity[yr, stg] <-
@@ -48,10 +48,12 @@ bbs_fecundity <- function(intercept,
   }
 
   efecundity[, zero] <- 0
-  list(eFecundity = efecundity,
-       b0 = intercept,
-       bYear = trend,
-       bAnnual = bannual)
+  list(
+    eFecundity = efecundity,
+    b0 = intercept,
+    bYear = trend,
+    bAnnual = bannual
+  )
 }
 
 #' Get stochastic Boreal Caribou fecundity rates by year and stage.
@@ -67,7 +69,7 @@ bbs_fecundity <- function(intercept,
 #' @export
 #'
 #' @examples
-#' if(interactive()){
+#' if (interactive()) {
 #'   bbs_fecundity_caribou(0.4, trend = 0.1, annual_sd = 0.3)
 #' }
 #'
@@ -81,18 +83,19 @@ bbs_fecundity_caribou <- function(calves_per_adult_female,
   chk_number(annual_sd)
   chk_gte(nyear)
   chk_whole_number(nyear)
-  
+
   nstage <- 3
   efecundity <- matrix(0, nrow = nyear, ncol = nstage)
   bannual <- vector(length = nyear)
   year <- 1:nyear - 1
-  
+
   intercept <- c(NA, NA, logit(calves_per_adult_female))
   trend <- c(0, 0, trend)
   annual_sd <- c(0, 0, annual_sd)
-  
+
   bbs_fecundity(intercept,
-                trend = trend,
-                annual_sd = annual_sd,
-                nyear = nyear)
+    trend = trend,
+    annual_sd = annual_sd,
+    nyear = nyear
+  )
 }

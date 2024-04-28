@@ -60,17 +60,21 @@ As in `bbs_survival_caribou()`, the standard deviation of the annual variation o
 ```{r}
 set.seed(1)
 nyear <- 5
-survival <- bbs_survival_caribou(survival_adult_female = 0.85, 
-                                 annual_sd_adult_female = 0.2,
-                                 month_sd_adult_female = 0.1,
-                                 survival_calf_female = 0.5, 
-                                 yearling_effect = 0.05,
-                                 nyear = nyear)
+survival <- bbs_survival_caribou(
+  survival_adult_female = 0.85,
+  annual_sd_adult_female = 0.2,
+  month_sd_adult_female = 0.1,
+  survival_calf_female = 0.5,
+  yearling_effect = 0.05,
+  nyear = nyear
+)
 
-fecundity <- bbs_fecundity_caribou(calves_per_adult_female = 0.7, 
-                                   annual_sd = 0.1,
-                                   trend = 0.05,
-                                   nyear = nyear)
+fecundity <- bbs_fecundity_caribou(
+  calves_per_adult_female = 0.7,
+  annual_sd = 0.1,
+  trend = 0.05,
+  nyear = nyear
+)
 ```
 
 The output of `bbs_survival_caribou()` is a list containing the intercept (`b0`), trend (`bYear`), individual random effects (`bAnnual`, `bMonth`, and `bAnnualMonth`) and the expected monthly survival, `eSurvival`. 
@@ -79,7 +83,7 @@ The output of `bbs_survival_caribou()` is a list containing the intercept (`b0`)
 
 ```{r}
 # adult female survival rates for the first 5 years
-survival$eSurvival[,1:5,3]
+survival$eSurvival[, 1:5, 3]
 ```
 
 The output of `bbs_fecundity_caribou()` is a list containing the intercept (`b0`), trend (`bYear`), individual annual random effects (`bAnnual`) and the expected annual calves per adult female, `eFecundity`. 
@@ -88,7 +92,7 @@ The output of `bbs_fecundity_caribou()` is a list containing the intercept (`b0`
 
 ```{r}
 # adult female fecundity rates
-fecundity$eFecundity[,3]
+fecundity$eFecundity[, 3]
 ```
 
 
@@ -101,24 +105,25 @@ Internally, a custom function (`%*b%`) is used for stochastic matrix multiplicat
 ```{r}
 set.seed(1)
 initial_pop <- c(100, 80, 180)
-survival_mat1 <- bbs_matrix_survival(survival$eSurvival[1,1,])
+survival_mat1 <- bbs_matrix_survival(survival$eSurvival[1, 1, ])
 survival_mat1 %*b% initial_pop
 ```
 Initial population abundance for each stage is determined from the initial number of adult females set by the user and the calculated stable stage distribution, which is informed by the calves per adult female intercept, adult female survival intercept, calf survival intercept and sex ratio  (see `bbs_demographic_summary()` for details).
 Population abundance for male stages are based on user-provided sex ratios. 
 
 ```{r}
-population <- bbs_population_caribou(survival, 
-                                     fecundity = fecundity, 
-                                     adult_females = 500,
-                                     proportion_adult_female = 0.65)
+population <- bbs_population_caribou(survival,
+  fecundity = fecundity,
+  adult_females = 500,
+  proportion_adult_female = 0.65
+)
 ```
 
 The output is a matrix with abundance for each period and stage. The first period is the initial population and period 13 is the final month of the first year. 
 
 ```{r}
 # projected population for first year
-population[,1:13]
+population[, 1:13]
 ```
 
 ```{r, fig.height=4,fig.width=7}
@@ -128,28 +133,35 @@ bbs_plot_population(population)
 It can be useful to view estimates of key demographic summary metrics (i.e., lambda, recruitment, stable stage distribution) prior to simulating data, e.g., to assess the stability of the population. 
 
 ```{r}
-bbs_demographic_summary(calves_per_adult_female = 0.7,
-                        survival_adult_female = 0.85, 
-                        survival_calf = 0.5, 
-                        proportion_female = 0.65)
+bbs_demographic_summary(
+  calves_per_adult_female = 0.7,
+  survival_adult_female = 0.85,
+  survival_calf = 0.5,
+  proportion_female = 0.65
+)
 ```
 As another example, adding a high negative strend and high standard deviation of the annual variation in the adult female survival will cause higher variation and downward projection of population.
 
 ```{r fig.height=4,fig.width=7}
 set.seed(1)
 nyear <- 20
-survival2 <- bbs_survival_caribou(survival_adult_female = 0.85, 
-                                 annual_sd_adult_female = 0.6,
-                                 trend_adult_female = -0.1,
-                                 nyear = nyear)
+survival2 <- bbs_survival_caribou(
+  survival_adult_female = 0.85,
+  annual_sd_adult_female = 0.6,
+  trend_adult_female = -0.1,
+  nyear = nyear
+)
 
-fecundity2 <- bbs_fecundity_caribou(calves_per_adult_female = 0.8,
-                                   nyear = nyear)
+fecundity2 <- bbs_fecundity_caribou(
+  calves_per_adult_female = 0.8,
+  nyear = nyear
+)
 
-population <- bbs_population_caribou(survival2, 
-                                     fecundity = fecundity2, 
-                                     adult_females = 500,
-                                     proportion_adult_female = 0.5)
+population <- bbs_population_caribou(survival2,
+  fecundity = fecundity2,
+  adult_females = 500,
+  proportion_adult_female = 0.5
+)
 
 bbs_plot_population(population)
 ```
@@ -162,15 +174,17 @@ The output is a list of lists of the abundance, survival, and recruitment data.f
 
 ```{r}
 set.seed(1)
-data <- bbs_simulate_caribou(survival = survival,
-                             fecundity = fecundity,
-                             nsims = 10,
-                             adult_females = 500,
-                             proportion_adult_female = 0.65,
-                             month_composition = 9L,
-                             collared_adult_females = 50,
-                             group_size = 6, 
-                             group_coverage = 0.3)
+data <- bbs_simulate_caribou(
+  survival = survival,
+  fecundity = fecundity,
+  nsims = 10,
+  adult_females = 500,
+  proportion_adult_female = 0.65,
+  month_composition = 9L,
+  collared_adult_females = 50,
+  group_size = 6,
+  group_coverage = 0.3
+)
 ```
 
 Key sampling parameters for recruitment data include month of composition survey mean group size, minimum group size, maximum group size (as proportion of total population), proportion of groups observed (`group_coverage`), probability that an adult female has unknown sex, and probability that an adult male has unknown sex. 

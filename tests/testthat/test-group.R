@@ -3,7 +3,7 @@ test_that("assign population to groups", {
     survival <- bbs_survival_caribou(0.84)
     fecundity <- bbs_fecundity_caribou(0.2)
     population <- bbs_population_caribou(survival = survival, fecundity = fecundity, adult_females = 1000)
-    
+
     min_size <- 2
     max_proportion <- 0.75
     lambda <- 6
@@ -29,7 +29,7 @@ test_that("assign population to groups", {
   for (i in seq_along(individuals)) {
     expect_identical(individuals[[i]], sort(unlist(group[[i]])))
   }
-  
+
   # check min and max group sizes
   sizes <- lapply(group, function(x)
     sapply(x, length))
@@ -46,7 +46,7 @@ test_that("sample groups from population", {
     survival <- bbs_survival_caribou(0.84)
     fecundity <- bbs_fecundity_caribou(0.2)
     population <- bbs_population_caribou(survival = survival, fecundity = fecundity, adult_females = 1000)
-    
+
     min_size <- 2
     max_proportion <- 0.75
     lambda <- 6
@@ -58,14 +58,14 @@ test_that("sample groups from population", {
       group_max_proportion = max_proportion,
       group_min_size = min_size
     )
-    
+
     expect_snapshot({
       print(group)
     })
   })
 
   nstep <- ncol(population)
-  expect_equal(length(group), (nstep - 1)/12)
+  expect_equal(length(group), (nstep - 1) / 12)
 
   sizes <- lapply(group, function(x)
     sapply(x, length))
@@ -82,7 +82,7 @@ test_that("assign population to groups by pairs", {
     survival <- bbs_survival_caribou(0.84)
     fecundity <- bbs_fecundity_caribou(0.2)
     population <- bbs_population_caribou(survival = survival, fecundity = fecundity, adult_females = 1000)
-    
+
     min_size <- 2
     max_proportion <- 0.75
     lambda <- 6
@@ -94,20 +94,20 @@ test_that("assign population to groups by pairs", {
       group_max_proportion = max_proportion,
       group_min_size = min_size
     )
-    
+
     expect_snapshot({
       print(group)
     })
   })
 
   nstep <- ncol(population)
-  
+
   individuals <-
     purrr::map(1:ncol(population), ~ sort(population_individuals(population[, .x])))
   for (i in seq_along(individuals)) {
     expect_identical(individuals[[i]], sort(unlist(group[[i]])))
   }
-  
+
   sizes <- lapply(group, function(x)
     sapply(x, length))
   expect_true(min(unlist(sizes)) >= min_size)
@@ -134,12 +134,12 @@ test_that("assign population to groups in declining population to 0", {
       group_max_proportion = max_proportion,
       group_min_size = min_size
     )
-    
+
     expect_snapshot({
       print(group)
     })
   })
-  
+
   nstep <- ncol(population)
   expect_identical(length(group), nstep)
 
@@ -149,7 +149,7 @@ test_that("assign population to groups in declining population to 0", {
   for (i in seq_along(individuals)) {
     expect_identical(individuals[[i]], sort(unlist(group[[i]])))
   }
-  
+
   # check min and max group sizes
   sizes <- lapply(group, function(x)
     sapply(x, length))

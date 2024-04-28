@@ -6,7 +6,7 @@ title: "Work with bboutools"
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  message = FALSE, 
+  message = FALSE,
   warning = FALSE
 )
 library(bbousims)
@@ -21,44 +21,51 @@ First we set up a stable population with annual variation in adult female surviv
 ```{r}
 set.seed(1)
 nyear <- 5
-survival <- bbs_survival_caribou(survival_adult_female = 0.85, 
-                                 annual_sd_adult_female = 0.2,
-                                 month_sd_adult_female = 0.1,
-                                 survival_calf_female = 0.5, 
-                                 yearling_effect = 0.05,
-                                 nyear = nyear)
+survival <- bbs_survival_caribou(
+  survival_adult_female = 0.85,
+  annual_sd_adult_female = 0.2,
+  month_sd_adult_female = 0.1,
+  survival_calf_female = 0.5,
+  yearling_effect = 0.05,
+  nyear = nyear
+)
 
-fecundity <- bbs_fecundity_caribou(calves_per_adult_female = 0.7, 
-                                   annual_sd = 0.1,
-                                   trend = 0.05,
-                                   nyear = nyear)
+fecundity <- bbs_fecundity_caribou(
+  calves_per_adult_female = 0.7,
+  annual_sd = 0.1,
+  trend = 0.05,
+  nyear = nyear
+)
 
 # use stochastic=FALSE to use deterministic matrix multiplication
-population <- bbs_population_caribou(survival, 
-                                     fecundity = fecundity, 
-                                     adult_females = 500, 
-                                     stochastic = FALSE)
+population <- bbs_population_caribou(survival,
+  fecundity = fecundity,
+  adult_females = 500,
+  stochastic = FALSE
+)
 
 nsims <- 3
-data <- bbs_simulate_caribou(survival = survival,
-                             fecundity = fecundity,
-                             nsims = nsims,
-                             adult_females = 500,
-                             proportion_adult_female = 0.65,
-                             month_composition = 9L,
-                             collared_adult_females = 30,
-                             group_size = 6, 
-                             group_coverage = 0.5)
+data <- bbs_simulate_caribou(
+  survival = survival,
+  fecundity = fecundity,
+  nsims = nsims,
+  adult_females = 500,
+  proportion_adult_female = 0.65,
+  month_composition = 9L,
+  collared_adult_females = 30,
+  group_size = 6,
+  group_coverage = 0.5
+)
 ```
 
 The true annual adult female survival rates can be calculated from the projected population as the product of the monthly survival rates for each year
 ```{r}
-saf <- survival$eSurvival[,,3]
+saf <- survival$eSurvival[, , 3]
 nyear <- dim(saf)[2]
 
 saf_annual <- vector(length = nyear)
-for(yr in 1:nyear){
-  saf_annual[yr] <- prod(saf[,yr])
+for (yr in 1:nyear) {
+  saf_annual[yr] <- prod(saf[, yr])
 }
 saf_annual
 ```
@@ -73,19 +80,21 @@ library(ggplot2)
 # fit model for each simulation
 # we set year_start = 1 because we assume the projected population is for the biological year
 nsims <- length(data)
-fits_survival <- map(1:nsims, function(x){
+fits_survival <- map(1:nsims, function(x) {
   survival <- data[[x]]$survival
-  bboutools::bb_fit_survival(data = survival, 
-                             year_start = 1L, 
-                             quiet = TRUE, nthin = 200, 
-                             niters = 500)
+  bboutools::bb_fit_survival(
+    data = survival,
+    year_start = 1L,
+    quiet = TRUE, nthin = 200,
+    niters = 500
+  )
 })
 ```
 Check that all models have converged 
 ```{r}
 all(
   unlist(
-    map(fits_survival, function(x){
+    map(fits_survival, function(x) {
       glance(x)$converged
     })
   )
@@ -98,36 +107,36 @@ Plot predicted survival estimates to assess whether 95% CI contains true value.
 actual <- tibble(CaribouYear = 1:nyear, actual = saf_annual)
 
 # predict annual survival
-preds <- map_df(1:length(fits_survival), function(x){
+preds <- map_df(1:length(fits_survival), function(x) {
   pred <- bboutools::bb_predict_survival(fits_survival[[x]])
   pred$sim <- x
   pred
 })
 
- gp <- 
-    ggplot(data = preds) +
-    geom_pointrange(aes(x = CaribouYear, y = estimate, ymin = lower, ymax = upper, group = sim), size = 0.2, position = position_dodge(width = 0.3)) +
-    xlab("Year") +
-    scale_y_continuous("Annual Survival") +
-    geom_point(data = actual, aes(x = CaribouYear, y = actual), color = "red", size = 2) 
- gp
+gp <-
+  ggplot(data = preds) +
+  geom_pointrange(aes(x = CaribouYear, y = estimate, ymin = lower, ymax = upper, group = sim), size = 0.2, position = position_dodge(width = 0.3)) +
+  xlab("Year") +
+  scale_y_continuous("Annual Survival") +
+  geom_point(data = actual, aes(x = CaribouYear, y = actual), color = "red", size = 2)
+gp
 ```
 
 The true recruitment rates can be calculated from the projected population at each composition survey month.
 ```{r}
 month_composition = 9L
-survey <- seq(1, 12*nyear, by = 12) + month_composition
+survey <- seq(1, 12 * nyear, by = 12) + month_composition
 x <- population[, survey]
 
 # calves per adult female
 caf <- vector(length = nyear)
-for(i in 1:ncol(x)){
+for (i in 1:ncol(x)) {
   # female calves + male calves / female yearlings + female adults
-  caf[i] <- (x[1,i] + x[2,i]) / (x[3,i] + x[5, i])
+  caf[i] <- (x[1, i] + x[2, i]) / (x[3, i] + x[5, i])
 }
 
 # decesare adjusted recruitment to match bboutools predictions
-fcaf <- (caf * 0.5) 
+fcaf <- (caf * 0.5)
 recruitment <- (fcaf / (1 + fcaf))
 
 actual <- tibble(CaribouYear = 1:length(recruitment), actual = recruitment)
@@ -137,13 +146,15 @@ The model coefficient estimates for each simulation can be compared to the true 
 
 ```{r, fig.height=5,fig.width=5}
 nsims <- length(data)
-fits_recruitment <- map(1:nsims, function(x){
+fits_recruitment <- map(1:nsims, function(x) {
   recruitment <- data[[x]]$recruitment
-  bboutools::bb_fit_recruitment(data = recruitment, 
-                             year_start = 1L, 
-                             quiet = TRUE, 
-                             nthin = 100, 
-                             niters = 500)
+  bboutools::bb_fit_recruitment(
+    data = recruitment,
+    year_start = 1L,
+    quiet = TRUE,
+    nthin = 100,
+    niters = 500
+  )
 })
 ```
 
@@ -151,7 +162,7 @@ Ensure all models have converged.
 ```{r}
 all(
   unlist(
-    map(fits_recruitment, function(x){
+    map(fits_recruitment, function(x) {
       glance(x)$converged
     })
   )
@@ -162,18 +173,18 @@ Plot predicted recruitment estimates to assess whether 95% CI contains true valu
 
 ```{r}
 # predict annual recruitment
-preds <- map_df(1:length(fits_recruitment), function(x){
+preds <- map_df(1:length(fits_recruitment), function(x) {
   pred <- bboutools::bb_predict_recruitment(fits_recruitment[[x]])
   pred$sim <- x
   pred
 })
 
- gp <- 
-    ggplot(data = preds) +
-    geom_pointrange(aes(x = CaribouYear, y = estimate, ymin = lower, ymax = upper, group = sim), size = 0.2, position = position_dodge(width = 0.3)) +
-    xlab("Year") +
-    scale_y_continuous("Annual Survival") +
-    geom_point(data = actual, aes(x = CaribouYear, y = actual), color = "red", size = 2) 
- gp
+gp <-
+  ggplot(data = preds) +
+  geom_pointrange(aes(x = CaribouYear, y = estimate, ymin = lower, ymax = upper, group = sim), size = 0.2, position = position_dodge(width = 0.3)) +
+  xlab("Year") +
+  scale_y_continuous("Annual Survival") +
+  geom_point(data = actual, aes(x = CaribouYear, y = actual), color = "red", size = 2)
+gp
 ```
 

@@ -32,7 +32,6 @@ test_that("can plot population matrix", {
 })
 
 test_that("can plot population matrix 2 stages and 4 periods", {
-  
   withr::with_seed(10, {
     survival <- bbs_survival(
       intercept = logit(c(0.94, 0.98)),
@@ -51,14 +50,16 @@ test_that("can plot population matrix 2 stages and 4 periods", {
     survival_mat <- bbs_matrix_survival_period(survival$eSurvival)
     birth_mat <-
       bbs_matrix_birth_year(fecundity$eFecundity,
-                            female_recruit_stage = 1,
-                            male_recruit_stage = NULL)
+        female_recruit_stage = 1,
+        male_recruit_stage = NULL
+      )
     age_mat <- bbs_matrix_age(c(2, 2))
     pop0 <- c(105, 220)
     x <- bbs_population(pop0,
-                        birth = birth_mat,
-                        age = age_mat,
-                        survival = survival_mat)
+      birth = birth_mat,
+      age = age_mat,
+      survival = survival_mat
+    )
     gp <- bbs_plot_population(x, nperiod_within_year = 4)
     expect_s3_class(gp, "ggplot")
     expect_snapshot_plot(gp, "population_stage")
@@ -75,4 +76,3 @@ test_that("can plot population bbou simulation", {
     expect_snapshot_plot(gp, "population_bbou_simulation")
   })
 })
-
