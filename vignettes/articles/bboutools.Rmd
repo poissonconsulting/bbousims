@@ -5,14 +5,18 @@ title: "Working with bboutools"
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  message = FALSE, 
+  warning = FALSE
 )
 library(bbousims)
 ```
 
-The recruitment and survival data are formatted to be used as input for `bboutools` model fitting functions. 
+Recruitment and survival data that are the output of `bbs_simulate_caribou()` are formatted to be used as input for `bboutools` model fitting functions. 
 
-The ability of different models to recover the 'true' annual survival and recruitment rates can be assessed. 
+The ability of different models to recover the 'true' annual survival and recruitment rates can be assessed for any number of simulations. 
+
+First we set up a stable population with annual variation in adult female survival and recruitment and generate three simulated datasets for illustration. 
 
 ```{r}
 set.seed(1)
@@ -47,7 +51,7 @@ data <- bbs_simulate_caribou(survival = survival,
                              group_coverage = 0.5)
 ```
 
-For example, the true annual adult female survival rates can be calculated from the projected population as the product of the monthly survival rates for each year
+The true annual adult female survival rates can be calculated from the projected population as the product of the monthly survival rates for each year
 ```{r}
 saf <- survival$eSurvival[,,3]
 nyear <- dim(saf)[2]
@@ -76,8 +80,9 @@ fits_survival <- map(1:nsims, function(x){
                              quiet = TRUE, nthin = 200, 
                              niters = 500)
 })
-
-# check that all converged
+```
+Check that all models have converged 
+```{r}
 all(
   unlist(
     map(fits_survival, function(x){
@@ -85,6 +90,12 @@ all(
     })
   )
 )
+```
+
+
+Plot predicted survival estimates to assess whether 95% CI contains true value. 
+```{r}
+actual <- tibble(CaribouYear = 1:nyear, actual = saf_annual)
 
 # predict annual survival
 preds <- map_df(1:length(fits_survival), function(x){
@@ -92,8 +103,6 @@ preds <- map_df(1:length(fits_survival), function(x){
   pred$sim <- x
   pred
 })
-  
-actual <- tibble(CaribouYear = 1:nyear, actual = saf_annual)
 
  gp <- 
     ggplot(data = preds) +
@@ -104,9 +113,7 @@ actual <- tibble(CaribouYear = 1:nyear, actual = saf_annual)
  gp
 ```
 
-In this case, fits for each simulated data set contain the actual value in the 95% CI. 
-
-The true recruitment rates can be calculated from the projected population at each composition survey month as 
+The true recruitment rates can be calculated from the projected population at each composition survey month.
 ```{r}
 month_composition = 9L
 survey <- seq(1, 12*nyear, by = 12) + month_composition
@@ -126,6 +133,7 @@ recruitment <- (fcaf / (1 + fcaf))
 actual <- tibble(CaribouYear = 1:length(recruitment), actual = recruitment)
 ```
 
+The model coefficient estimates for each simulation can be compared to the true recruitment rates. 
 
 ```{r, fig.height=5,fig.width=5}
 nsims <- length(data)
@@ -137,8 +145,10 @@ fits_recruitment <- map(1:nsims, function(x){
                              nthin = 100, 
                              niters = 500)
 })
+```
 
-# check that all converged
+Ensure all models have converged.
+```{r}
 all(
   unlist(
     map(fits_recruitment, function(x){
@@ -146,14 +156,18 @@ all(
     })
   )
 )
+```
 
+Plot predicted recruitment estimates to assess whether 95% CI contains true value. 
+
+```{r}
 # predict annual recruitment
 preds <- map_df(1:length(fits_recruitment), function(x){
   pred <- bboutools::bb_predict_recruitment(fits_recruitment[[x]])
   pred$sim <- x
   pred
 })
-  
+
  gp <- 
     ggplot(data = preds) +
     geom_pointrange(aes(x = CaribouYear, y = estimate, ymin = lower, ymax = upper, group = sim), size = 0.2, position = position_dodge(width = 0.3)) +
@@ -162,3 +176,4 @@ preds <- map_df(1:length(fits_recruitment), function(x){
     geom_point(data = actual, aes(x = CaribouYear, y = actual), color = "red", size = 2) 
  gp
 ```
+
