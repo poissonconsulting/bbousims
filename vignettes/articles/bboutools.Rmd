@@ -12,11 +12,11 @@ knitr::opts_chunk$set(
 library(bbousims)
 ```
 
-Recruitment and survival data that are the output of `bbs_simulate_caribou()` are formatted to be used as input for `bboutools` model fitting functions. 
+Recruitment and survival data from `bbs_simulate_caribou()` are formatted to be used as input for `bboutools` model fitting functions. 
 
 The ability of different models to recover the 'true' annual survival and recruitment rates can be assessed for any number of simulations. 
 
-First we set up a stable population with annual variation in adult female survival and recruitment and generate three simulated datasets for illustration. 
+To demonstrate, first set up a stable population with annual variation in adult female survival and recruitment and generate three simulated datasets for illustration. Variation in recruitment could also be achieved by adding annual variation calf survival. 
 
 ```{r}
 set.seed(1)
@@ -90,6 +90,7 @@ fits_survival <- map(1:nsims, function(x) {
   )
 })
 ```
+
 Check that all models have converged 
 ```{r}
 all(
@@ -100,7 +101,6 @@ all(
   )
 )
 ```
-
 
 Plot predicted survival estimates to assess whether 95% CI contains true value. 
 ```{r}
@@ -122,7 +122,8 @@ gp <-
 gp
 ```
 
-The true recruitment rates can be calculated from the projected population at each composition survey month.
+The true recruitment rates can be calculated from the projected population at each composition survey month. First calculate calf-cow ratio and calculate DeCesare adjusted recruitment to match bboutools predictions. 
+
 ```{r}
 month_composition <- 9L
 survey <- seq(1, 12 * nyear, by = 12) + month_composition
@@ -135,7 +136,7 @@ for (i in seq_len(ncol(x))) {
   caf[i] <- (x[1, i] + x[2, i]) / (x[3, i] + x[5, i])
 }
 
-# decesare adjusted recruitment to match bboutools predictions
+# decesare adjusted recruitment 
 fcaf <- (caf * 0.5)
 recruitment <- (fcaf / (1 + fcaf))
 
