@@ -134,6 +134,7 @@ bbs_population_caribou <- function(survival,
                                    stochastic = TRUE) {
   .chk_survival(survival)
   .chk_fecundity(fecundity)
+  .chk_nyears(survival, fecundity)
   chk_whole_number(adult_females)
   chk_gt(adult_females)
   chk_number(proportion_adult_female)

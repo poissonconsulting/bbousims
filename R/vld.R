@@ -13,3 +13,9 @@
     vld_equal(length(dim(x$eFecundity)), 2)
   )
 }
+
+.vld_nyears <- function(survival, fecundity) {
+  all(
+    vld_equal(dim(survival$eSurvival)[2], dim(fecundity$eFecundity)[1])
+  )
+}

@@ -55,3 +55,19 @@ test_that("bbs_population_caribou works", {
     })
   })
 })
+
+test_that("bbs_population_caribou fails with different number of years", {
+  withr::with_seed(10, {
+    nyear <- 10
+    survival <- bbs_survival_caribou(
+      survival_adult_female = 0.84,
+      nyear = nyear
+    )
+    fecundity <- bbs_fecundity_caribou(0.2, nyear = 3)
+    
+    expect_chk_error(bbs_population_caribou(
+      survival = survival,
+      fecundity = fecundity
+    ), regexp = "must have the same number of years") 
+  })
+})
