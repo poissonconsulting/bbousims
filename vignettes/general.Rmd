@@ -1,5 +1,5 @@
 ---
-title: "Simulate population from birth and survival rates and assign groups"
+title: "General tools for population projection and allocating groups"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{general}
@@ -12,9 +12,126 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-```
-
-```{r setup}
 library(bbousims)
 ```
 
+`bbousims` contains more flexible, general functionality todo the following for any set of time periods and stages: generate survival and fecundity rates; generate survival, birth and age process matrices; project population; allocate individuals from population into groups; sample a proportion of groups in a given period each year. 
+
+### Survival and fecundity rates
+
+`bbs_survival()` and `bbs_fecundity()` can be used to stochastically generate survival and fecundity rates over time. 
+Survival varies by period (e.g., month, season) with options to set the intercept, year trend, annual random effect, period random effect and period within annual random effect for each stage, on the log-odds scale.  
+
+The rates are provided as a vector with each element corresponding to each stage. 
+
+```{r}
+set.seed(1)
+# 2 stages
+survival <- bbs_survival(intercept = logit(c(0.94, 0.98)),
+                         trend = c(0, 0.3),
+                         annual_sd = rep(0.05, 2),
+                         period_sd = rep(0.1, 2),
+                         nyear = 3, 
+                         nperiod_within_year = 4)
+survival$eSurvival
+```
+
+Fecundity varies by year, with options to set the intercept, year trend and annual random effect for each stage, on the log-odds scale. Setting intercept to NA will force all rates in that stage to be 0. 
+
+```{r}
+set.seed(1)
+fecundity <- bbs_fecundity(intercept = c(NA, logit(0.4)),
+                           trend = c(0, -0.2),
+                           annual_sd = c(0, 0.1),
+                           nyear = 3)
+fecundity$eFecundity
+```
+### Process matrices
+Survival and fecundity rate arrays can be converted into process matrices for use in matrix model population projection. 
+In this example there are two stages representing recruit and adult.  
+`male_recruit_stage` is set to NULL to indicate that there is only one recruit stage. 
+
+```{r}
+survival_mat <- bbs_matrix_survival_period(survival$eSurvival)
+birth_mat <- bbs_matrix_birth_year(fecundity$eFecundity,
+                                   female_recruit_stage = 1, 
+                                   male_recruit_stage = NULL)
+# first period, first year
+survival_mat[,,1,1]
+
+# first year
+birth_mat[,,1]
+```
+
+`bbs_matrix_age()` is used to generate an age process matrix, which does not vary in time. 
+The input vector denotes which stage that stage will age into (i.e., stage 1 ages to stage 2, stage 2 collects).
+
+```{r}
+age_mat <- bbs_matrix_age(c(2, 2))
+age_mat
+```
+
+### Population projection
+`bbousims` contains a custom infix operator `%*b%` to perform matrix multiplication with stochasticity. Instead of multiplying the population at each stage by the corresponding rate, `%*b%` draws from a binomial distribution, where size is the population and probability is the rate of interest.  
+
+For example, with an initial population vector and survival process matrix for the first period of the first year
+```{r}
+pop0 <- c(25, 52)
+survival_mat1 <- survival_mat[,,1,1]
+```
+
+regular (deterministic) matrix multiplication yields
+
+```{r}
+survival_mat1 %*% pop0
+```
+
+and stochastic matrix multiplication yields 
+
+```{r}
+set.seed(1)
+survival_mat1 %*b% pop0
+```
+
+`bbs_population()` is used to project population forward in time from survival, age and birth process matrices. Survival occur at the end of each period, and survival, ageing and birth occur at the end of each year, in that order. 
+
+```{r}
+population <- bbs_population(pop0, 
+                             birth = birth_mat, 
+                             age = age_mat, 
+                             survival = survival_mat)
+population
+```
+
+### Group allocation
+`bbs_population_groups()` is used to randomly allocate individuals at each time step into groups. 
+Group sizes are randomly drawn from a gamma-poisson distribution with user-specified `lambda` and `theta` (dispersion parameter) values. 
+Minimum and maximum (i.e., as a maximum proportion of the total population) group sizes can be set. 
+Group sizes are drawn until the cumulative size exceeds the total individuals. 
+The remaining individuals comprise the final group. 
+If the remaining number of individuals is < minimum group size specified by the user, these will be added to the previous group.  
+
+The output is a list of lists containing the individuals (identified by stage) in each group at each time period. 
+
+```{r}
+groups <- bbs_population_groups(population, 
+                                group_size_lambda = 20, 
+                                group_size_theta = 0)
+
+# first time period
+groups[[1]]
+```
+
+`bbs_population_groups_pairs()` behaves similarly but keeps calf-cow pairs (or equivalent for different animals) together in groups whenever possible.  
+
+`bbs_population_groups_survey()` allocates individuals into groups once a year (month of composition survey relative to biological year start) and allows the user to set the sample coverage (i.e., the proportion of groups observed). Groups are sampled randomly. 
+
+```{r}
+groups <- bbs_population_groups_survey(population, 
+                                       group_size_lambda = 20, 
+                                       month_composition = 3L, 
+                                       group_coverage = 0.2)
+
+# sampled groups in first time period
+groups[[1]]
+```
