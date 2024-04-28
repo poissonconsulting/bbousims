@@ -184,7 +184,7 @@ gp <-
   ggplot(data = preds) +
   geom_pointrange(aes(x = CaribouYear, y = estimate, ymin = lower, ymax = upper, group = sim), size = 0.2, position = position_dodge(width = 0.3)) +
   xlab("Year") +
-  scale_y_continuous("Annual Survival") +
+  scale_y_continuous("Annual Recruitment") +
   geom_point(data = actual, aes(x = CaribouYear, y = actual), color = "red", size = 2)
 gp
 ```
