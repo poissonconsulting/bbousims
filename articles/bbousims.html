@@ -99,27 +99,28 @@ recruitment data:</p>
 <li>Project population using a stochastic matrix model accounting for
 survival, ageing and birth, in that order.<br>
 </li>
-<li>Generate recruitment data by randomly assigning population into
-groups and randomly observing some proportion of those groups.<br>
+<li>Generate recruitment data by randomly assigning projected population
+into groups and randomly observing some proportion of those groups
+during the composition survey month.<br>
 </li>
-<li>Generate survival data by simulating monthly collared adult females
-mortalities from adult female survival rates.</li>
+<li>Generate survival data by simulating monthly collared adult female
+mortalities from survival rates.</li>
 </ol>
-<p>Any number of survival/recruitment data sets can be simulated from a
-single set of survival and fecundity rates.</p>
+<p>Any number of survival and recruitment data sets can be simulated
+from a single set of survival and fecundity rates.</p>
 <div class="section level3">
 <h3 id="simulate-survival-and-fecundity-rates">Simulate survival and fecundity rates<a class="anchor" aria-label="anchor" href="#simulate-survival-and-fecundity-rates"></a>
 </h3>
 <p>Survival rates are simulated for each month, year and stage with
 <code><a href="../reference/bbs_survival_caribou.html">bbs_survival_caribou()</a></code> and fecundity rates are simulated
 for each year and stage with <code><a href="../reference/bbs_fecundity_caribou.html">bbs_fecundity_caribou()</a></code>.</p>
-<p>Rates are generated for three stages: female calf; female yearling;
+<p>Rates are generated for three stages: female calf, female yearling,
 and female adult.</p>
 <p>Survival rates for female calves and female adults are generated
 stochastically from linear models taking the following form (simplified
 for readability):</p>
 <p><span class="math display">\[
-logit(eSurvival_{y,m}) = \beta_0 + \beta_Y \cdot Year_{y} +
+logit(Survival_{y,m}) \sim \beta_0 + \beta_Y \cdot Year_{y} +
 \beta_{A_{y}} + \beta_{M_{m}} + \beta_{AM_{y,m}}
 \]</span></p>
 <p>The intercept (<span class="math inline">\(\beta_0\)</span>) is
@@ -128,9 +129,9 @@ annual survival rate in the first year. Internally, this rate is
 transformed to a monthly rate on the log-odds scale.</p>
 <p><span class="math inline">\(\beta_{A}\)</span>, <span class="math inline">\(\beta_{M}\)</span> and <span class="math inline">\(\beta_{AM}\)</span> are random effects
 representing the annual variation, monthly variation and month within
-annual variation on the intercept on the log-odds scale. Random effects
-are generated stochastically from a normal distribution with a mean of 0
-and standard deviation provided by the user.</p>
+annual variation on the log-odds scale. Random effects are generated
+stochastically from a normal distribution with a mean of 0 and standard
+deviation provided by the user.</p>
 <p><span class="math inline">\(\beta_{Y}\)</span> is a trend
 representing the effect of an increase of one year on the log-odds
 monthly survival rate.</p>
@@ -139,14 +140,14 @@ separate linear models, whereas female yearling survival is determined
 as an effect on female adult survival.</p>
 <p>Fecundity rates are generated from a linear model taking the
 (simplified) form: <span class="math display">\[
-logit(eSurvival_{y,m}) = \beta_0 + \beta_Y \cdot Year_{y} +
+logit(Fecundity_{y,m}) \sim \beta_0 + \beta_Y \cdot Year_{y} +
 \beta_{A_{y}}
 \]</span> The intercept (<span class="math inline">\(\beta_0\)</span>)
 is provided to <code><a href="../reference/bbs_fecundity_caribou.html">bbs_fecundity_caribou()</a></code> as the annual rate
 of calves per adult female in the first year.<br>
-Internally, this is transformed to the logit scale.</p>
+Internally, this is transformed to the log-odds scale.</p>
 <p>As in <code><a href="../reference/bbs_survival_caribou.html">bbs_survival_caribou()</a></code>, the standard deviation of
-the annual variation on the intercept on the log-odds scale (<span class="math inline">\(\beta_A\)</span>) is provided by the user and the
+the annual variation on the log-odds scale (<span class="math inline">\(\beta_A\)</span>) is provided by the user and the
 trend (<span class="math inline">\(\beta_Y\)</span>) represents the
 effect of an increase of one year on the log-odds calves per adult
 female.</p>
@@ -173,10 +174,10 @@ containing the intercept (<code>b0</code>), trend (<code>bYear</code>),
 individual random effects (<code>bAnnual</code>, <code>bMonth</code>,
 and <code>bAnnualMonth</code>) and the expected monthly survival,
 <code>eSurvival</code>.</p>
-<p><code>eSurvival</code> is an array with the survival rate for each
+<p><code>eSurvival</code> is an array with the survival rate in each
 month, year and stage.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># adult female survival rates for the first 5 years</span></span>
+<code class="sourceCode R"><span><span class="co"># adult female (stage 3) survival rates for the first 5 years</span></span>
 <span><span class="va">survival</span><span class="op">$</span><span class="va">eSurvival</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">3</span><span class="op">]</span></span>
 <span><span class="co">#&gt;            [,1]      [,2]      [,3]      [,4]      [,5]</span></span>
 <span><span class="co">#&gt;  [1,] 0.9834999 0.9859332 0.9828071 0.9893564 0.9863321</span></span>
@@ -198,21 +199,25 @@ annual calves per adult female, <code>eFecundity</code>.</p>
 <p><code>eFecundity</code> is an matrix with the fecundity rates for
 each year and stage.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># adult female fecundity rates</span></span>
-<span><span class="va">fecundity</span><span class="op">$</span><span class="va">eFecundity</span><span class="op">[</span>, <span class="fl">3</span><span class="op">]</span></span>
-<span><span class="co">#&gt; [1] 0.7194392 0.7269931 0.7323715 0.7482302 0.7550096</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fecundity</span><span class="op">$</span><span class="va">eFecundity</span></span>
+<span><span class="co">#&gt;      [,1] [,2]      [,3]</span></span>
+<span><span class="co">#&gt; [1,]    0    0 0.7194392</span></span>
+<span><span class="co">#&gt; [2,]    0    0 0.7269931</span></span>
+<span><span class="co">#&gt; [3,]    0    0 0.7323715</span></span>
+<span><span class="co">#&gt; [4,]    0    0 0.7482302</span></span>
+<span><span class="co">#&gt; [5,]    0    0 0.7550096</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="project-population">Project population<a class="anchor" aria-label="anchor" href="#project-population"></a>
 </h2>
 <p>Boreal Caribou population is projected from survival, ageing and
-birth processes using a matrix model. Survival occurs at the end of each
-month and survival, ageing and birth occur at the end of each year, in
-that order.</p>
+birth using a matrix model. Survival occurs at the end of each month and
+survival, ageing and birth occur at the end of each year, in that
+order.</p>
 <p>Internally, a custom function (<code>%*b%</code>) is used for
-stochastic matrix multiplication at each period. For example, we can
-convert the survival rates for the first period to a process matrix and
-multiply by an initial population vector.</p>
+stochastic matrix multiplication in each period. For demonstration, the
+survival rates for the first period are converted to a process matrix
+and multiplied by an initial population vector.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">initial_pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">80</span>, <span class="fl">180</span><span class="op">)</span></span>
@@ -227,8 +232,10 @@ initial number of adult females set by the user and the calculated
 stable stage distribution, which is informed by the calves per adult
 female intercept, adult female survival intercept, calf survival
 intercept and sex ratio (see <code><a href="../reference/bbs_demographic_summary.html">bbs_demographic_summary()</a></code> for
-details). Population abundance for male stages are based on
-user-provided sex ratios.</p>
+details).<br>
+Population abundance for male stages are drawn stochastically from a
+binomial distribution, with probability from user-provided sex
+ratios.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_population_caribou.html">bbs_population_caribou</a></span><span class="op">(</span><span class="va">survival</span>,</span>
 <span>  fecundity <span class="op">=</span> <span class="va">fecundity</span>,</span>
@@ -237,7 +244,8 @@ user-provided sex ratios.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p>The output is a matrix with abundance for each period and stage. The
 first period is the initial population and period 13 is the final month
-of the first year.</p>
+of the first year. Stages are female calf, male calf, female yearling,
+male yearling, female adult and male adult, in that order.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># projected population for first year</span></span>
 <span><span class="va">population</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">13</span><span class="op">]</span></span>
@@ -272,9 +280,11 @@ simulating data, e.g., to assess the stability of the population.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $stable_stage_dist</span></span>
 <span><span class="co">#&gt; [1] 0.2434066 0.1203962 0.6361972</span></span></code></pre></div>
-<p>As another example, adding a high negative strend and high standard
-deviation of the annual variation in the adult female survival will
-cause higher variation and downward projection of population.</p>
+<p>As another example of population projection, adding a high negative
+trend, high standard deviation of the annual variation in the adult
+female survival and adult female proportion of 0.5 will cause higher
+variation, downward projection of population and similar number of males
+and females.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">nyear</span> <span class="op">&lt;-</span> <span class="fl">20</span></span>
@@ -290,31 +300,109 @@ cause higher variation and downward projection of population.</p>
 <span>  nyear <span class="op">=</span> <span class="va">nyear</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_population_caribou.html">bbs_population_caribou</a></span><span class="op">(</span><span class="va">survival2</span>,</span>
+<span><span class="va">population2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_population_caribou.html">bbs_population_caribou</a></span><span class="op">(</span><span class="va">survival2</span>,</span>
 <span>  fecundity <span class="op">=</span> <span class="va">fecundity2</span>,</span>
 <span>  adult_females <span class="op">=</span> <span class="fl">500</span>,</span>
 <span>  proportion_adult_female <span class="op">=</span> <span class="fl">0.5</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/bbs_plot_population.html">bbs_plot_population</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/bbs_plot_population.html">bbs_plot_population</a></span><span class="op">(</span><span class="va">population2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="bbousims_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
+<div class="section level3">
+<h3 id="allocate-and-sample-groups">Allocate and sample groups<a class="anchor" aria-label="anchor" href="#allocate-and-sample-groups"></a>
+</h3>
+<p>Individuals in a projected population can be allocated into groups in
+each period. The user can adjust the group size (drawn from a
+gamma-poisson distribution with mean lambda and dispersion parameter
+theta), minimum group size and maximum group size as proportion of total
+population. Individuals are assigned randomly to groups until they are
+filled. See <code><a href="../reference/bbs_population_groups.html">?bbs_population_groups</a></code> for more details on the
+algorithm.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_population_groups.html">bbs_population_groups</a></span><span class="op">(</span><span class="va">population</span>, </span>
+<span>                                group_size_lambda <span class="op">=</span> <span class="fl">6</span>, </span>
+<span>                                group_size_theta <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>                                group_min_size <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>                                group_max_proportion <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
+<p>The output is a list of lists representing the period and groups
+within each period. Each group is a vector representing individuals and
+their stage.</p>
+<p>For example, the first group in the first period has 7 individuals
+comprised of 3 female adults, 1 female calf, 2 male calves, and 1 male
+yearling.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">groups</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] 5 5 1 5 4 2 2</span></span></code></pre></div>
+<p>Groups can be sampled in each composition survey month using
+<code><a href="../reference/bbs_population_groups_survey.html">bbs_population_groups_survey()</a></code>. The proportion of groups
+observed is set with <code>group_coverage</code>.
+<code>month_composition</code> is relative to the start of the
+biological year.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">groups_observed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_population_groups_survey.html">bbs_population_groups_survey</a></span><span class="op">(</span><span class="va">population</span>, </span>
+<span>                                                month_composition <span class="op">=</span> <span class="fl">9L</span>,</span>
+<span>                                                group_size_lambda <span class="op">=</span> <span class="fl">6</span>, </span>
+<span>                                                group_min_size <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>                                                group_coverage <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
+<p>The output is a list of lists representing the year and groups within
+each year.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># observed groups in first year </span></span>
+<span><span class="va">groups_observed</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; [1] 5 5 1 5 5 5 5 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt;  [1] 5 2 3 5 6 3 5 5 2 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[3]]</span></span>
+<span><span class="co">#&gt;  [1] 5 2 2 4 2 5 5 6 6 1 5 2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[4]]</span></span>
+<span><span class="co">#&gt; [1] 5 2 6 6 1 2 5</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[5]]</span></span>
+<span><span class="co">#&gt;  [1] 1 5 6 1 4 3 5 4 1 2 4 2 5 6 3</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[6]]</span></span>
+<span><span class="co">#&gt;  [1] 5 5 6 3 6 5 3 6 5 3 5 5 5</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[7]]</span></span>
+<span><span class="co">#&gt;  [1] 5 5 5 5 5 1 6 5 6 5 5 5 2 5 5 5 6 3 5 5 2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[8]]</span></span>
+<span><span class="co">#&gt;  [1] 2 5 2 2 2 5 5 4 5 2 5 3 5 6 5 2 5 5 3 5 3 1 3</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[9]]</span></span>
+<span><span class="co">#&gt; [1] 5 5 1 5 2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[10]]</span></span>
+<span><span class="co">#&gt; [1] 3 1 2 6 5 3 4 2 1</span></span></code></pre></div>
+</div>
 <div class="section level3">
 <h3 id="simulate-abundance-survival-and-recruitment-data">Simulate abundance, survival and recruitment data<a class="anchor" aria-label="anchor" href="#simulate-abundance-survival-and-recruitment-data"></a>
 </h3>
 <p>Abundance, survival and recruitment data are simulated from
-hypothetical composition surveys and collaring, given the survival and
-fecundity rates used to project the population and a set of key sampling
-parameters. <code><a href="../reference/bbs_simulate_caribou.html">bbs_simulate_caribou()</a></code> is used to simulate any
-number abundance, survival and recruitment data sets from a single set
-of survival and fecundity rates. The output is a list of lists of the
-abundance, survival, and recruitment data.frames for each
-simulation.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+hypothetical composition surveys and collaring with
+<code><a href="../reference/bbs_simulate_caribou.html">bbs_simulate_caribou()</a></code>. The main inputs are the periodic
+survival and fecundity rates and a set of key sampling parameters.
+Internally, <code>bbs_project_population()</code> is used to project
+population and <code><a href="../reference/bbs_population_groups_survey.html">bbs_population_groups_survey()</a></code> is used to
+allocate and sample groups.</p>
+<p>Any number of simulated abundance, survival and recruitment data sets
+can be generated from a single set of survival and fecundity rates. The
+output is a list of lists of the abundance, survival, and recruitment
+data.frames for each simulation.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co"># 10 simulations</span></span>
+<span><span class="va">nsims</span> <span class="op">&lt;-</span> <span class="fl">10</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bbs_simulate_caribou.html">bbs_simulate_caribou</a></span><span class="op">(</span></span>
 <span>  survival <span class="op">=</span> <span class="va">survival</span>,</span>
 <span>  fecundity <span class="op">=</span> <span class="va">fecundity</span>,</span>
-<span>  nsims <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  nsims <span class="op">=</span> <span class="va">nsims</span>,</span>
 <span>  adult_females <span class="op">=</span> <span class="fl">500</span>,</span>
 <span>  proportion_adult_female <span class="op">=</span> <span class="fl">0.65</span>,</span>
 <span>  month_composition <span class="op">=</span> <span class="fl">9L</span>,</span>
@@ -323,19 +411,13 @@ simulation.</p>
 <span>  group_coverage <span class="op">=</span> <span class="fl">0.3</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Key sampling parameters for recruitment data include month of
-composition survey mean group size, minimum group size, maximum group
+composition survey, mean group size, minimum group size, maximum group
 size (as proportion of total population), proportion of groups observed
 (<code>group_coverage</code>), probability that an adult female has
 unknown sex, and probability that an adult male has unknown sex.</p>
-<p>Group sizes are generated stochastically from a poisson distribution
-and individuals that comprise the population are assigned randomly to
-groups until they are filled. See <code><a href="../reference/bbs_population_groups.html">?bbs_population_groups</a></code>
-documentation for more details.</p>
-<p><code><a href="../reference/bbs_population_caribou.html">bbs_population_caribou()</a></code> is run internally to project
-population in each period prior to generating recruitment data. Each row
-in the recruitment dataset is an observed group with specified number of
-cows, bulls, yearlings, calves and unknown adults.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<p>Each row in the recruitment dataset is an observed group with total
+number of cows, bulls, yearlings, calves and unknown adults.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">recruitment</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 252 × 9</span></span></span>
 <span><span class="co">#&gt;     Year Month PopulationName   Day  Cows Bulls Yearlings Calves UnknownAdults</span></span>
@@ -353,11 +435,11 @@ cows, bulls, yearlings, calves and unknown adults.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 242 more rows</span></span></span></code></pre></div>
 <p>Key sampling parameters for survival data are the collaring month,
 number of collars, probability of uncertain mortality (i.e., collar lost
-but fate unknown), probability of uncertain survival (i.e., collar ).
-The number of collars are ‘topped up’ each year in the collaring
-month.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">survival</span></span>
+and assumed dead), probability of uncertain survival (i.e., collar lost
+and assumed alive). The number of collars are ‘topped up’ each year in
+the collaring month.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">survival</span>, n <span class="op">=</span> <span class="fl">13</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 60 × 6</span></span></span>
 <span><span class="co">#&gt;     Year Month PopulationName StartTotal MortalitiesCertain MortalitiesUncertain</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
@@ -371,10 +453,13 @@ month.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     1     8 A                      45                  0                    0</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     1     9 A                      45                  1                    0</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     1    10 A                      44                  0                    0</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 50 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>     1    11 A                      44                  0                    0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>     1    12 A                      44                  1                    0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>     2     1 A                      50                  1                    0</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 47 more rows</span></span></span></code></pre></div>
 <p>The recruitment and survival data are formatted to be used as input
 for <code>bboutools</code> model fitting functions.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://poissonconsulting.github.io/bboutools/" class="external-link">bboutools</a></span><span class="op">)</span></span>
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">bboutools</span><span class="fu">::</span><span class="fu"><a href="https://poissonconsulting.github.io/bboutools/reference/bb_fit_survival.html" class="external-link">bb_fit_survival</a></span><span class="op">(</span><span class="va">data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">survival</span><span class="op">)</span></span></code></pre></div>
 </div>
