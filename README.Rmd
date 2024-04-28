@@ -42,8 +42,7 @@ remotes::install_github("poissonconsulting/bbousims")
 ### Simulate survival and fecundity rates
 Simulate survival rates for each month, year and stage and fecundity rates for each year and stage.
 Rates are generated for female stages (female calf, female yearling and female adult).
-Female calf and female adult survival rates are produced from separate linear models, whereas female yearling survival is determined as an effect on female adult survival. 
-Variation in recruitment can be specified either through calf survival and/or calves per adult female. 
+Female calf and female adult survival rates are determined from separate linear models, whereas female yearling survival is determined as an effect on female adult survival. 
 
 ```{r}
 set.seed(1)
