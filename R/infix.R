@@ -1,3 +1,17 @@
+# Copyright 2024 Province of Alberta
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 #' Stochastic matrix multiplication for age-structured population projection.
 #'
 #' Matrix x should be a process matrix with identical number of rows and columns.
@@ -11,13 +25,9 @@
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'   population0 <- c(148, 82, 111, 99)
-#'   survival_mat <- matrix_survival(c(0.845, 0.872, 0.859, 0.861))
-#'   set.seed(102)
-#'   survival_mat %*b% population0
-#' }
-#'
+#' population0 <- c(148, 82, 111, 99)
+#' survival_mat <- bbs_matrix_survival(c(0.845, 0.872, 0.859, 0.861))
+#' survival_mat %*b% population0
 `%*b%` <- function(x, y) {
   y <- as.matrix(y)
   chk_identical(ncol(y), 1L)
@@ -50,12 +60,9 @@
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'   population0 <- c(148, 82, 111, 99)
-#'   survival_mat <- matrix_survival(c(0.845, 0.872, 0.859, 0.861))
-#'   set.seed(102)
-#'   survival_mat %*b% population0
-#' }
+#' population0 <- c(148, 82, 111, 99)
+#' survival_mat <- bbs_matrix_survival(c(0.845, 0.872, 0.859, 0.861))
+#' survival_mat %*b% population0
 `%*b2%` <- function(x, y) {
   chk_identical(ncol(x), ncol(y))
   chk_identical(nrow(x), nrow(y))

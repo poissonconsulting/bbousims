@@ -1,3 +1,17 @@
+# Copyright 2024 Province of Alberta
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 #' Create a birth process matrix.
 #'
 #' @param fecundity A vector of the fecundity rates in each stage.
@@ -7,9 +21,7 @@
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'   bbs_matrix_birth(c(0, 0, 0.2, 0, 0.25, 0)) %*% rep(100, 6)
-#' }
+#' bbs_matrix_birth(c(0, 0, 0.2, 0, 0.25, 0)) %*% rep(100, 6)
 bbs_matrix_birth <- function(fecundity,
                              female_recruit_stage = 1,
                              male_recruit_stage = NULL,
@@ -43,13 +55,8 @@ bbs_matrix_birth <- function(fecundity,
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'   birth_year(matrix(c(
-#'     0, 0.2, 0, 0.3, 0,
-#'     0, 0.3, 0, 0.35, 0,
-#'     0, 0.25, 0, 0.3, 0
-#'   ), ncol = 5, byrow = TRUE))
-#' }
+#' fec <- bbs_fecundity(c(NA, 0.7), nyear = 3)
+#' bbs_matrix_birth_year(fec$eFecundity)
 bbs_matrix_birth_year <- function(fecundity,
                                   female_recruit_stage = 1,
                                   male_recruit_stage = NULL,

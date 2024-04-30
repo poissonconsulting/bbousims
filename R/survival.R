@@ -1,3 +1,17 @@
+# Copyright 2024 Province of Alberta
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 #' Get stochastic Boreal Caribou survival rates by month, year and stage.
 #'
 #' Stages include female calves, female yearlings and female adults.
@@ -21,9 +35,7 @@
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'   survival <- bbs_survival_caribou(0.84, survival_calf_female = 0.5)
-#' }
+#' survival <- bbs_survival_caribou(0.84, survival_calf_female = 0.5)
 bbs_survival_caribou <- function(survival_adult_female,
                                  survival_calf_female = 0.5,
                                  nyear = 10,
@@ -95,9 +107,7 @@ bbs_survival_caribou <- function(survival_adult_female,
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'   survival <- bbs_survival(intercept = logit(c(0.94, 0.98, 0.98)), trend = c(0, 0, 0.2))
-#' }
+#' survival <- bbs_survival(intercept = logit(c(0.94, 0.98, 0.98)), trend = c(0, 0, 0.2))
 bbs_survival <- function(intercept,
                          nyear = 10,
                          trend = rep(0, length(intercept)),

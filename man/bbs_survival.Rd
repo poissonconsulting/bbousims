@@ -39,7 +39,5 @@ Variation from random effects is stochastic.
 Year is scaled to Year - 1 for trend, which ensures that the intercept is the rate in the first year.
 }
 \examples{
-if (interactive()) {
-  survival <- bbs_survival(intercept = logit(c(0.94, 0.98, 0.98)), trend = c(0, 0, 0.2))
-}
+survival <- bbs_survival(intercept = logit(c(0.94, 0.98, 0.98)), trend = c(0, 0, 0.2))
 }

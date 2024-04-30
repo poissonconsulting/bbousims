@@ -37,12 +37,10 @@ The probability of uncertain mortality determines the proportion of mortalities 
 The probability of uncertain survival reduces the number of collared adult females without adding mortalities.
 }
 \examples{
-if (interactive()) {
-  survival <- bbs_survival_caribou(0.84)
-  survival_adult_female <- survival$eSurvival[, , 3]
-  survival_collared <- bbs_survival_collared(
-    collared_adult_females = 30,
-    survival_adult_female_month_year = survival_adult_female
-  )
-}
+survival <- bbs_survival_caribou(0.84)
+survival_adult_female <- survival$eSurvival[, , 3]
+survival_collared <- bbs_survival_collared(
+  collared_adult_females = 30,
+  survival_adult_female_month_year = survival_adult_female
+)
 }

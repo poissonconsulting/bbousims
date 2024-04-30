@@ -1,3 +1,17 @@
+# Copyright 2024 Province of Alberta
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 #' Simulate Boreal Caribou Data
 #'
 #' Simulate Boreal Caribou data from survival rates, fecundity rates and sampling parameters.
@@ -21,11 +35,9 @@
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'   survival <- bbs_survival_caribou(0.84)
-#'   fecundity <- bbs_fecundity_caribou(0.7)
-#'   caribou <- bbs_simulate_caribou(survival, fecundity = fecundity, nsims = 2)
-#' }
+#' survival <- bbs_survival_caribou(0.84)
+#' fecundity <- bbs_fecundity_caribou(0.7)
+#' caribou <- bbs_simulate_caribou(survival, fecundity = fecundity, nsims = 2)
 bbs_simulate_caribou <- function(
     survival,
     fecundity,

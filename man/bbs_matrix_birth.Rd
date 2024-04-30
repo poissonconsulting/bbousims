@@ -27,7 +27,5 @@ A birth process matrix.
 Create a birth process matrix.
 }
 \examples{
-if (interactive()) {
-  bbs_matrix_birth(c(0, 0, 0.2, 0, 0.25, 0)) \%*\% rep(100, 6)
-}
+bbs_matrix_birth(c(0, 0, 0.2, 0, 0.25, 0)) \%*\% rep(100, 6)
 }

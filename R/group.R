@@ -1,3 +1,17 @@
+# Copyright 2024 Province of Alberta
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 # drawn from gamma poisson
 ran_group_size <- function(lambda, theta, max_size, min_size) {
   inside <- FALSE
@@ -160,12 +174,10 @@ population1_groups_pairs <- function(population,
 #' @return A list of groups in each period.
 #' @export
 #' @examples
-#' if (interactive()) {
-#'   survival <- bbs_survival_caribou(0.84)
-#'   fecundity <- bbs_fecundity_caribou(0.7)
-#'   x <- bbs_population_caribou(survival, fecundity = fecundity, adult_females = 100)
-#'   bbs_population_groups(x)
-#' }
+#' survival <- bbs_survival_caribou(0.84)
+#' fecundity <- bbs_fecundity_caribou(0.7)
+#' x <- bbs_population_caribou(survival, fecundity = fecundity, adult_females = 100)
+#' bbs_population_groups(x)
 bbs_population_groups <- function(population,
                                   group_size_lambda = 5,
                                   group_size_theta = 2,
@@ -210,12 +222,10 @@ bbs_population_groups <- function(population,
 #' @return A list of groups for each period.
 #' @export
 #' @examples
-#' if (interactive()) {
-#'   survival <- bbs_survival_caribou(0.84)
-#'   fecundity <- bbs_fecundity_caribou(0.7)
-#'   x <- bbs_population_caribou(survival, fecundity = fecundity, adult_females = 100)
-#'   bbs_population_groups_pairs(x)
-#' }
+#' survival <- bbs_survival_caribou(0.84)
+#' fecundity <- bbs_fecundity_caribou(0.7)
+#' x <- bbs_population_caribou(survival, fecundity = fecundity, adult_females = 100)
+#' bbs_population_groups_pairs(x)
 bbs_population_groups_pairs <- function(population,
                                         group_size_lambda = 5,
                                         group_size_theta = 2,

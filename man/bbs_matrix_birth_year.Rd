@@ -27,11 +27,6 @@ An array of the birth process matrices with dimensions stage, stage, year.
 Create a birth process matrix for each year.
 }
 \examples{
-if (interactive()) {
-  birth_year(matrix(c(
-    0, 0.2, 0, 0.3, 0,
-    0, 0.3, 0, 0.35, 0,
-    0, 0.25, 0, 0.3, 0
-  ), ncol = 5, byrow = TRUE))
-}
+fec <- bbs_fecundity(c(NA, 0.7), nyear = 3)
+bbs_matrix_birth_year(fec$eFecundity)
 }

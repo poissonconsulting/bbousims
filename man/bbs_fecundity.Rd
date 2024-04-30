@@ -27,8 +27,5 @@ A matrix of fecundity rates with dimensions year and stage.
 Year is scaled to Year - 1 for trend, which ensures that the intercept is the rate in the first year.
 }
 \examples{
-if (interactive()) {
-  bbs_fecundity(c(NA, logit(0.4)), trend = c(NA, 0.1), annual_sd = c(NA, 0.05))
-}
-
+bbs_fecundity(c(NA, logit(0.4)), trend = c(NA, 0.1), annual_sd = c(NA, 0.05))
 }

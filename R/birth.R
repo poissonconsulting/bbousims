@@ -1,3 +1,17 @@
+# Copyright 2024 Province of Alberta
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 #' Get stochastic fecundity rates by year and stage.
 #'
 #' Year is scaled to Year - 1 for trend, which ensures that the intercept is the rate in the first year.
@@ -11,10 +25,7 @@
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'   bbs_fecundity(c(NA, logit(0.4)), trend = c(NA, 0.1), annual_sd = c(NA, 0.05))
-#' }
-#'
+#' bbs_fecundity(c(NA, logit(0.4)), trend = c(NA, 0.1), annual_sd = c(NA, 0.05))
 bbs_fecundity <- function(intercept,
                           trend = rep(0, length(intercept)),
                           annual_sd = rep(0, length(intercept)),
@@ -69,10 +80,7 @@ bbs_fecundity <- function(intercept,
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'   bbs_fecundity_caribou(0.4, trend = 0.1, annual_sd = 0.3)
-#' }
-#'
+#' bbs_fecundity_caribou(0.4, trend = 0.1, annual_sd = 0.3)
 bbs_fecundity_caribou <- function(calves_per_adult_female,
                                   trend = 0,
                                   annual_sd = 0,
