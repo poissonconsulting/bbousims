@@ -101,10 +101,39 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu">bbs_fecundity</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fu"><a href="https://poissonconsulting.github.io/extras/reference/logit.html" class="external-link">logit</a></span><span class="op">(</span><span class="fl">0.4</span><span class="op">)</span><span class="op">)</span>, trend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.1</span><span class="op">)</span>, annual_sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.05</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">bbs_fecundity</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fu"><a href="https://poissonconsulting.github.io/extras/reference/logit.html" class="external-link">logit</a></span><span class="op">(</span><span class="fl">0.4</span><span class="op">)</span><span class="op">)</span>, trend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.1</span><span class="op">)</span>, annual_sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.05</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $eFecundity</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1]      [,2]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]    0 0.3833230</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]    0 0.4273432</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,]    0 0.4188908</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,]    0 0.4735887</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]    0 0.5064028</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,]    0 0.5379159</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,]    0 0.5258380</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]    0 0.5700778</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]    0 0.5944337</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10,]    0 0.6178422</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $b0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]         NA -0.4054651</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $bYear</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  NA 0.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $bAnnual</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1]          [,2]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]    0 -0.0700021758</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]    0  0.0127658527</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,]    0 -0.1218631806</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,]    0 -0.0002785643</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]    0  0.0310776361</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,]    0  0.0574205803</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,]    0 -0.0910908830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]    0 -0.0123662651</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]    0 -0.0122099803</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10,]    0 -0.0141352724</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </div>

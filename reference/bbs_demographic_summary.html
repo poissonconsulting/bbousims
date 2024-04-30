@@ -69,9 +69,9 @@ from demographic parameters.</p>
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">bbs_demographic_summary</span><span class="op">(</span></span>
-<span>  <span class="va">calves_per_adult_female</span>,</span>
-<span>  <span class="va">survival_adult_female</span>,</span>
-<span>  <span class="va">survival_calf</span>,</span>
+<span>  calves_per_adult_female <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>  survival_adult_female <span class="op">=</span> <span class="fl">0.85</span>,</span>
+<span>  survival_calf <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  survival_yearling <span class="op">=</span> <span class="va">survival_adult_female</span>,</span>
 <span>  proportion_female <span class="op">=</span> <span class="fl">0.5</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -108,9 +108,19 @@ from demographic parameters.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">bbs_demographic_summary</span><span class="op">(</span><span class="fl">0.7</span>, survival_adult_female <span class="op">=</span> <span class="fl">0.84</span>, survival_calf <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">bbs_demographic_summary</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $calf_cow_ratio</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2745098</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $recruitment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1206897</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $lambda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9813018</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $stable_stage_dist</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2079858 0.1059744 0.6860398</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </div>
