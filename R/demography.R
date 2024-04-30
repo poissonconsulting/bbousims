@@ -97,11 +97,11 @@ estimate_lambda <- function(calves_per_adult_female,
 #' @export
 #' @examples
 #' if (interactive()) {
-#'   x <- bbs_demographic_summary(0.7, survival_adult_female = 0.84, survival_calf = 0.5)
+#'   x <- bbs_demographic_summary()
 #' }
-bbs_demographic_summary <- function(calves_per_adult_female,
-                                    survival_adult_female,
-                                    survival_calf,
+bbs_demographic_summary <- function(calves_per_adult_female = 0.7,
+                                    survival_adult_female = 0.85,
+                                    survival_calf = 0.5,
                                     survival_yearling = survival_adult_female,
                                     proportion_female = 0.5) {
   calf_cow <- calf_cow_ratio(
