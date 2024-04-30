@@ -45,7 +45,7 @@ The probability of uncertain survival reduces the number of collared adult femal
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/poissonconsulting/bboutools/" class="external-link">
+  <a href="https://github.com/poissonconsulting/bbousims/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -60,7 +60,7 @@ The probability of uncertain survival reduces the number of collared adult femal
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Survival of collared females.</h1>
-    <small class="dont-index">Source: <a href="https://github.com/poissonconsulting/bboutools/blob/HEAD/R/survival-collared.R" class="external-link"><code>R/survival-collared.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/poissonconsulting/bbousims/blob/HEAD/R/survival-collared.R" class="external-link"><code>R/survival-collared.R</code></a></small>
     <div class="hidden name"><code>bbs_survival_collared.Rd</code></div>
     </div>
 
@@ -119,10 +119,12 @@ The number of collared adult females is 'topped up' each year at <code>month_col
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">survival</span> <span class="op">&lt;-</span> <span class="fu"><a href="bbs_survival_caribou.html">bbs_survival_caribou</a></span><span class="op">(</span><span class="fl">0.84</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="va">survival_adult_female</span> <span class="op">&lt;-</span> <span class="va">survival</span><span class="op">$</span><span class="va">eSurvival</span><span class="op">[</span>,,<span class="fl">3</span><span class="op">]</span></span></span>
-<span class="r-in"><span>    <span class="va">survival_collared</span> <span class="op">&lt;-</span> <span class="fu">bbs_survival_collared</span><span class="op">(</span>collared_adult_females <span class="op">=</span> <span class="fl">30</span>, </span></span>
-<span class="r-in"><span>    survival_adult_female_month_year <span class="op">=</span> <span class="va">survival_adult_female</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">survival</span> <span class="op">&lt;-</span> <span class="fu"><a href="bbs_survival_caribou.html">bbs_survival_caribou</a></span><span class="op">(</span><span class="fl">0.84</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">survival_adult_female</span> <span class="op">&lt;-</span> <span class="va">survival</span><span class="op">$</span><span class="va">eSurvival</span><span class="op">[</span>, , <span class="fl">3</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="va">survival_collared</span> <span class="op">&lt;-</span> <span class="fu">bbs_survival_collared</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    collared_adult_females <span class="op">=</span> <span class="fl">30</span>,</span></span>
+<span class="r-in"><span>    survival_adult_female_month_year <span class="op">=</span> <span class="va">survival_adult_female</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>

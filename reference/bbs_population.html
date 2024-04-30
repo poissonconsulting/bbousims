@@ -45,7 +45,7 @@ The dimensions of birth, age and survival process matrices must be identical to 
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/poissonconsulting/bboutools/" class="external-link">
+  <a href="https://github.com/poissonconsulting/bbousims/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -60,7 +60,7 @@ The dimensions of birth, age and survival process matrices must be identical to 
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Simulate population from survival, ageing and birth</h1>
-    <small class="dont-index">Source: <a href="https://github.com/poissonconsulting/bboutools/blob/HEAD/R/population.R" class="external-link"><code>R/population.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/poissonconsulting/bbousims/blob/HEAD/R/population.R" class="external-link"><code>R/population.R</code></a></small>
     <div class="hidden name"><code>bbs_population.Rd</code></div>
     </div>
 
@@ -107,16 +107,17 @@ The dimensions of birth, age and survival process matrices must be identical to 
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">pop0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">200</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="va">survival</span> <span class="op">&lt;-</span> <span class="fu"><a href="bbs_survival.html">bbs_survival</a></span><span class="op">(</span>intercept <span class="op">=</span> <span class="fu"><a href="https://poissonconsulting.github.io/extras/reference/logit.html" class="external-link">logit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.95</span>, <span class="fl">0.98</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="va">fecundity</span> <span class="op">&lt;-</span> <span class="fu"><a href="bbs_fecundity.html">bbs_fecundity</a></span><span class="op">(</span>intercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fu"><a href="https://poissonconsulting.github.io/extras/reference/logit.html" class="external-link">logit</a></span><span class="op">(</span><span class="fl">0.4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="va">survival_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="bbs_matrix_survival_period.html">bbs_matrix_survival_period</a></span><span class="op">(</span><span class="va">survival</span><span class="op">$</span><span class="va">eSurvival</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="va">birth_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="bbs_matrix_birth_year.html">bbs_matrix_birth_year</a></span><span class="op">(</span><span class="va">fecundity</span><span class="op">$</span><span class="va">eFecundity</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="va">age_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="bbs_matrix_age.html">bbs_matrix_age</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">bbs_population</span><span class="op">(</span><span class="va">pop0</span>, </span></span>
-<span class="r-in"><span>                        birth <span class="op">=</span> <span class="va">birth_mat</span>, </span></span>
-<span class="r-in"><span>                        age <span class="op">=</span> <span class="va">age_mat</span>, </span></span>
-<span class="r-in"><span>                        survival <span class="op">=</span> <span class="va">survival_mat</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">pop0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">200</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">survival</span> <span class="op">&lt;-</span> <span class="fu"><a href="bbs_survival.html">bbs_survival</a></span><span class="op">(</span>intercept <span class="op">=</span> <span class="fu"><a href="https://poissonconsulting.github.io/extras/reference/logit.html" class="external-link">logit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.95</span>, <span class="fl">0.98</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">fecundity</span> <span class="op">&lt;-</span> <span class="fu"><a href="bbs_fecundity.html">bbs_fecundity</a></span><span class="op">(</span>intercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fu"><a href="https://poissonconsulting.github.io/extras/reference/logit.html" class="external-link">logit</a></span><span class="op">(</span><span class="fl">0.4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">survival_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="bbs_matrix_survival_period.html">bbs_matrix_survival_period</a></span><span class="op">(</span><span class="va">survival</span><span class="op">$</span><span class="va">eSurvival</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">birth_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="bbs_matrix_birth_year.html">bbs_matrix_birth_year</a></span><span class="op">(</span><span class="va">fecundity</span><span class="op">$</span><span class="va">eFecundity</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">age_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="bbs_matrix_age.html">bbs_matrix_age</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">bbs_population</span><span class="op">(</span><span class="va">pop0</span>,</span></span>
+<span class="r-in"><span>    birth <span class="op">=</span> <span class="va">birth_mat</span>,</span></span>
+<span class="r-in"><span>    age <span class="op">=</span> <span class="va">age_mat</span>,</span></span>
+<span class="r-in"><span>    survival <span class="op">=</span> <span class="va">survival_mat</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>

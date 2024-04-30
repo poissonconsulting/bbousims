@@ -63,7 +63,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/poissonconsulting/bboutools/" class="external-link">
+  <a href="https://github.com/poissonconsulting/bbousims/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -84,7 +84,7 @@
       <h1 data-toc-skip>Get Started with bbousims</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/poissonconsulting/bboutools/blob/HEAD/vignettes/bbousims.Rmd" class="external-link"><code>vignettes/bbousims.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/poissonconsulting/bbousims/blob/HEAD/vignettes/bbousims.Rmd" class="external-link"><code>vignettes/bbousims.Rmd</code></a></small>
       <div class="hidden name"><code>bbousims.Rmd</code></div>
 
     </div>
@@ -120,7 +120,7 @@ and female adult.</p>
 stochastically from linear models taking the following form (simplified
 for readability):</p>
 <p><span class="math display">\[
-logit(Survival_{y,m}) \sim \beta_0 + \beta_Y \cdot Year_{y} +
+\text{logit}(Survival_{y,m}) \sim \beta_0 + \beta_Y \cdot Year_{y} +
 \beta_{A_{y}} + \beta_{M_{m}} + \beta_{AM_{y,m}}
 \]</span></p>
 <p>The intercept (<span class="math inline">\(\beta_0\)</span>) is
@@ -135,12 +135,12 @@ deviation provided by the user.</p>
 <p><span class="math inline">\(\beta_{Y}\)</span> is a trend
 representing the effect of an increase of one year on the log-odds
 monthly survival rate.</p>
-<p>Female calf and female adult survival rates are determined from
-separate linear models, whereas female yearling survival is determined
-as an effect on female adult survival.</p>
+<p>Female calf and female adult survival rates are specified from
+separate linear models, whereas female yearling survival is specified as
+an effect on female adult survival.</p>
 <p>Fecundity rates are generated from a linear model taking the
 (simplified) form: <span class="math display">\[
-logit(Fecundity_{y,m}) \sim \beta_0 + \beta_Y \cdot Year_{y} +
+\text{logit}(Fecundity_{y,m}) \sim \beta_0 + \beta_Y \cdot Year_{y} +
 \beta_{A_{y}}
 \]</span> The intercept (<span class="math inline">\(\beta_0\)</span>)
 is provided to <code><a href="../reference/bbs_fecundity_caribou.html">bbs_fecundity_caribou()</a></code> as the annual rate

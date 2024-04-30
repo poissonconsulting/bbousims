@@ -42,7 +42,7 @@
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/poissonconsulting/bboutools/" class="external-link">
+  <a href="https://github.com/poissonconsulting/bbousims/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -57,7 +57,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create survival matrix for each year and period.</h1>
-    <small class="dont-index">Source: <a href="https://github.com/poissonconsulting/bboutools/blob/HEAD/R/survival-matrix.R" class="external-link"><code>R/survival-matrix.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/poissonconsulting/bbousims/blob/HEAD/R/survival-matrix.R" class="external-link"><code>R/survival-matrix.R</code></a></small>
     <div class="hidden name"><code>bbs_matrix_survival_period.Rd</code></div>
     </div>
 
@@ -85,8 +85,8 @@
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">survival_rates</span> <span class="op">&lt;-</span> <span class="fu"><a href="bbs_survival.html">bbs_survival</a></span><span class="op">(</span><span class="fu"><a href="https://poissonconsulting.github.io/extras/reference/logit.html" class="external-link">logit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.94</span>, <span class="fl">0.98</span><span class="op">)</span><span class="op">)</span>, nyear <span class="op">=</span> <span class="fl">2</span>, nperiod_within_year <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="fu">bbs_matrix_survival_period</span><span class="op">(</span><span class="va">survival_rates</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">survival_rates</span> <span class="op">&lt;-</span> <span class="fu"><a href="bbs_survival.html">bbs_survival</a></span><span class="op">(</span><span class="fu"><a href="https://poissonconsulting.github.io/extras/reference/logit.html" class="external-link">logit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.94</span>, <span class="fl">0.98</span><span class="op">)</span><span class="op">)</span>, nyear <span class="op">=</span> <span class="fl">2</span>, nperiod_within_year <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">bbs_matrix_survival_period</span><span class="op">(</span><span class="va">survival_rates</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
