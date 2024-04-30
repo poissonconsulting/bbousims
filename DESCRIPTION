@@ -24,7 +24,6 @@ Imports:
     dplyr,
     extras,
     ggplot2,
-    magrittr,
     popbio,
     purrr,
     sims,
