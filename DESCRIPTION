@@ -3,22 +3,20 @@ Title: Simulate Boreal Caribou Survival, Recruitment and Population Growth
 Version: 0.0.0.9000
 Authors@R: c(
     person("Seb", "Dalgarno", , "seb@poissonconsulting.ca", role = c("aut", "cre"),
-    comment = c(ORCID = "0000-0002-3658-4517")),
+           comment = c(ORCID = "0000-0002-3658-4517")),
     person("Joe", "Thorley", , "joe@poissonconsulting.ca", role = "aut",
            comment = c(ORCID = "0000-0002-7683-4592")),
     person("John", "Boulanger", role = "aut",
            comment = c(ORCID = "0000-0001-8222-1445")),
     person("Ayla", "Pearson", , "ayla@poissonconsulting.ca", role = "aut"),
-    person(given = "Environment and Climate Change Canada",
-             role = "cph")
+    person("Environment and Climate Change Canada", role = "cph")
   )
-Description: Simulates survival and recruitment data
-    for boreal caribou populations using hierarchical Bayesian models.
+Description: Simulates survival and recruitment data for boreal caribou
+    populations using hierarchical Bayesian models.
 License: Apache License (== 2.0) | file LICENSE
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
-BugReports: https://github.com/poissonconsulting/bboutools/issues
+URL: https://github.com/poissonconsulting/bbousims,
+    https://poissonconsulting.github.io/bbousims/
+BugReports: https://github.com/poissonconsulting/bbousims/issues
 Depends:
     R (>= 4.0)
 Imports: 
@@ -26,10 +24,8 @@ Imports:
     dplyr,
     extras,
     ggplot2,
-    magrittr,
     popbio,
     purrr,
-    sims,
     tidyr
 Suggests: 
     bboutools,
@@ -39,7 +35,11 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     withr
+VignetteBuilder: 
+    knitr
 Remotes:
     poissonconsulting/bboutools
 Config/testthat/edition: 3
-VignetteBuilder: knitr
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1

@@ -40,9 +40,10 @@ remotes::install_github("poissonconsulting/bbousims")
 ## Introduction
 
 ### Simulate survival and fecundity rates
+
 Simulate survival rates for each month, year and stage and fecundity rates for each year and stage.
 Rates are generated for female stages (female calf, female yearling and female adult).
-Female calf and female adult survival rates are determined from separate linear models, whereas female yearling survival is determined as an effect on female adult survival. 
+Female calf and female adult survival rates are specified from separate linear models, whereas female yearling survival is specified as an effect on female adult survival. 
 
 ```{r}
 set.seed(1)
@@ -69,6 +70,7 @@ survival$eSurvival[, , 3]
 ```
 
 ### Project population
+
 Population is projected from survival and fecundity rates. 
 Survival occurs at the end of each month and survival, ageing and birth occur at the end of each year, in that order.  
 
@@ -97,6 +99,7 @@ bbs_plot_population(population)
 
 
 ### Simulate abundance, survival and recruitment data
+
 Abundance, survival and recruitment data are simulated from hypothetical composition surveys and collaring, given the survival and fecundity rates used to project the population and a set of key sampling parameters. 
 The output is a list of lists of the abundance, survival, and recruitment data.frames for each simulation.
 
@@ -121,12 +124,14 @@ bbs_plot_population(data)
 ```
 
 View collar survival data for the first simulation
+
 ```{r}
 # collar survival data for first simulation
 print(data[[1]]$survival)
 ```
 
 ### Work with `bboutools`
+
 The survival and recruitment data.frames in the output of `bbs_simulate_caribou()` are intended to be used as input data for model fitting functions in the [bboutools package]("https://poissonconsulting.github.io/bboutools/).
 
 ```{r, eval=FALSE}
@@ -154,4 +159,32 @@ Other packages in this suite include:
 - [bbouretro](https://github.com/poissonconsulting/bbouretro)
 - [bboushiny](https://github.com/poissonconsulting/bboushiny)
 - [bboutools](https://github.com/poissonconsulting/bboutools)
+
+## Contribution
+
+Please report any [issues](https://github.com/poissonconsulting/bbousims/issues).
+
+[Pull requests](https://github.com/poissonconsulting/bbousims/pulls) are always welcome.
+
+## Code of Conduct
+
+Please note that the `bbousims` project is released with a [Contributor Code of Conduct](https://poissonconsulting.github.io/bbousims/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
+
+## License
+
+The code is released under the Apache License 2.0
+
+Copyright 2024 Province of Alberta
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at 
+
+https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 

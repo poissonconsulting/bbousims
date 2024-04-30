@@ -32,6 +32,6 @@ from demographic parameters.
 }
 \examples{
 if (interactive()) {
-    x <- bbs_demographic_summary(0.7, survival_adult_female = 0.84, survival_calf = 0.5)
+  x <- bbs_demographic_summary(0.7, survival_adult_female = 0.84, survival_calf = 0.5)
 }
 }

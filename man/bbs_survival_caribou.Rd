@@ -56,6 +56,6 @@ Year is scaled to Year - 1 for trend, which ensures that the intercept is the ra
 }
 \examples{
 if (interactive()) {
-    survival <- bbs_survival_caribou(0.84, survival_calf_female = 0.5)
+  survival <- bbs_survival_caribou(0.84, survival_calf_female = 0.5)
 }
 }

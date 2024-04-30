@@ -82,8 +82,8 @@ Survival and recrutiment data.frames generated are formatted to be used as input
 }
 \examples{
 if (interactive()) {
-    survival <- bbs_survival_caribou(0.84)
-    fecundity <- bbs_fecundity_caribou(0.7)
-    caribou <- bbs_simulate_caribou(survival, fecundity = fecundity, nsims = 2)
+  survival <- bbs_survival_caribou(0.84)
+  fecundity <- bbs_fecundity_caribou(0.7)
+  caribou <- bbs_simulate_caribou(survival, fecundity = fecundity, nsims = 2)
 }
 }
