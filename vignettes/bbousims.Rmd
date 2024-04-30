@@ -36,7 +36,7 @@ Rates are generated for three stages: female calf, female yearling, and female a
 Survival rates for female calves and female adults are generated stochastically from linear models taking the following form (simplified for readability):
 
 $$
-\text{logit}(Survival_{y,m}) \sim \beta_0 + \beta_Y \cdot Year_{y} + \beta_{A_{y}} + \beta_{M_{m}} + \beta_{AM_{y,m}}
+\text{logit}(Survival_{y,m}) = \beta_0 + \beta_Y \cdot Year_{y} + \beta_{A_{y}} + \beta_{M_{m}} + \beta_{AM_{y,m}}
 $$
 
 The intercept ($\beta_0$) is provided by the user to `bbs_survival_caribou()` as the annual survival rate in the first year. 
@@ -51,7 +51,7 @@ Female calf and female adult survival rates are specified from separate linear m
 
 Fecundity rates are generated from a linear model taking the (simplified) form:
 $$
-\text{logit}(Fecundity_{y,m}) \sim \beta_0 + \beta_Y \cdot Year_{y} + \beta_{A_{y}}
+\text{logit}(Fecundity_{y,m}) = \beta_0 + \beta_Y \cdot Year_{y} + \beta_{A_{y}}
 $$
 The intercept ($\beta_0$) is provided to `bbs_fecundity_caribou()` as the annual rate of calves per adult female in the first year.  
 Internally, this is transformed to the log-odds scale.  
