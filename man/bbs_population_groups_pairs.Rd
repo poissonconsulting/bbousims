@@ -44,9 +44,9 @@ If there are only pairs left in the pool and one individual is required to fill 
 }
 \examples{
 if (interactive()) {
-    survival <- bbs_survival_caribou(0.84)
-    fecundity <- bbs_fecundity_caribou(0.7)
-    x <- bbs_population_caribou(survival, fecundity = fecundity, adult_females = 100)
-    bbs_population_groups_pairs(x)
+  survival <- bbs_survival_caribou(0.84)
+  fecundity <- bbs_fecundity_caribou(0.7)
+  x <- bbs_population_caribou(survival, fecundity = fecundity, adult_females = 100)
+  bbs_population_groups_pairs(x)
 }
 }

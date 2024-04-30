@@ -54,34 +54,35 @@ Plots population abundance by period and stage.
 }}
 \examples{
 if (interactive()) {
-    survival <- bbs_survival_caribou(0.84)
-    fecundity <- bbs_fecundity_caribou(0.7)
-    x <- bbs_population_caribou(survival, fecundity = fecundity)
-    bbs_plot_population(x[[1]]$abundance)
+  survival <- bbs_survival_caribou(0.84)
+  fecundity <- bbs_fecundity_caribou(0.7)
+  x <- bbs_population_caribou(survival, fecundity = fecundity)
+  bbs_plot_population(x[[1]]$abundance)
 }
 if (interactive()) {
-    pop0 <- c(100, 200)
-    survival <- bbs_survival(intercept = logit(c(0.95, 0.98)))
-    fecundity <- bbs_fecundity(intercept = c(NA, logit(0.4)))
-    survival_mat <- bbs_matrix_survival_period(survival$eSurvival)
-    birth_mat <- bbs_matrix_birth_year(fecundity$eFecundity)
-    age_mat <- bbs_matrix_age(c(2, 2))
-    x <- bbs_population(pop0, 
-                        birth = birth_mat, 
-                        age = age_mat, 
-                        survival = survival_mat)
-    bbs_plot_population(x)
+  pop0 <- c(100, 200)
+  survival <- bbs_survival(intercept = logit(c(0.95, 0.98)))
+  fecundity <- bbs_fecundity(intercept = c(NA, logit(0.4)))
+  survival_mat <- bbs_matrix_survival_period(survival$eSurvival)
+  birth_mat <- bbs_matrix_birth_year(fecundity$eFecundity)
+  age_mat <- bbs_matrix_age(c(2, 2))
+  x <- bbs_population(pop0,
+    birth = birth_mat,
+    age = age_mat,
+    survival = survival_mat
+  )
+  bbs_plot_population(x)
 }
 if (interactive()) {
-    survival <- bbs_survival_caribou(0.84)
-    fecundity <- bbs_fecundity_caribou(0.7)
-    x <- bbs_simulate_caribou(survival, fecundity = fecundity, nsims = 3, alpha = 0.7)
-    bbs_plot_population(x)
+  survival <- bbs_survival_caribou(0.84)
+  fecundity <- bbs_fecundity_caribou(0.7)
+  x <- bbs_simulate_caribou(survival, fecundity = fecundity, nsims = 3, alpha = 0.7)
+  bbs_plot_population(x)
 }
 if (interactive()) {
-    survival <- bbs_survival_caribou(0.84)
-    fecundity <- bbs_fecundity_caribou(0.7)
-    x <- bbs_population_caribou(survival, fecundity = fecundity)
-    bbs_plot_population(x)
+  survival <- bbs_survival_caribou(0.84)
+  fecundity <- bbs_fecundity_caribou(0.7)
+  x <- bbs_population_caribou(survival, fecundity = fecundity)
+  bbs_plot_population(x)
 }
 }

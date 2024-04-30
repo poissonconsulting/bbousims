@@ -16,7 +16,7 @@ A matrix of the age subprocess.
 Create an age process matrix.
 }
 \examples{
-if(interactive()){
+if (interactive()) {
   bbs_matrix_age(c(2, 3, 3)) \%*\% c(80, 50, 150)
 }
 }
