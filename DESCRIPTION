@@ -14,7 +14,9 @@ Authors@R: c(
 Description: Simulates survival and recruitment data for boreal caribou
     populations using hierarchical Bayesian models.
 License: Apache License (== 2.0) | file LICENSE
-BugReports: https://github.com/poissonconsulting/bboutools/issues
+URL: https://github.com/poissonconsulting/bbousims,
+    https://poissonconsulting.github.io/bbousims/
+BugReports: https://github.com/poissonconsulting/bbousims/issues
 Depends:
     R (>= 4.0)
 Imports: 
