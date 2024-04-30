@@ -28,6 +28,7 @@ There are four key steps to simulating Boreal Caribou survival and recruitment d
 Any number of survival and recruitment data sets can be simulated from a single set of survival and fecundity rates. 
 
 ### Simulate survival and fecundity rates
+
 Survival rates are simulated for each month, year and stage with `bbs_survival_caribou()` and fecundity rates are simulated for each year and stage with `bbs_fecundity_caribou()`.  
 
 Rates are generated for three stages: female calf, female yearling, and female adult.
@@ -35,7 +36,7 @@ Rates are generated for three stages: female calf, female yearling, and female a
 Survival rates for female calves and female adults are generated stochastically from linear models taking the following form (simplified for readability):
 
 $$
-logit(Survival_{y,m}) \sim \beta_0 + \beta_Y \cdot Year_{y} + \beta_{A_{y}} + \beta_{M_{m}} + \beta_{AM_{y,m}}
+\text{logit}(Survival_{y,m}) \sim \beta_0 + \beta_Y \cdot Year_{y} + \beta_{A_{y}} + \beta_{M_{m}} + \beta_{AM_{y,m}}
 $$
 
 The intercept ($\beta_0$) is provided by the user to `bbs_survival_caribou()` as the annual survival rate in the first year. 
@@ -46,11 +47,11 @@ Random effects are generated stochastically from a normal distribution with a me
 
 $\beta_{Y}$ is a trend representing the effect of an increase of one year on the log-odds monthly survival rate.  
 
-Female calf and female adult survival rates are determined from separate linear models, whereas female yearling survival is determined as an effect on female adult survival. 
+Female calf and female adult survival rates are specified from separate linear models, whereas female yearling survival is specified as an effect on female adult survival. 
 
 Fecundity rates are generated from a linear model taking the (simplified) form:
 $$
-logit(Fecundity_{y,m}) \sim \beta_0 + \beta_Y \cdot Year_{y} + \beta_{A_{y}}
+\text{logit}(Fecundity_{y,m}) \sim \beta_0 + \beta_Y \cdot Year_{y} + \beta_{A_{y}}
 $$
 The intercept ($\beta_0$) is provided to `bbs_fecundity_caribou()` as the annual rate of calves per adult female in the first year.  
 Internally, this is transformed to the log-odds scale.  
@@ -166,7 +167,9 @@ bbs_plot_population(population2)
 ```
 
 ### Allocate and sample groups
-Individuals in a projected population can be allocated into groups in each period. The user can adjust the group size (drawn from a gamma-poisson distribution with mean lambda and dispersion parameter theta), minimum group size and maximum group size as proportion of total population. Individuals are assigned randomly to groups until they are filled. See `?bbs_population_groups` for more details on the algorithm. 
+Individuals in a projected population can be allocated into groups in each period. 
+The user can adjust the group size (drawn from a gamma-poisson distribution with mean lambda and dispersion parameter theta), minimum group size and maximum group size as proportion of total population. 
+Individuals are assigned randomly to groups until they are filled. See `?bbs_population_groups` for more details on the algorithm. 
 
 ```{r}
 set.seed(1)
@@ -202,7 +205,8 @@ groups_observed[[1]]
 ```
 
 ### Simulate abundance, survival and recruitment data
-Abundance, survival and recruitment data are simulated from hypothetical composition surveys and collaring with `bbs_simulate_caribou()`. The main inputs are the periodic survival and fecundity rates and a set of key sampling parameters. 
+Abundance, survival and recruitment data are simulated from hypothetical composition surveys and collaring with `bbs_simulate_caribou()`. 
+The main inputs are the periodic survival and fecundity rates and a set of key sampling parameters. 
 Internally, `bbs_project_population()` is used to project population and `bbs_population_groups_survey()` is used to allocate and sample groups. 
 
 Any number of simulated abundance, survival and recruitment data sets can be generated from a single set of survival and fecundity rates.
