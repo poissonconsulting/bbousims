@@ -81,9 +81,7 @@ See \code{\link[=bbs_survival_collared]{bbs_survival_collared()}} for details on
 Survival and recrutiment data.frames generated are formatted to be used as input data to \code{\link[bboutools:bb_fit_survival]{bboutools::bb_fit_survival()}} and \code{\link[bboutools:bb_fit_recruitment]{bboutools::bb_fit_recruitment()}}, respectively.
 }
 \examples{
-if (interactive()) {
-  survival <- bbs_survival_caribou(0.84)
-  fecundity <- bbs_fecundity_caribou(0.7)
-  caribou <- bbs_simulate_caribou(survival, fecundity = fecundity, nsims = 2)
-}
+survival <- bbs_survival_caribou(0.84)
+fecundity <- bbs_fecundity_caribou(0.7)
+caribou <- bbs_simulate_caribou(survival, fecundity = fecundity, nsims = 2)
 }

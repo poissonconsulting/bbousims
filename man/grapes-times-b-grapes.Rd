@@ -20,11 +20,7 @@ Matrix y should have one column, with each row indicating abundance at a given s
 A binomial distribution is used, where size is drawn from the y matrix and prob is drawn from the x matrix.
 }
 \examples{
-if (interactive()) {
-  population0 <- c(148, 82, 111, 99)
-  survival_mat <- matrix_survival(c(0.845, 0.872, 0.859, 0.861))
-  set.seed(102)
-  survival_mat \%*b\% population0
-}
-
+population0 <- c(148, 82, 111, 99)
+survival_mat <- bbs_matrix_survival(c(0.845, 0.872, 0.859, 0.861))
+survival_mat \%*b\% population0
 }

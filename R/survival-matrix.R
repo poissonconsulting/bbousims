@@ -6,10 +6,7 @@
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'   bbs_matrix_survival(c(0.5, 0.83, 0.84)) %*% rep(100, 3)
-#' }
-#'
+#' bbs_matrix_survival(c(0.5, 0.83, 0.84)) %*% rep(100, 3)
 bbs_matrix_survival <- function(survival) {
   chk_numeric(survival)
   chk_range(survival)
@@ -27,11 +24,8 @@ bbs_matrix_survival <- function(survival) {
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'   survival_rates <- bbs_survival(logit(c(0.94, 0.98)), nyear = 2, nperiod_within_year = 1)
-#'   bbs_matrix_survival_period(survival_rates)
-#' }
-#'
+#' survival_rates <- bbs_survival(logit(c(0.94, 0.98)), nyear = 2, nperiod_within_year = 1)
+#' bbs_matrix_survival_period(survival_rates$eSurvival)
 bbs_matrix_survival_period <- function(survival) {
   chk_is(survival, "array")
   chk_length(dim(survival), 3L)

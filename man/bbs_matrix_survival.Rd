@@ -16,8 +16,5 @@ A matrix of the survival subprocess.
 Create a survival process matrix.
 }
 \examples{
-if (interactive()) {
-  bbs_matrix_survival(c(0.5, 0.83, 0.84)) \%*\% rep(100, 3)
-}
-
+bbs_matrix_survival(c(0.5, 0.83, 0.84)) \%*\% rep(100, 3)
 }

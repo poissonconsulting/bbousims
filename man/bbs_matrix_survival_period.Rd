@@ -16,9 +16,6 @@ An array of survival process matrices with dimensions stage, stage, year, period
 Create survival matrix for each year and period.
 }
 \examples{
-if (interactive()) {
-  survival_rates <- bbs_survival(logit(c(0.94, 0.98)), nyear = 2, nperiod_within_year = 1)
-  bbs_matrix_survival_period(survival_rates)
-}
-
+survival_rates <- bbs_survival(logit(c(0.94, 0.98)), nyear = 2, nperiod_within_year = 1)
+bbs_matrix_survival_period(survival_rates$eSurvival)
 }

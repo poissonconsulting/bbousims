@@ -21,11 +21,9 @@
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'   survival <- bbs_survival_caribou(0.84)
-#'   fecundity <- bbs_fecundity_caribou(0.7)
-#'   caribou <- bbs_simulate_caribou(survival, fecundity = fecundity, nsims = 2)
-#' }
+#' survival <- bbs_survival_caribou(0.84)
+#' fecundity <- bbs_fecundity_caribou(0.7)
+#' caribou <- bbs_simulate_caribou(survival, fecundity = fecundity, nsims = 2)
 bbs_simulate_caribou <- function(
     survival,
     fecundity,

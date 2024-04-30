@@ -11,13 +11,9 @@
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'   population0 <- c(148, 82, 111, 99)
-#'   survival_mat <- matrix_survival(c(0.845, 0.872, 0.859, 0.861))
-#'   set.seed(102)
-#'   survival_mat %*b% population0
-#' }
-#'
+#' population0 <- c(148, 82, 111, 99)
+#' survival_mat <- bbs_matrix_survival(c(0.845, 0.872, 0.859, 0.861))
+#' survival_mat %*b% population0
 `%*b%` <- function(x, y) {
   y <- as.matrix(y)
   chk_identical(ncol(y), 1L)
@@ -50,12 +46,9 @@
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'   population0 <- c(148, 82, 111, 99)
-#'   survival_mat <- matrix_survival(c(0.845, 0.872, 0.859, 0.861))
-#'   set.seed(102)
-#'   survival_mat %*b% population0
-#' }
+#' population0 <- c(148, 82, 111, 99)
+#' survival_mat <- bbs_matrix_survival(c(0.845, 0.872, 0.859, 0.861))
+#' survival_mat %*b% population0
 `%*b2%` <- function(x, y) {
   chk_identical(ncol(x), ncol(y))
   chk_identical(nrow(x), nrow(y))

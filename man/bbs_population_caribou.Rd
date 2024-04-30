@@ -42,9 +42,7 @@ Yearling female survival is assumed to be the same as adult female survival.
 Stages 1-6 in output matrix correspond to female calf, male calf, female yearling, male yearling, female adult and male adult, respectively.
 }
 \examples{
-if (interactive()) {
-  survival <- bbs_survival_caribou(0.84)
-  fecundity <- bbs_fecundity_caribou(0.7)
-  x <- bbs_population_caribou(survival, fecundity = fecundity)
-}
+survival <- bbs_survival_caribou(0.84)
+fecundity <- bbs_fecundity_caribou(0.7)
+x <- bbs_population_caribou(survival, fecundity = fecundity)
 }

@@ -27,8 +27,5 @@ A matrix of fecundity rates with dimensions year and stage.
 Year is scaled to Year - 1 for trend, which ensures that \code{calves_per_adult_female} is the rate in the first year.
 }
 \examples{
-if (interactive()) {
-  bbs_fecundity_caribou(0.4, trend = 0.1, annual_sd = 0.3)
-}
-
+bbs_fecundity_caribou(0.4, trend = 0.1, annual_sd = 0.3)
 }

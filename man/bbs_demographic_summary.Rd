@@ -31,7 +31,5 @@ Generate calf-cow ratio, DeCesare recruitment, lambda, leslie matrix and stable-
 from demographic parameters.
 }
 \examples{
-if (interactive()) {
-  x <- bbs_demographic_summary()
-}
+bbs_demographic_summary()
 }

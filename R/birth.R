@@ -11,10 +11,7 @@
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'   bbs_fecundity(c(NA, logit(0.4)), trend = c(NA, 0.1), annual_sd = c(NA, 0.05))
-#' }
-#'
+#' bbs_fecundity(c(NA, logit(0.4)), trend = c(NA, 0.1), annual_sd = c(NA, 0.05))
 bbs_fecundity <- function(intercept,
                           trend = rep(0, length(intercept)),
                           annual_sd = rep(0, length(intercept)),
@@ -69,10 +66,7 @@ bbs_fecundity <- function(intercept,
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'   bbs_fecundity_caribou(0.4, trend = 0.1, annual_sd = 0.3)
-#' }
-#'
+#' bbs_fecundity_caribou(0.4, trend = 0.1, annual_sd = 0.3)
 bbs_fecundity_caribou <- function(calves_per_adult_female,
                                   trend = 0,
                                   annual_sd = 0,
