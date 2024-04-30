@@ -2,7 +2,7 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @import chk sims
+#' @import chk
 #' @importFrom stats rbinom rnorm
 #' @importFrom ggplot2 .data ggplot aes geom_pointrange geom_line geom_ribbon scale_color_manual xlab
 #' @importFrom dplyr mutate arrange group_by slice ungroup select tibble case_when everything all_of %>%
