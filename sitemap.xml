@@ -1,105 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/articles/bbousims.html</loc>
-  </url>
-  <url>
-    <loc>/articles/bboutools.html</loc>
-  </url>
-  <url>
-    <loc>/articles/general.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbousims-package.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbs_demographic_summary.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbs_fecundity.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbs_fecundity_caribou.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbs_matrix_age.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbs_matrix_birth.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbs_matrix_birth_year.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbs_matrix_survival.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbs_matrix_survival_period.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbs_plot_population.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbs_population.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbs_population_caribou.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbs_population_groups.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbs_population_groups_pairs.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbs_population_groups_survey.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbs_simulate_caribou.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbs_survival.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbs_survival_caribou.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bbs_survival_collared.html</loc>
-  </url>
-  <url>
-    <loc>/reference/grapes-times-b-grapes.html</loc>
-  </url>
-  <url>
-    <loc>/reference/grapes-times-b2-grapes.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ilog.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/params.html</loc>
-  </url>
-  <url>
-    <loc>/reference/reexports.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/articles/bbousims.html</loc></url>
+<url><loc>/articles/bboutools.html</loc></url>
+<url><loc>/articles/general.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/bbousims-package.html</loc></url>
+<url><loc>/reference/bbs_demographic_summary.html</loc></url>
+<url><loc>/reference/bbs_fecundity.html</loc></url>
+<url><loc>/reference/bbs_fecundity_caribou.html</loc></url>
+<url><loc>/reference/bbs_matrix_age.html</loc></url>
+<url><loc>/reference/bbs_matrix_birth.html</loc></url>
+<url><loc>/reference/bbs_matrix_birth_year.html</loc></url>
+<url><loc>/reference/bbs_matrix_survival.html</loc></url>
+<url><loc>/reference/bbs_matrix_survival_period.html</loc></url>
+<url><loc>/reference/bbs_plot_population.html</loc></url>
+<url><loc>/reference/bbs_population.html</loc></url>
+<url><loc>/reference/bbs_population_caribou.html</loc></url>
+<url><loc>/reference/bbs_population_groups.html</loc></url>
+<url><loc>/reference/bbs_population_groups_pairs.html</loc></url>
+<url><loc>/reference/bbs_population_groups_survey.html</loc></url>
+<url><loc>/reference/bbs_simulate_caribou.html</loc></url>
+<url><loc>/reference/bbs_survival.html</loc></url>
+<url><loc>/reference/bbs_survival_caribou.html</loc></url>
+<url><loc>/reference/bbs_survival_collared.html</loc></url>
+<url><loc>/reference/grapes-times-b-grapes.html</loc></url>
+<url><loc>/reference/grapes-times-b2-grapes.html</loc></url>
+<url><loc>/reference/ilog.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/params.html</loc></url>
+<url><loc>/reference/reexports.html</loc></url>
 </urlset>
+
