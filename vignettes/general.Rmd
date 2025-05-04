@@ -29,7 +29,7 @@ knitr::opts_chunk$set(
 library(bbousims)
 ```
 
-`bbousims` contains more flexible, general functionality todo the following for any set of time periods and stages: generate survival and fecundity rates; generate survival, birth and age process matrices; project population; allocate individuals from population into groups; sample a proportion of groups in a given period each year. 
+`bbousims` contains more flexible, general functionality to do the following for any set of time periods and stages: generate survival and fecundity rates; generate survival, birth and age process matrices; project population; allocate individuals from population into groups; sample a proportion of groups in a given period each year. 
 
 ### Survival and fecundity rates
 
