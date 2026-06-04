@@ -134,7 +134,7 @@ and female adult.</p>
 <p>Survival rates for female calves and female adults are generated
 stochastically from linear models taking the following form (simplified
 for readability):</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">logit</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>S</mi><mi>u</mi><mi>r</mi><mi>v</mi><mi>i</mi><mi>v</mi><mi>a</mi><msub><mi>l</mi><mrow><mi>y</mi><mo>,</mo><mi>m</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>β</mi><mn>0</mn></msub><mo>+</mo><msub><mi>β</mi><mi>Y</mi></msub><mo>⋅</mo><mi>Y</mi><mi>e</mi><mi>a</mi><msub><mi>r</mi><mi>y</mi></msub><mo>+</mo><msub><mi>β</mi><msub><mi>A</mi><mi>y</mi></msub></msub><mo>+</mo><msub><mi>β</mi><msub><mi>M</mi><mi>m</mi></msub></msub><mo>+</mo><msub><mi>β</mi><mrow><mi>A</mi><msub><mi>M</mi><mrow><mi>y</mi><mo>,</mo><mi>m</mi></mrow></msub></mrow></msub></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">logit</mtext><mo stretchy="false" form="prefix">(</mo><mi>S</mi><mi>u</mi><mi>r</mi><mi>v</mi><mi>i</mi><mi>v</mi><mi>a</mi><msub><mi>l</mi><mrow><mi>y</mi><mo>,</mo><mi>m</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>β</mi><mn>0</mn></msub><mo>+</mo><msub><mi>β</mi><mi>Y</mi></msub><mo>⋅</mo><mi>Y</mi><mi>e</mi><mi>a</mi><msub><mi>r</mi><mi>y</mi></msub><mo>+</mo><msub><mi>β</mi><msub><mi>A</mi><mi>y</mi></msub></msub><mo>+</mo><msub><mi>β</mi><msub><mi>M</mi><mi>m</mi></msub></msub><mo>+</mo><msub><mi>β</mi><mrow><mi>A</mi><msub><mi>M</mi><mrow><mi>y</mi><mo>,</mo><mi>m</mi></mrow></msub></mrow></msub></mrow><annotation encoding="application/x-tex">
 \text{logit}(Survival_{y,m}) = \beta_0 + \beta_Y \cdot Year_{y} + \beta_{A_{y}} + \beta_{M_{m}} + \beta_{AM_{y,m}}
 </annotation></semantics></math></p>
 <p>The intercept
@@ -158,7 +158,7 @@ separate linear models, whereas female yearling survival is specified as
 an effect on female adult survival.</p>
 <p>Fecundity rates are generated from a linear model taking the
 (simplified) form:
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">logit</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>F</mi><mi>e</mi><mi>c</mi><mi>u</mi><mi>n</mi><mi>d</mi><mi>i</mi><mi>t</mi><msub><mi>y</mi><mrow><mi>y</mi><mo>,</mo><mi>m</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>β</mi><mn>0</mn></msub><mo>+</mo><msub><mi>β</mi><mi>Y</mi></msub><mo>⋅</mo><mi>Y</mi><mi>e</mi><mi>a</mi><msub><mi>r</mi><mi>y</mi></msub><mo>+</mo><msub><mi>β</mi><msub><mi>A</mi><mi>y</mi></msub></msub></mrow><annotation encoding="application/x-tex">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">logit</mtext><mo stretchy="false" form="prefix">(</mo><mi>F</mi><mi>e</mi><mi>c</mi><mi>u</mi><mi>n</mi><mi>d</mi><mi>i</mi><mi>t</mi><msub><mi>y</mi><mrow><mi>y</mi><mo>,</mo><mi>m</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>β</mi><mn>0</mn></msub><mo>+</mo><msub><mi>β</mi><mi>Y</mi></msub><mo>⋅</mo><mi>Y</mi><mi>e</mi><mi>a</mi><msub><mi>r</mi><mi>y</mi></msub><mo>+</mo><msub><mi>β</mi><msub><mi>A</mi><mi>y</mi></msub></msub></mrow><annotation encoding="application/x-tex">
 \text{logit}(Fecundity_{y,m}) = \beta_0 + \beta_Y \cdot Year_{y} + \beta_{A_{y}}
 </annotation></semantics></math> The intercept
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mn>0</mn></msub><annotation encoding="application/x-tex">\beta_0</annotation></semantics></math>)
@@ -279,7 +279,7 @@ male yearling, female adult and male adult, in that order.</p>
 <span><span class="co">#&gt; [6,]  273  247  253  249  259  237  247  250  243   213   229   246   276</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/bbs_plot_population.html">bbs_plot_population</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span></span></code></pre></div>
-<p><img src="bbousims_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
+<p><img src="bbousims_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="" width="672"></p>
 <p>It can be useful to view estimates of key demographic summary metrics
 (i.e., lambda, recruitment, stable stage distribution) prior to
 simulating data, e.g., to assess the stability of the population.</p>
@@ -328,7 +328,7 @@ and females.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/bbs_plot_population.html">bbs_plot_population</a></span><span class="op">(</span><span class="va">population2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="bbousims_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
+<p><img src="bbousims_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="" width="672"></p>
 <div class="section level3">
 <h3 id="allocate-and-sample-groups">Allocate and sample groups<a class="anchor" aria-label="anchor" href="#allocate-and-sample-groups"></a>
 </h3>
@@ -502,7 +502,7 @@ for <code>bboutools</code> model fitting functions.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>
