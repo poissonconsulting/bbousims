@@ -8,7 +8,8 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-7683-4592")),
     person("John", "Boulanger", role = "aut",
            comment = c(ORCID = "0000-0001-8222-1445")),
-    person("Ayla", "Pearson", , "ayla@poissonconsulting.ca", role = "aut"),
+    person("Ayla", "Pearson", , "ayla@poissonconsulting.ca", role = "aut",
+           comment = c(ORCID = "0000-0001-7388-1222")),
     person("Province of Alberta", role = "cph")
   )
 Description: Simulates survival and recruitment data for boreal caribou
