@@ -55,7 +55,12 @@ test_that("can change female proportion", {
 
 test_that("can change calf stage indices", {
   rates <- c(0.4, 0, 0)
-  x <- bbs_matrix_birth(rates, male_recruit_stage = 3, female_recruit_stage = 2, proportion_female = 0.75)
+  x <- bbs_matrix_birth(
+    rates,
+    male_recruit_stage = 3,
+    female_recruit_stage = 2,
+    proportion_female = 0.75
+  )
   expect_snapshot({
     print(x)
   })
@@ -63,10 +68,18 @@ test_that("can change calf stage indices", {
 
 test_that("birth process matrices work", {
   # 4 seasons, 2 years, 2 stages
-  rates <- matrix(c(
-    0, 0, 0.2,
-    0, 0, 0.3
-  ), nrow = 2, byrow = TRUE)
+  rates <- matrix(
+    c(
+      0,
+      0,
+      0.2,
+      0,
+      0,
+      0.3
+    ),
+    nrow = 2,
+    byrow = TRUE
+  )
   x <- bbs_matrix_birth_year(rates)
   expect_identical(dim(x), c(3L, 3L, 2L))
   expect_snapshot({

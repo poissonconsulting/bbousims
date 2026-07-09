@@ -22,10 +22,12 @@
 #'
 #' @examples
 #' bbs_matrix_birth(c(0, 0, 0.2, 0, 0.25, 0)) %*% rep(100, 6)
-bbs_matrix_birth <- function(fecundity,
-                             female_recruit_stage = 1,
-                             male_recruit_stage = NULL,
-                             proportion_female = 0.5) {
+bbs_matrix_birth <- function(
+  fecundity,
+  female_recruit_stage = 1,
+  male_recruit_stage = NULL,
+  proportion_female = 0.5
+) {
   chk_numeric(fecundity)
   chk_gte(fecundity)
   chk_null_or(male_recruit_stage, vld = vld_whole_number)
@@ -57,10 +59,12 @@ bbs_matrix_birth <- function(fecundity,
 #' @examples
 #' fec <- bbs_fecundity(c(NA, 0.7), nyear = 3)
 #' bbs_matrix_birth_year(fec$eFecundity)
-bbs_matrix_birth_year <- function(fecundity,
-                                  female_recruit_stage = 1,
-                                  male_recruit_stage = NULL,
-                                  proportion_female = 0.5) {
+bbs_matrix_birth_year <- function(
+  fecundity,
+  female_recruit_stage = 1,
+  male_recruit_stage = NULL,
+  proportion_female = 0.5
+) {
   chk_is(fecundity, "matrix")
   chk_length(dim(fecundity), 2L)
 
@@ -69,7 +73,8 @@ bbs_matrix_birth_year <- function(fecundity,
   nstate <- dims[2]
   x <- array(0, dim = c(nstate, nstate, nyear))
   for (year in 1:nyear) {
-    x[, , year] <- bbs_matrix_birth(fecundity[year, ],
+    x[,, year] <- bbs_matrix_birth(
+      fecundity[year, ],
       female_recruit_stage = female_recruit_stage,
       male_recruit_stage = male_recruit_stage,
       proportion_female = proportion_female

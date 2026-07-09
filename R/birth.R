@@ -26,10 +26,12 @@
 #'
 #' @examples
 #' bbs_fecundity(c(NA, logit(0.4)), trend = c(NA, 0.1), annual_sd = c(NA, 0.05))
-bbs_fecundity <- function(intercept,
-                          trend = rep(0, length(intercept)),
-                          annual_sd = rep(0, length(intercept)),
-                          nyear = 10) {
+bbs_fecundity <- function(
+  intercept,
+  trend = rep(0, length(intercept)),
+  annual_sd = rep(0, length(intercept)),
+  nyear = 10
+) {
   chk_numeric(intercept)
   chk_numeric(trend)
   chk_length(trend, length(intercept))
@@ -81,10 +83,12 @@ bbs_fecundity <- function(intercept,
 #'
 #' @examples
 #' bbs_fecundity_caribou(0.4, trend = 0.1, annual_sd = 0.3)
-bbs_fecundity_caribou <- function(calves_per_adult_female,
-                                  trend = 0,
-                                  annual_sd = 0,
-                                  nyear = 10) {
+bbs_fecundity_caribou <- function(
+  calves_per_adult_female,
+  trend = 0,
+  annual_sd = 0,
+  nyear = 10
+) {
   chk_number(calves_per_adult_female)
   chk_gte(calves_per_adult_female)
   chk_number(trend)
@@ -96,9 +100,5 @@ bbs_fecundity_caribou <- function(calves_per_adult_female,
   trend <- c(0, 0, trend)
   annual_sd <- c(0, 0, annual_sd)
 
-  bbs_fecundity(intercept,
-    trend = trend,
-    annual_sd = annual_sd,
-    nyear = nyear
-  )
+  bbs_fecundity(intercept, trend = trend, annual_sd = annual_sd, nyear = nyear)
 }

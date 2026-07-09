@@ -25,8 +25,8 @@ test_that("bbs_survival works", {
     )
 
   expect_equal(dim(x$eSurvival), c(4, 3, 2))
-  expect_true(all(x$eSurvival[, , 1] == ilogit(logit(b0_1))))
-  expect_true(all(x$eSurvival[, , 2] == ilogit(logit(b0_2))))
+  expect_true(all(x$eSurvival[,, 1] == ilogit(logit(b0_1))))
+  expect_true(all(x$eSurvival[,, 2] == ilogit(logit(b0_2))))
   expect_snapshot({
     print(x)
   })
@@ -145,9 +145,16 @@ test_that("bbs_survival_caribou works with intercepts", {
     )
 
   ex <- x$eSurvival
-  expect_true(all(unlist(ex[, , 3]) == ilogit(logit(survival_adult_female^(1 / 12)))))
-  expect_true(all(unlist(ex[, , 1]) == ilogit(logit(survival_calf_female^(1 / 12)))))
-  expect_true(all(unlist(ex[, , 2]) == ilogit(logit(survival_adult_female^(1 / 12)) + yearling_effect)))
+  expect_true(all(
+    unlist(ex[,, 3]) == ilogit(logit(survival_adult_female^(1 / 12)))
+  ))
+  expect_true(all(
+    unlist(ex[,, 1]) == ilogit(logit(survival_calf_female^(1 / 12)))
+  ))
+  expect_true(all(
+    unlist(ex[,, 2]) ==
+      ilogit(logit(survival_adult_female^(1 / 12)) + yearling_effect)
+  ))
   expect_snapshot({
     print(x)
   })
@@ -170,9 +177,16 @@ test_that("bbs_survival_caribou works with trend", {
     )
 
   ex <- x$eSurvival
-  expect_true(all(as.vector(ex[, 1, 3]) == ilogit(logit(survival_adult_female^(1 / 12)))))
-  expect_true(all(as.vector(ex[, 1, 2]) == ilogit(logit(survival_adult_female^(1 / 12)) + yearling_effect)))
-  expect_true(all(as.vector(ex[, 1, 1]) == ilogit(logit(survival_calf_female^(1 / 12)))))
+  expect_true(all(
+    as.vector(ex[, 1, 3]) == ilogit(logit(survival_adult_female^(1 / 12)))
+  ))
+  expect_true(all(
+    as.vector(ex[, 1, 2]) ==
+      ilogit(logit(survival_adult_female^(1 / 12)) + yearling_effect)
+  ))
+  expect_true(all(
+    as.vector(ex[, 1, 1]) == ilogit(logit(survival_calf_female^(1 / 12)))
+  ))
   expect_true(all(ex[1, , 1] >= ilogit(logit(survival_calf_female^(1 / 12)))))
   expect_equal(length(unique(ex[1, , 1])), nyear)
   expect_true(all(ex[1, , 3] >= ilogit(logit(survival_adult_female^(1 / 12)))))
@@ -203,7 +217,10 @@ test_that("bbs_survival_caribou works with random effects", {
     expect_equal(length(unique(ex[, 1, 3])), 1)
 
     # linear relationship logit yearling and adult
-    expect_equal(length(unique(as.vector(round(logit(ex[, , 2]) - logit(ex[, , 3]), 2)))), 1)
+    expect_equal(
+      length(unique(as.vector(round(logit(ex[,, 2]) - logit(ex[,, 3]), 2)))),
+      1
+    )
 
     expect_snapshot({
       print(x)

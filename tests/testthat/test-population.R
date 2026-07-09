@@ -32,9 +32,14 @@ test_that("bbs_population works", {
       nyear = nyear
     )
     survival_mat <- bbs_matrix_survival_period(survival$eSurvival)
-    birth_mat <- bbs_matrix_birth_year(fecundity$eFecundity, female_recruit_stage = 1, male_recruit_stage = NULL)
+    birth_mat <- bbs_matrix_birth_year(
+      fecundity$eFecundity,
+      female_recruit_stage = 1,
+      male_recruit_stage = NULL
+    )
     age_mat <- bbs_matrix_age(c(2, 2))
-    x <- bbs_population(pop0,
+    x <- bbs_population(
+      pop0,
       birth = birth_mat,
       age = age_mat,
       survival = survival_mat
@@ -78,10 +83,13 @@ test_that("bbs_population_caribou fails with different number of years", {
       nyear = nyear
     )
     fecundity <- bbs_fecundity_caribou(0.2, nyear = 3)
-    
-    expect_chk_error(bbs_population_caribou(
-      survival = survival,
-      fecundity = fecundity
-    ), regexp = "must have the same number of years") 
+
+    expect_chk_error(
+      bbs_population_caribou(
+        survival = survival,
+        fecundity = fecundity
+      ),
+      regexp = "must have the same number of years"
+    )
   })
 })

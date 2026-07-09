@@ -39,9 +39,16 @@ population_tbl <- function(x, nperiod_within_year = 12) {
   x %>%
     as.data.frame() %>%
     mutate(Stage = factor(seq_len(nrow(x)))) %>%
-    pivot_longer(-all_of(nstep), names_to = "Period", values_to = "Abundance") %>%
+    pivot_longer(
+      -all_of(nstep),
+      names_to = "Period",
+      values_to = "Abundance"
+    ) %>%
     mutate(
       Period = as.integer(.data$Period) - 1,
-      Year = period_to_year(.data$Period, nperiod_within_year = nperiod_within_year)
+      Year = period_to_year(
+        .data$Period,
+        nperiod_within_year = nperiod_within_year
+      )
     )
 }

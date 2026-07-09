@@ -15,7 +15,10 @@
 .vld_survival <- function(x) {
   all(
     vld_true(inherits(x, "list")),
-    vld_identical(names(x), c("eSurvival", "b0", "bYear", "bAnnual", "bPeriod", "bAnnualPeriod")),
+    vld_identical(
+      names(x),
+      c("eSurvival", "b0", "bYear", "bAnnual", "bPeriod", "bAnnualPeriod")
+    ),
     vld_equal(length(dim(x$eSurvival)), 3)
   )
 }

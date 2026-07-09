@@ -51,7 +51,7 @@ bbs_matrix_survival_period <- function(survival) {
   x <- array(0, dim = c(nstate, nstate, nyear, nperiod))
   for (year in 1:nyear) {
     for (period in 1:nperiod) {
-      x[, , year, period] <- bbs_matrix_survival(survival[period, year, ])
+      x[,, year, period] <- bbs_matrix_survival(survival[period, year, ])
     }
   }
   x

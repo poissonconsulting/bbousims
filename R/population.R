@@ -13,15 +13,20 @@
 # limitations under the License.
 
 rbinom_map <- function(size, prob) {
-  purrr::map_dbl(size, ~ {
-    rbinom(1, size = round(.x / prob), prob = 1 - prob)
-  })
+  purrr::map_dbl(
+    size,
+    ~ {
+      rbinom(1, size = round(.x / prob), prob = 1 - prob)
+    }
+  )
 }
 
-add_male_population <- function(population,
-                                proportion_adult_female,
-                                proportion_yearling_female,
-                                stochastic) {
+add_male_population <- function(
+  population,
+  proportion_adult_female,
+  proportion_yearling_female,
+  stochastic
+) {
   m <- matrix(NA, nrow = 6, ncol = ncol(population))
   m[1, ] <- population[1, ]
   m[3, ] <- population[2, ]
@@ -68,11 +73,13 @@ add_male_population <- function(population,
 #'   age = age_mat,
 #'   survival = survival_mat
 #' )
-bbs_population <- function(population_init,
-                           birth,
-                           age,
-                           survival,
-                           stochastic = TRUE) {
+bbs_population <- function(
+  population_init,
+  birth,
+  age,
+  survival,
+  stochastic = TRUE
+) {
   chk_whole_numeric(population_init)
   chk_array(birth)
   chk_length(dim(birth), 3L)
@@ -105,10 +112,16 @@ bbs_population <- function(population_init,
       period_now <- (year - 1) * nperiod + period
       if (period == nperiod) {
         abundance[, period_now + 1] <-
-          mmult(birth[, , year], mmult(age, mmult(survival[, , year, period], abundance[, period_now])))
+          mmult(
+            birth[,, year],
+            mmult(
+              age,
+              mmult(survival[,, year, period], abundance[, period_now])
+            )
+          )
       } else {
         abundance[, period_now + 1] <-
-          mmult(survival[, , year, period], abundance[, period_now])
+          mmult(survival[,, year, period], abundance[, period_now])
       }
     }
   }
@@ -136,12 +149,14 @@ bbs_population <- function(population_init,
 #' survival <- bbs_survival_caribou(0.84)
 #' fecundity <- bbs_fecundity_caribou(0.7)
 #' x <- bbs_population_caribou(survival, fecundity = fecundity)
-bbs_population_caribou <- function(survival,
-                                   fecundity,
-                                   adult_females = 1000,
-                                   proportion_adult_female = 0.65,
-                                   proportion_yearling_female = 0.5,
-                                   stochastic = TRUE) {
+bbs_population_caribou <- function(
+  survival,
+  fecundity,
+  adult_females = 1000,
+  proportion_adult_female = 0.65,
+  proportion_yearling_female = 0.5,
+  stochastic = TRUE
+) {
   .chk_survival(survival)
   .chk_fecundity(fecundity)
   .chk_nyears(survival, fecundity)
@@ -178,7 +193,8 @@ bbs_population_caribou <- function(survival,
     stochastic = stochastic
   )
 
-  x <- add_male_population(population,
+  x <- add_male_population(
+    population,
     proportion_adult_female = proportion_adult_female,
     proportion_yearling_female = proportion_yearling_female,
     stochastic = stochastic

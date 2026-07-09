@@ -31,42 +31,50 @@
 #'   collared_adult_females = 30,
 #'   survival_adult_female_month_year = survival_adult_female
 #' )
-bbs_survival_collared <- function(collared_adult_females,
-                                  survival_adult_female_month_year,
-                                  probability_uncertain_mortality = 0,
-                                  probability_uncertain_survival = 0,
-                                  month_collar = 1L,
-                                  population_name = "A") {
+bbs_survival_collared <- function(
+  collared_adult_females,
+  survival_adult_female_month_year,
+  probability_uncertain_mortality = 0,
+  probability_uncertain_survival = 0,
+  month_collar = 1L,
+  population_name = "A"
+) {
   starttotal <- collared_adult_females
   nyear <- ncol(survival_adult_female_month_year)
   yearmon <- tidyr::expand_grid(year = 1:nyear, month = 1:12)
   # remove first months without collaring
-  yearmon <- dplyr::filter(yearmon, !(.data$year == 1 & .data$month < month_collar))
+  yearmon <- dplyr::filter(
+    yearmon,
+    !(.data$year == 1 & .data$month < month_collar)
+  )
 
-  purrr::map_df(seq_len(nrow(yearmon)), ~ {
-    month <- yearmon$month[.x]
-    year <- yearmon$year[.x]
-    phi <- survival_adult_female_month_year[month, year]
-    prob_uncertain_mort <- probability_uncertain_mortality
-    prob_uncertain_surv <- probability_uncertain_survival
-    last <- starttotal[length(starttotal)]
-    dead <- rbinom(1, last, (1 - phi))
-    dead_uncertain <- rbinom(1, dead, prob_uncertain_mort)
-    dead_certain <- dead - dead_uncertain
-    alive_uncertain <- rbinom(1, last, prob_uncertain_surv)
-    update <- last - dead - alive_uncertain
-    if (month == month_collar - 1 || (month == 12 & month_collar == 1)) {
-      starttotal <<- c(starttotal, collared_adult_females)
-    } else {
-      starttotal <<- c(starttotal, update)
+  purrr::map_df(
+    seq_len(nrow(yearmon)),
+    ~ {
+      month <- yearmon$month[.x]
+      year <- yearmon$year[.x]
+      phi <- survival_adult_female_month_year[month, year]
+      prob_uncertain_mort <- probability_uncertain_mortality
+      prob_uncertain_surv <- probability_uncertain_survival
+      last <- starttotal[length(starttotal)]
+      dead <- rbinom(1, last, (1 - phi))
+      dead_uncertain <- rbinom(1, dead, prob_uncertain_mort)
+      dead_certain <- dead - dead_uncertain
+      alive_uncertain <- rbinom(1, last, prob_uncertain_surv)
+      update <- last - dead - alive_uncertain
+      if (month == month_collar - 1 || (month == 12 & month_collar == 1)) {
+        starttotal <<- c(starttotal, collared_adult_females)
+      } else {
+        starttotal <<- c(starttotal, update)
+      }
+      tibble(
+        Year = year,
+        Month = month,
+        PopulationName = population_name,
+        StartTotal = last,
+        MortalitiesCertain = dead_certain,
+        MortalitiesUncertain = dead_uncertain
+      )
     }
-    tibble(
-      Year = year,
-      Month = month,
-      PopulationName = population_name,
-      StartTotal = last,
-      MortalitiesCertain = dead_certain,
-      MortalitiesUncertain = dead_uncertain
-    )
-  })
+  )
 }
