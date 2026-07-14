@@ -63,13 +63,15 @@ test_that("can plot population matrix 2 stages and 4 periods", {
     )
     survival_mat <- bbs_matrix_survival_period(survival$eSurvival)
     birth_mat <-
-      bbs_matrix_birth_year(fecundity$eFecundity,
+      bbs_matrix_birth_year(
+        fecundity$eFecundity,
         female_recruit_stage = 1,
         male_recruit_stage = NULL
       )
     age_mat <- bbs_matrix_age(c(2, 2))
     pop0 <- c(105, 220)
-    x <- bbs_population(pop0,
+    x <- bbs_population(
+      pop0,
       birth = birth_mat,
       age = age_mat,
       survival = survival_mat

@@ -36,18 +36,20 @@
 #'
 #' @examples
 #' survival <- bbs_survival_caribou(0.84, survival_calf_female = 0.5)
-bbs_survival_caribou <- function(survival_adult_female,
-                                 survival_calf_female = 0.5,
-                                 nyear = 10,
-                                 trend_adult_female = 0,
-                                 annual_sd_adult_female = 0,
-                                 month_sd_adult_female = 0,
-                                 annual_month_sd_adult_female = 0,
-                                 trend_calf_female = 0,
-                                 annual_sd_calf_female = 0,
-                                 month_sd_calf_female = 0,
-                                 annual_month_sd_calf_female = 0,
-                                 yearling_effect = 0) {
+bbs_survival_caribou <- function(
+  survival_adult_female,
+  survival_calf_female = 0.5,
+  nyear = 10,
+  trend_adult_female = 0,
+  annual_sd_adult_female = 0,
+  month_sd_adult_female = 0,
+  annual_month_sd_adult_female = 0,
+  trend_calf_female = 0,
+  annual_sd_calf_female = 0,
+  month_sd_calf_female = 0,
+  annual_month_sd_calf_female = 0,
+  yearling_effect = 0
+) {
   chk_number(survival_adult_female)
   chk_range(survival_adult_female)
   chk_number(survival_calf_female)
@@ -72,7 +74,11 @@ bbs_survival_caribou <- function(survival_adult_female,
   trend <- c(trend_calf_female, 0, trend_adult_female)
   annual_sd <- c(annual_sd_calf_female, 0, annual_sd_adult_female)
   period_sd <- c(month_sd_calf_female, 0, month_sd_adult_female)
-  annual_period_sd <- c(annual_month_sd_calf_female, 0, annual_month_sd_adult_female)
+  annual_period_sd <- c(
+    annual_month_sd_calf_female,
+    0,
+    annual_month_sd_adult_female
+  )
 
   x <- bbs_survival(
     intercept = intercept,
@@ -85,7 +91,7 @@ bbs_survival_caribou <- function(survival_adult_female,
   )
 
   # add yearling effect
-  x$eSurvival[, , 2] <- ilogit(logit(x$eSurvival[, , 3]) + yearling_effect)
+  x$eSurvival[,, 2] <- ilogit(logit(x$eSurvival[,, 3]) + yearling_effect)
   x
 }
 
@@ -108,13 +114,15 @@ bbs_survival_caribou <- function(survival_adult_female,
 #'
 #' @examples
 #' survival <- bbs_survival(intercept = logit(c(0.94, 0.98, 0.98)), trend = c(0, 0, 0.2))
-bbs_survival <- function(intercept,
-                         nyear = 10,
-                         trend = rep(0, length(intercept)),
-                         annual_sd = rep(0, length(intercept)),
-                         period_sd = rep(0, length(intercept)),
-                         annual_period_sd = rep(0, length(intercept)),
-                         nperiod_within_year = 12) {
+bbs_survival <- function(
+  intercept,
+  nyear = 10,
+  trend = rep(0, length(intercept)),
+  annual_sd = rep(0, length(intercept)),
+  period_sd = rep(0, length(intercept)),
+  annual_period_sd = rep(0, length(intercept)),
+  nperiod_within_year = 12
+) {
   chk_numeric(intercept)
   chk_whole_number(nyear)
   chk_gt(nyear)
@@ -158,7 +166,13 @@ bbs_survival <- function(intercept,
   for (yr in 1:nyear) {
     for (prd in 1:nperiod) {
       for (stg in 1:nstage) {
-        esurvival[prd, yr, stg] <- ilogit(intercept[stg] + trend[stg] * year[yr] + bannual[yr, stg] + bperiod[prd, stg] + bannual_period[yr, prd, stg])
+        esurvival[prd, yr, stg] <- ilogit(
+          intercept[stg] +
+            trend[stg] * year[yr] +
+            bannual[yr, stg] +
+            bperiod[prd, stg] +
+            bannual_period[yr, prd, stg]
+        )
       }
     }
   }

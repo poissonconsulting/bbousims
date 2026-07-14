@@ -23,7 +23,14 @@ ran_group_size <- function(lambda, theta, max_size, min_size) {
 }
 
 # sample groups until total reached - return as cumulative sum including 0 and total, for use as index
-sample_groups <- function(total, lambda, theta, max_size, min_size, cumulative = TRUE) {
+sample_groups <- function(
+  total,
+  lambda,
+  theta,
+  max_size,
+  min_size,
+  cumulative = TRUE
+) {
   sizes <- vector()
   capacity <- FALSE
   while (!capacity) {
@@ -33,8 +40,9 @@ sample_groups <- function(total, lambda, theta, max_size, min_size, cumulative =
   }
   sizes <- sizes[-length(sizes)]
   # if remainder is too small, consumed by previous
-  if (total - sum(sizes) < min_size)
+  if (total - sum(sizes) < min_size) {
     sizes <- sizes[-length(sizes)]
+  }
 
   if (cumulative) {
     sizes <- c(0, cumsum(sizes), total)
@@ -64,14 +72,21 @@ break_up_pair <- function(x) {
 
 # from stage totals create vector of individuals numbered by stage
 population_individuals <- function(population, shuffle = TRUE) {
-  x <- unlist(purrr::map(seq_along(population), function(x) rep(x, population[x])))
-  if (shuffle)
+  x <- unlist(purrr::map(seq_along(population), function(x) {
+    rep(x, population[x])
+  }))
+  if (shuffle) {
     x <- sample(x)
+  }
   x
 }
 
 # create recruit-female pairs, #pairs = min(recruits, females)
-individuals_to_pairs <- function(x, recruit_stages, reproductive_female_stages) {
+individuals_to_pairs <- function(
+  x,
+  recruit_stages,
+  reproductive_female_stages
+) {
   index <- seq_along(x)
   recruits <- index[x %in% recruit_stages]
   females <- index[x %in% reproductive_female_stages]
@@ -85,11 +100,13 @@ individuals_to_pairs <- function(x, recruit_stages, reproductive_female_stages) 
 }
 
 # population in a single period
-population1_groups <- function(population,
-                               group_size_lambda,
-                               group_size_theta,
-                               group_max_proportion,
-                               group_min_size) {
+population1_groups <- function(
+  population,
+  group_size_lambda,
+  group_size_theta,
+  group_max_proportion,
+  group_min_size
+) {
   total <- sum(population)
   individuals <- population_individuals(population, shuffle = TRUE)
   index <- 1:total
@@ -100,7 +117,8 @@ population1_groups <- function(population,
   if ((floor(max_size) - 1) <= min_size) {
     return(list(individuals))
   } else {
-    sizes <- sample_groups(total,
+    sizes <- sample_groups(
+      total,
       lambda = group_size_lambda,
       theta = group_size_theta,
       max_size = max_size,
@@ -114,22 +132,26 @@ population1_groups <- function(population,
   })
 }
 
-population1_groups_pairs <- function(population,
-                                     group_size_lambda,
-                                     group_size_theta,
-                                     group_max_proportion,
-                                     group_min_size,
-                                     recruit_stages,
-                                     reproductive_female_stages) {
+population1_groups_pairs <- function(
+  population,
+  group_size_lambda,
+  group_size_theta,
+  group_max_proportion,
+  group_min_size,
+  recruit_stages,
+  reproductive_female_stages
+) {
   total <- sum(population)
   individuals <- population_individuals(population)
-  pairs <- individuals_to_pairs(individuals,
+  pairs <- individuals_to_pairs(
+    individuals,
     recruit_stages = recruit_stages,
     reproductive_female_stages = reproductive_female_stages
   )
   names(pairs) <- seq_along(pairs)
 
-  sizes <- sample_groups(total,
+  sizes <- sample_groups(
+    total,
     lambda = group_size_lambda,
     theta = group_size_theta,
     max_size = total * group_max_proportion,
@@ -178,11 +200,13 @@ population1_groups_pairs <- function(population,
 #' fecundity <- bbs_fecundity_caribou(0.7)
 #' x <- bbs_population_caribou(survival, fecundity = fecundity, adult_females = 100)
 #' bbs_population_groups(x)
-bbs_population_groups <- function(population,
-                                  group_size_lambda = 5,
-                                  group_size_theta = 2,
-                                  group_max_proportion = 1 / 4,
-                                  group_min_size = 2) {
+bbs_population_groups <- function(
+  population,
+  group_size_lambda = 5,
+  group_size_theta = 2,
+  group_max_proportion = 1 / 4,
+  group_min_size = 2
+) {
   chk_matrix(population)
   chk_whole_numeric(population)
   chk_number(group_size_lambda)
@@ -196,14 +220,18 @@ bbs_population_groups <- function(population,
 
   population <- as.matrix(population)
   nstep <- ncol(population)
-  purrr::map(seq_len(nstep), ~ {
-    population1_groups(population[, .x],
-      group_size_lambda = group_size_lambda,
-      group_size_theta = group_size_theta,
-      group_max_proportion = group_max_proportion,
-      group_min_size = group_min_size
-    )
-  })
+  purrr::map(
+    seq_len(nstep),
+    ~ {
+      population1_groups(
+        population[, .x],
+        group_size_lambda = group_size_lambda,
+        group_size_theta = group_size_theta,
+        group_max_proportion = group_max_proportion,
+        group_min_size = group_min_size
+      )
+    }
+  )
 }
 
 #' Assign population into groups by pairs
@@ -226,13 +254,15 @@ bbs_population_groups <- function(population,
 #' fecundity <- bbs_fecundity_caribou(0.7)
 #' x <- bbs_population_caribou(survival, fecundity = fecundity, adult_females = 100)
 #' bbs_population_groups_pairs(x)
-bbs_population_groups_pairs <- function(population,
-                                        group_size_lambda = 5,
-                                        group_size_theta = 2,
-                                        group_max_proportion = 1 / 4,
-                                        group_min_size = 2,
-                                        recruit_stages = c(1, 2),
-                                        reproductive_female_stages = c(3, 5)) {
+bbs_population_groups_pairs <- function(
+  population,
+  group_size_lambda = 5,
+  group_size_theta = 2,
+  group_max_proportion = 1 / 4,
+  group_min_size = 2,
+  recruit_stages = c(1, 2),
+  reproductive_female_stages = c(3, 5)
+) {
   chk_matrix(population)
   chk_whole_numeric(population)
   chk_number(group_size_lambda)
@@ -252,7 +282,8 @@ bbs_population_groups_pairs <- function(population,
   population <- as.matrix(population)
   nstep <- ncol(population)
   purrr::map(seq_len(nstep), function(x) {
-    population1_groups_pairs(population[, x],
+    population1_groups_pairs(
+      population[, x],
       group_size_lambda = group_size_lambda,
       group_size_theta = group_size_theta,
       group_max_proportion = group_max_proportion,

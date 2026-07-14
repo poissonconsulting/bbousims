@@ -6,3 +6,5 @@
 ^codecov\.yml$
 ^\.github$
 ^vignettes/articles$
+^[.]?air[.]toml$
+^\.vscode$

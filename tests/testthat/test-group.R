@@ -16,7 +16,11 @@ test_that("assign population to groups", {
   withr::with_seed(10, {
     survival <- bbs_survival_caribou(0.84)
     fecundity <- bbs_fecundity_caribou(0.2)
-    population <- bbs_population_caribou(survival = survival, fecundity = fecundity, adult_females = 1000)
+    population <- bbs_population_caribou(
+      survival = survival,
+      fecundity = fecundity,
+      adult_females = 1000
+    )
 
     min_size <- 2
     max_proportion <- 0.75
@@ -39,7 +43,10 @@ test_that("assign population to groups", {
 
   # check same individuals as in population for each period when unlist groups
   individuals <-
-    purrr::map(seq_len(ncol(population)), ~ sort(population_individuals(population[, .x])))
+    purrr::map(
+      seq_len(ncol(population)),
+      ~ sort(population_individuals(population[, .x]))
+    )
   for (i in seq_along(individuals)) {
     expect_identical(individuals[[i]], sort(unlist(group[[i]])))
   }
@@ -61,7 +68,11 @@ test_that("sample groups from population", {
   withr::with_seed(10, {
     survival <- bbs_survival_caribou(0.84)
     fecundity <- bbs_fecundity_caribou(0.2)
-    population <- bbs_population_caribou(survival = survival, fecundity = fecundity, adult_females = 1000)
+    population <- bbs_population_caribou(
+      survival = survival,
+      fecundity = fecundity,
+      adult_females = 1000
+    )
 
     min_size <- 2
     max_proportion <- 0.75
@@ -99,7 +110,11 @@ test_that("assign population to groups by pairs", {
   withr::with_seed(10, {
     survival <- bbs_survival_caribou(0.84)
     fecundity <- bbs_fecundity_caribou(0.2)
-    population <- bbs_population_caribou(survival = survival, fecundity = fecundity, adult_females = 1000)
+    population <- bbs_population_caribou(
+      survival = survival,
+      fecundity = fecundity,
+      adult_females = 1000
+    )
 
     min_size <- 2
     max_proportion <- 0.75
@@ -121,7 +136,10 @@ test_that("assign population to groups by pairs", {
   nstep <- ncol(population)
 
   individuals <-
-    purrr::map(seq_len(ncol(population)), ~ sort(population_individuals(population[, .x])))
+    purrr::map(
+      seq_len(ncol(population)),
+      ~ sort(population_individuals(population[, .x]))
+    )
   for (i in seq_along(individuals)) {
     expect_identical(individuals[[i]], sort(unlist(group[[i]])))
   }
@@ -142,7 +160,11 @@ test_that("assign population to groups in declining population to 0", {
   withr::with_seed(101, {
     survival <- bbs_survival_caribou(0.84)
     fecundity <- bbs_fecundity_caribou(0.2)
-    population <- bbs_population_caribou(survival = survival, fecundity = fecundity, adult_females = 1000)
+    population <- bbs_population_caribou(
+      survival = survival,
+      fecundity = fecundity,
+      adult_females = 1000
+    )
     min_size <- 2
     max_proportion <- 1
     lambda <- 6
@@ -165,7 +187,10 @@ test_that("assign population to groups in declining population to 0", {
 
   # check same individuals as in population for each period when unlist groups
   individuals <-
-    purrr::map(seq_len(ncol(population)), ~ sort(population_individuals(population[, .x])))
+    purrr::map(
+      seq_len(ncol(population)),
+      ~ sort(population_individuals(population[, .x]))
+    )
   for (i in seq_along(individuals)) {
     expect_identical(individuals[[i]], sort(unlist(group[[i]])))
   }

@@ -53,7 +53,8 @@ test_that("bbs_simulate_caribou works with bboutools and values can be recovered
     nyear = nyear
   )
 
-  x <- bbs_simulate_caribou(survival,
+  x <- bbs_simulate_caribou(
+    survival,
     fecundity = fecundity,
     nsims = nsims,
     adult_females = 500,
@@ -63,17 +64,20 @@ test_that("bbs_simulate_caribou works with bboutools and values can be recovered
     collared_adult_females = 200
   )
 
-  fit_r <- bboutools::bb_fit_recruitment(x[[1]]$recruitment,
+  fit_r <- bboutools::bb_fit_recruitment(
+    x[[1]]$recruitment,
     adult_female_proportion = NULL,
     yearling_female_proportion = 0.5
   )
 
-  fit_s <- bboutools::bb_fit_survival(x[[1]]$survival,
+  fit_s <- bboutools::bb_fit_survival(
+    x[[1]]$survival,
     min_random_year = Inf,
-    nthin = 30L, year_start = 1L
+    nthin = 30L,
+    year_start = 1L
   )
 
-  saf <- survival$eSurvival[, , 3]
+  saf <- survival$eSurvival[,, 3]
   nyear <- dim(saf)[2]
   saf_annual <- vector(length = nyear)
   for (yr in 1:nyear) {
@@ -91,6 +95,9 @@ test_that("bbs_simulate_caribou works with bboutools and values can be recovered
   year$actual <- saf_annual
 
   ggplot(data = year) +
-    geom_pointrange(aes(x = CaribouYear, y = estimate, ymin = lower, ymax = upper), alpha = 0.5) +
+    geom_pointrange(
+      aes(x = CaribouYear, y = estimate, ymin = lower, ymax = upper),
+      alpha = 0.5
+    ) +
     geom_point(aes(x = CaribouYear, y = actual), size = 2, color = "red")
 })

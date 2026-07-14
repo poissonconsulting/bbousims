@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-initial_population <- function(adult_females,
-                               stable_stage_dist) {
+initial_population <- function(adult_females, stable_stage_dist) {
   n_af <- adult_females
   dist_a <- stable_stage_dist[3]
   dist_y <- stable_stage_dist[2]
@@ -30,37 +29,58 @@ initial_population <- function(adult_females,
   ))
 }
 
-female_calves <- function(proportion_female, survival_adult_female, calves_per_adult_female) {
+female_calves <- function(
+  proportion_female,
+  survival_adult_female,
+  calves_per_adult_female
+) {
   proportion_female * survival_adult_female * calves_per_adult_female
 }
 
-calf_cow_ratio <- function(calves_per_adult_female,
-                           survival_adult_female,
-                           survival_calf,
-                           survival_yearling) {
-  (calves_per_adult_female * survival_calf) / (survival_adult_female + 0.5 * survival_yearling)
+calf_cow_ratio <- function(
+  calves_per_adult_female,
+  survival_adult_female,
+  survival_calf,
+  survival_yearling
+) {
+  (calves_per_adult_female * survival_calf) /
+    (survival_adult_female + 0.5 * survival_yearling)
 }
 
 decesare_recruitment <- function(calf_cow, proportion_female) {
   calf_cow * proportion_female / (1 + calf_cow * proportion_female)
 }
 
-leslie_matrix <- function(female_calves, survival_calf, survival_yearling, survival_adult_female) {
+leslie_matrix <- function(
+  female_calves,
+  survival_calf,
+  survival_yearling,
+  survival_adult_female
+) {
   matrix(
     c(
-      0, 0, female_calves,
-      survival_calf, 0, 0,
-      0, survival_yearling, survival_adult_female
+      0,
+      0,
+      female_calves,
+      survival_calf,
+      0,
+      0,
+      0,
+      survival_yearling,
+      survival_adult_female
     ),
-    nrow = 3, byrow = TRUE
+    nrow = 3,
+    byrow = TRUE
   )
 }
 
-stable_stage_distribution <- function(calves_per_adult_female,
-                                      survival_adult_female,
-                                      survival_calf,
-                                      survival_yearling,
-                                      proportion_female) {
+stable_stage_distribution <- function(
+  calves_per_adult_female,
+  survival_adult_female,
+  survival_calf,
+  survival_yearling,
+  proportion_female
+) {
   female_calves <- female_calves(
     proportion_female = proportion_female,
     survival_adult_female = survival_adult_female,
@@ -77,11 +97,13 @@ stable_stage_distribution <- function(calves_per_adult_female,
   popbio::stable.stage(leslie)
 }
 
-estimate_lambda <- function(calves_per_adult_female,
-                            survival_adult_female,
-                            survival_calf,
-                            survival_yearling,
-                            proportion_female) {
+estimate_lambda <- function(
+  calves_per_adult_female,
+  survival_adult_female,
+  survival_calf,
+  survival_yearling,
+  proportion_female
+) {
   female_calves <- female_calves(
     proportion_female = proportion_female,
     survival_adult_female = survival_adult_female,
@@ -111,11 +133,13 @@ estimate_lambda <- function(calves_per_adult_female,
 #' @export
 #' @examples
 #' bbs_demographic_summary()
-bbs_demographic_summary <- function(calves_per_adult_female = 0.7,
-                                    survival_adult_female = 0.85,
-                                    survival_calf = 0.5,
-                                    survival_yearling = survival_adult_female,
-                                    proportion_female = 0.5) {
+bbs_demographic_summary <- function(
+  calves_per_adult_female = 0.7,
+  survival_adult_female = 0.85,
+  survival_calf = 0.5,
+  survival_yearling = survival_adult_female,
+  proportion_female = 0.5
+) {
   calf_cow <- calf_cow_ratio(
     calves_per_adult_female = calves_per_adult_female,
     survival_adult_female = survival_adult_female,
@@ -123,7 +147,8 @@ bbs_demographic_summary <- function(calves_per_adult_female = 0.7,
     survival_yearling = survival_yearling
   )
 
-  recruitment <- decesare_recruitment(calf_cow,
+  recruitment <- decesare_recruitment(
+    calf_cow,
     proportion_female = proportion_female
   )
 
